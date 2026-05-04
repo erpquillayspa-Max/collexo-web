@@ -1,0 +1,249 @@
+# ────────────────────────────────────────────────
+# Collexo — World Cup 2026 Daily News Agent
+# Runs every day at 8am UTC (4am ET / 5am Chile)
+# Also runs after every push to main
+# ────────────────────────────────────────────────
+name: World Cup News Agent
+
+on:
+  schedule:
+    - cron: '0 8 * * *'   # Daily at 8am UTC
+  push:
+    branches: [main]
+  workflow_dispatch:        # Manual trigger from GitHub UI
+
+jobs:
+  update-news:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Create public dir
+        run: mkdir -p public
+
+      - name: Fetch World Cup news with Claude AI
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+        run: |
+          node << 'EOF'
+          const https = require('https');
+          const fs = require('fs');
+
+          // ── 1. Fetch latest news via Claude API with web search ──
+          async function fetchNews() {
+            const body = JSON.stringify({
+              model: 'claude-sonnet-4-20250514',
+              max_tokens: 1000,
+              tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+              system: `You are a World Cup 2026 news aggregator for Collexo — a Panini sticker marketplace app.
+Search for the 6 most recent and relevant news stories about:
+1. FIFA World Cup 2026 (matches, results, teams, players)
+2. Panini sticker album 2026 (market, prices, new stickers, collectors)
+
+Return ONLY a valid JSON array with exactly 6 objects, no markdown, no preamble:
+[
+  {
+    "category": "short category label (max 20 chars)",
+    "title": "headline under 80 chars",
+    "desc": "2-sentence description, 100-150 chars total",
+    "source": "Source Name · Month Day",
+    "tag": "one of: Album|Market|World Cup|Qualifying|Historic|Result|Match",
+    "icon": "one of: 📦|🥤|💰|⚽|🏆|📈|🔥|🇦🇷|🇧🇷|🇫🇷|🇪🇸|🇩🇪|🏟️|🎯"
+  }
+]`,
+              messages: [{
+                role: 'user',
+                content: `Today is ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}. Search for the 6 most recent FIFA World Cup 2026 and Panini sticker news. Return JSON only.`
+              }]
+            });
+
+            return new Promise((resolve, reject) => {
+              const req = https.request({
+                hostname: 'api.anthropic.com',
+                path: '/v1/messages',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'x-api-key': process.env.ANTHROPIC_API_KEY,
+                  'anthropic-version': '2023-06-01'
+                }
+              }, (res) => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                  try {
+                    const parsed = JSON.parse(data);
+                    const text = parsed.content
+                      .filter(b => b.type === 'text')
+                      .map(b => b.text).join('');
+                    const clean = text.replace(/```json|```/g, '').trim();
+                    resolve(JSON.parse(clean));
+                  } catch (e) {
+                    reject(new Error('Parse error: ' + e.message + '\nRaw: ' + data.slice(0, 200)));
+                  }
+                });
+              });
+              req.on('error', reject);
+              req.write(body);
+              req.end();
+            });
+          }
+
+          // ── 2. Fetch live World Cup results via football-data.org ──
+          async function fetchResults() {
+            if (!process.env.FOOTBALL_API_KEY) {
+              console.log('No football API key — skipping results');
+              return null;
+            }
+
+            return new Promise((resolve, reject) => {
+              const req = https.request({
+                hostname: 'api.football-data.org',
+                path: '/v4/competitions/WC/matches?status=FINISHED&limit=5',
+                method: 'GET',
+                headers: { 'X-Auth-Token': process.env.FOOTBALL_API_KEY }
+              }, (res) => {
+                let data = '';
+                res.on('data', chunk => data += chunk);
+                res.on('end', () => {
+                  try { resolve(JSON.parse(data)); }
+                  catch (e) { resolve(null); }
+                });
+              });
+              req.on('error', () => resolve(null));
+              req.end();
+            });
+          }
+
+          // ── 3. Build news cards HTML ──
+          function buildNewsCards(stories) {
+            const tagColors = {
+              'Album': 'nt-wc', 'Market': 'nt-mk', 'World Cup': 'nt-wc',
+              'Qualifying': 'nt-new', 'Historic': 'nt-new', 'Result': 'nt-wc', 'Match': 'nt-wc'
+            };
+
+            const svgIllos = {
+              '📦': `<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#1a1a2e"/><text x="150" y="70" font-size="50" text-anchor="middle">📦</text><text x="150" y="105" font-family="monospace" font-size="8" fill="rgba(126,200,0,0.5)" text-anchor="middle" letter-spacing="2">PANINI 2026</text></svg>`,
+              '⚽': `<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#0a1a08"/><circle cx="150" cy="55" r="35" fill="rgba(255,255,255,0.08)" stroke="rgba(126,200,0,0.3)" stroke-width="1.5"/><text x="150" y="65" font-size="40" text-anchor="middle">⚽</text><rect x="0" y="85" width="300" height="35" fill="rgba(45,122,0,0.4)"/></svg>`,
+              '💰': `<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#f9f4e8"/><text x="150" y="65" font-size="50" text-anchor="middle">💰</text><text x="150" y="105" font-family="monospace" font-size="8" fill="#c94000" text-anchor="middle">STICKER MARKET PRICE</text></svg>`,
+              '🏆': `<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#0d1520"/><text x="150" y="70" font-size="50" text-anchor="middle">🏆</text><text x="150" y="108" font-family="monospace" font-size="8" fill="rgba(126,200,0,0.5)" text-anchor="middle" letter-spacing="2">WORLD CUP 2026</text></svg>`,
+              '📈': `<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#0a1a0a"/><polyline points="30,90 80,65 120,75 170,40 220,55 270,25" fill="none" stroke="rgba(126,200,0,0.6)" stroke-width="2.5" stroke-linecap="round"/><text x="150" y="108" font-family="monospace" font-size="8" fill="rgba(126,200,0,0.4)" text-anchor="middle">MARKET TREND ↑</text></svg>`,
+              '🔥': `<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#1a0808"/><text x="150" y="70" font-size="50" text-anchor="middle">🔥</text><text x="150" y="108" font-family="monospace" font-size="8" fill="rgba(201,64,0,0.5)" text-anchor="middle">TRENDING NOW</text></svg>`,
+              'default': `<svg viewBox="0 0 300 120"><rect width="300" height="120" fill="#1a1a2e"/><text x="150" y="70" font-size="44" text-anchor="middle">⚽</text></svg>`
+            };
+
+            return stories.map(s => {
+              const svg = svgIllos[s.icon] || svgIllos['default'];
+              const tagClass = tagColors[s.tag] || 'nt-wc';
+              return `    <div class="nc">
+      <div class="nc-img">${svg}</div>
+      <div class="nc-body">
+        <div class="nc-cat">${s.category}</div>
+        <div class="nc-title">${s.title.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="nc-desc">${s.desc.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <div class="nc-foot">
+          <span class="nc-src">${s.source}</span>
+          <span class="nc-tag ${tagClass}">${s.tag}</span>
+        </div>
+      </div>
+    </div>`;
+            }).join('\n');
+          }
+
+          // ── 4. Build results HTML ──
+          function buildResults(data) {
+            if (!data || !data.matches || !data.matches.length) return '';
+            const flagMap = {
+              'ARG':'🇦🇷','BRA':'🇧🇷','FRA':'🇫🇷','ESP':'🇪🇸','GER':'🇩🇪','MEX':'🇲🇽',
+              'USA':'🇺🇸','CAN':'🇨🇦','ENG':'🏴󠁧󠁢󠁥󠁮󠁧󠁿','POR':'🇵🇹','NED':'🇳🇱','JPN':'🇯🇵',
+              'URU':'🇺🇾','COL':'🇨🇴','CHI':'🇨🇱','PER':'🇵🇪','ECU':'🇪🇨','PAR':'🇵🇾',
+              'BOL':'🇧🇴','VEN':'🇻🇪','AUS':'🇦🇺','KOR':'🇰🇷','MAR':'🇲🇦','SEN':'🇸🇳',
+              'default':'🏳️'
+            };
+            return data.matches.slice(0,5).map(m => {
+              const h = m.homeTeam.tla || '';
+              const a = m.awayTeam.tla || '';
+              const hf = flagMap[h] || '🏳️';
+              const af = flagMap[a] || '🏳️';
+              const hs = m.score.fullTime.home ?? '?';
+              const as = m.score.fullTime.away ?? '?';
+              const d = new Date(m.utcDate).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+              return `    <div class="mr">
+      <div class="mr-teams">
+        <span class="mr-flag">${hf}</span><span class="mr-name">${m.homeTeam.shortName||h}</span>
+        <span class="mr-vs">${hs} — ${as}</span>
+        <span class="mr-flag">${af}</span><span class="mr-name">${m.awayTeam.shortName||a}</span>
+      </div>
+      <div class="mr-info">
+        <span class="mi-group">Grp ${m.group?.replace('GROUP_','')}</span>
+        <span class="mi-date">${d}</span>
+      </div>
+    </div>`;
+            }).join('\n');
+          }
+
+          // ── 5. Main ──
+          async function main() {
+            console.log('🔍 Fetching news from Claude AI...');
+            const [stories, results] = await Promise.all([fetchNews(), fetchResults()]);
+
+            console.log(`✓ Got ${stories.length} news stories`);
+
+            const newsHTML = buildNewsCards(stories);
+            const resultsHTML = buildResults(results);
+            const timestamp = new Date().toLocaleDateString('en-US', {
+              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC'
+            }) + ' UTC';
+
+            // Write news data JSON for the page to consume
+            const outputData = {
+              updated: timestamp,
+              stories,
+              results: results?.matches?.slice(0,5) || []
+            };
+            fs.writeFileSync('public/wc2026-data.json', JSON.stringify(outputData, null, 2));
+            console.log('✓ Wrote public/wc2026-data.json');
+
+            // Also write a simple HTML snippet for embedding
+            fs.writeFileSync('public/wc2026-news.html', `<!-- Updated: ${timestamp} -->\n${newsHTML}`);
+            if (resultsHTML) {
+              fs.writeFileSync('public/wc2026-results.html', resultsHTML);
+            }
+
+            console.log('✅ Done! All files updated.');
+          }
+
+          main().catch(e => {
+            console.error('❌ Error:', e.message);
+            process.exit(1);
+          });
+          EOF
+
+      - name: Commit and push updated data
+        run: |
+          git config user.name "Collexo Bot"
+          git config user.email "bot@collexo.app"
+          git add public/wc2026-data.json public/wc2026-news.html public/wc2026-results.html 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🤖 Daily World Cup news update — $(date -u '+%Y-%m-%d %H:%M UTC')"
+            git push
+          fi
+
+      - name: Summary
+        run: |
+          echo "## ✅ World Cup News Updated" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- 🕐 Run time: $(date -u)" >> $GITHUB_STEP_SUMMARY
+          echo "- 📰 6 news stories fetched via Claude AI" >> $GITHUB_STEP_SUMMARY
+          echo "- ⚽ Latest match results included" >> $GITHUB_STEP_SUMMARY
+          echo "- 📁 Output: \`public/wc2026-data.json\`" >> $GITHUB_STEP_SUMMARY
