@@ -1,0 +1,1667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collexo — The Sticker Exchange Community</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('Rj7rnxMpenOIugaKq');</script>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --g:#2d7a00;--gl:#e8f5d8;--o:#c94000;--ol:#fff0e8;--r:#b5003e;--b:#005fa3;
+  --ink:#111;--ink2:#333;--ink3:#555;--ink4:#888;
+  --w:#fff;--bg:#f9f9f7;--bg2:#fff;--border:#e2e2dd;--border2:#ccc;
+  --dk:#111;--dkt:#eee;--dkm:#aaa;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;line-height:1.6;overflow-x:hidden}
+h1,h2,h3{font-family:'Unbounded',sans-serif;letter-spacing:-.02em;line-height:1.05;color:var(--ink)}
+p{color:var(--ink3)}
+a{color:var(--o)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;background:rgba(255,255,255,.96);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.logo{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:900;color:var(--ink);text-decoration:none;display:flex;flex-direction:column;line-height:1;gap:2px}
+.logo em{font-style:normal;color:var(--g)}
+.logo-sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:8px;font-weight:600;color:var(--ink4);letter-spacing:.5px;text-transform:uppercase;line-height:1}
+.nav-right{display:flex;align-items:center;gap:10px}
+.nav-cd{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;color:var(--o);letter-spacing:1px;background:var(--ol);border:1px solid #f0c0a0;padding:5px 12px;border-radius:100px}
+.nav-news{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--g);color:#fff;padding:9px 16px;border-radius:8px;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-news:hover{background:#1f5a00;color:#fff}
+.news-hub-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--ink);border-radius:16px;padding:20px 24px;margin-bottom:28px;flex-wrap:wrap}
+.nhb-left{display:flex;align-items:center;gap:14px}
+.nhb-icon{font-size:32px}
+.nhb-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:3px}
+.nhb-sub{font-size:12px;color:#666}
+.nhb-btn{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--lime);color:#000;padding:11px 22px;border-radius:10px;text-decoration:none;white-space:nowrap;transition:all .2s;flex-shrink:0}
+.nhb-btn:hover{background:#6dcc00;transform:translateY(-2px)}
+.nav-cta{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--ink);color:#fff;padding:9px 18px;border-radius:8px;text-decoration:none;transition:all .2s;white-space:nowrap}
+.nav-cta:hover{background:var(--o)}
+
+/* LANG SELECTOR — standalone, no conflicts */
+.lang-sel{position:relative}
+.lang-trigger{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:7px 11px;font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .2s;user-select:none}
+.lang-trigger:hover{border-color:var(--ink);background:#fff}
+.lang-caret{font-size:8px;color:var(--ink4);display:inline-block;transition:transform .2s}
+.lang-menu{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--border2);border-radius:12px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,.12);min-width:155px;z-index:9999;visibility:hidden;opacity:0;transform:translateY(-6px);transition:all .15s;pointer-events:none}
+.lang-menu.show{visibility:visible;opacity:1;transform:translateY(0);pointer-events:auto}
+.lang-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:background .1s}
+.lang-item:hover{background:var(--bg)}
+.lang-item.cur{background:var(--gl);color:var(--g)}
+
+/* BLINK */
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--g);animation:blink 1.4s ease-in-out infinite;flex-shrink:0}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:90px 24px 80px;background:var(--w);position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 40% at 10% 15%,rgba(45,122,0,.07),transparent 55%),radial-gradient(ellipse 45% 35% at 90% 80%,rgba(201,64,0,.06),transparent 55%)}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--gl);border:1px solid #b0db80;border-radius:100px;padding:7px 18px;margin-bottom:28px;font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--g);position:relative;z-index:1}
+h1.hero-h1{font-size:clamp(40px,7.5vw,88px);font-weight:900;line-height:.93;letter-spacing:-.03em;color:var(--ink);position:relative;z-index:1;margin-bottom:22px}
+.h1-accent{color:var(--o);display:block}
+.h1-ghost{color:transparent;-webkit-text-stroke:2px var(--border2);display:block}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--ink3);max-width:500px;line-height:1.7;margin-bottom:40px;position:relative;z-index:1}
+.hero-sub strong{color:var(--ink2);font-weight:700}
+
+/* PAY BADGES */
+.pay-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin-bottom:36px;position:relative;z-index:1}
+.pbadge{display:flex;align-items:center;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:7px 14px;font-size:12px;font-weight:700;color:var(--ink2)}
+.plogo{width:26px;height:17px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:7px;font-weight:900;flex-shrink:0}
+.pm-mp{background:#ffe600;color:#009ee3}
+.pm-ap{background:#1c1c1e;color:#fff;font-size:9px}
+.pm-gp{background:linear-gradient(135deg,#4285f4 25%,#34a853 25% 50%,#fbbc05 50% 75%,#ea4335 75%);color:#fff;font-size:7px;letter-spacing:-.5px}
+.pm-st{background:#635bff;color:#fff}
+.pm-lock{background:var(--g);color:#fff;font-size:10px}
+
+/* WAITLIST FORM */
+.wl-wrap{width:100%;max-width:500px;position:relative;z-index:1;margin-bottom:40px}
+.wl-card{background:var(--w);border:1.5px solid var(--border2);border-radius:20px;padding:28px;box-shadow:0 4px 24px rgba(0,0,0,.07)}
+.wl-label{font-family:'Unbounded',sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--ink3);display:block;margin-bottom:14px}
+.wl-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.wl-inp{flex:1;min-width:200px;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:13px 18px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:all .2s}
+.wl-inp::placeholder{color:var(--ink4)}
+.wl-inp:focus{border-color:var(--g);box-shadow:0 0 0 3px rgba(45,122,0,.1)}
+.wl-inp.err{border-color:#c00}
+.wl-btn{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--ink);color:#fff;border:none;border-radius:12px;padding:13px 22px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.wl-btn:hover{background:var(--o)}
+.wl-btn:disabled{opacity:.6;cursor:not-allowed}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chip{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:.5px;padding:6px 12px;border-radius:100px;border:1px solid var(--border2);color:var(--ink3);cursor:pointer;background:transparent;transition:all .15s}
+.chip:hover{border-color:var(--g);color:var(--g);background:var(--gl)}
+.chip.on{border-color:var(--g);color:#fff;background:var(--g)}
+.wl-fine{font-size:11px;color:var(--ink4);text-align:center}
+.wl-status{display:none;padding:10px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-top:10px}
+.wl-status.sending{display:block;background:#fff8e8;color:#7a5000;border:1px solid #f0d090}
+.wl-status.ok{display:block;background:var(--gl);color:#2d5a00;border:1px solid #a0cc60}
+.wl-status.er{display:block;background:#fde8e8;color:#900;border:1px solid #e0a0a0}
+.wl-success{display:none;text-align:center;padding:8px 0}
+.wl-success.show{display:block}
+.ws-ico{font-size:40px;margin-bottom:10px}
+.ws-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:var(--g);margin-bottom:8px}
+.ws-sub{font-size:14px;color:var(--ink3);margin-bottom:18px}
+.shr-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.shr{font-size:12px;font-weight:600;padding:9px 18px;border-radius:10px;cursor:pointer;transition:all .2s}
+.shr-wa{background:#e8faf0;color:#128c7e;border:1px solid #a8dfca}
+.shr-cp{background:var(--bg);color:var(--ink3);border:1px solid var(--border)}
+
+/* COUNTERS */
+.ctr-row{display:flex;gap:32px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1}
+.ctr{text-align:center}
+.ctr-n{font-family:'Unbounded',sans-serif;font-size:32px;font-weight:900;color:var(--ink);display:block;line-height:1}
+.ctr-n.g{color:var(--g)}.ctr-n.o{color:var(--o)}
+.ctr-l{font-size:10px;color:var(--ink4);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;display:block}
+.ctr-sep{width:1px;height:38px;background:var(--border)}
+
+/* TICKER */
+.ticker{background:var(--ink);padding:12px 0;overflow:hidden}
+.ticker-inner{display:inline-block;white-space:nowrap;animation:tscroll 32s linear infinite}
+.ticker-inner:hover{animation-play-state:paused}
+@keyframes tscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.tick{display:inline-flex;align-items:center;gap:8px;margin-right:52px;font-size:13px;color:#999}
+.tick strong{color:#fff}
+.tdot{width:4px;height:4px;border-radius:50%;background:var(--o);flex-shrink:0}
+
+/* SECTIONS */
+.section{max-width:1060px;margin:0 auto;padding:88px 28px}
+.sec-eye{font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--o);margin-bottom:12px;display:block}
+.sec-title{font-family:'Unbounded',sans-serif;font-size:clamp(28px,4vw,50px);font-weight:900;color:var(--ink);margin-bottom:48px;line-height:1.05}
+
+/* HOW IT WORKS */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.step{background:var(--w);border:1px solid var(--border);border-radius:18px;padding:26px;position:relative;overflow:hidden;transition:all .25s}
+.step:hover{border-color:var(--g);box-shadow:0 6px 24px rgba(45,122,0,.1);transform:translateY(-4px)}
+.step-n{font-family:'Unbounded',sans-serif;font-size:72px;font-weight:900;color:var(--border);position:absolute;bottom:-10px;right:10px;line-height:1;pointer-events:none;z-index:0}
+.step-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:21px;margin-bottom:16px;position:relative;z-index:1}
+.si1{background:var(--gl)}.si2{background:var(--ol)}.si3{background:#fde8f0}.si4{background:#e8f0fd}
+.step-title{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px;position:relative;z-index:1}
+.step-desc{font-size:13px;color:var(--ink3);line-height:1.6;position:relative;z-index:1}
+
+/* ESCROW */
+.escrow-box{background:var(--dk);border-radius:24px;overflow:hidden}
+.escrow-bar{height:4px;background:linear-gradient(90deg,var(--g),var(--o),var(--r))}
+.escrow-body{padding:44px 40px}
+.escrow-grid{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+@media(max-width:700px){.escrow-grid{grid-template-columns:1fr;gap:32px}}
+.esc-eye{font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#6dcc00;margin-bottom:12px;display:block}
+.esc-title{font-family:'Unbounded',sans-serif;font-size:clamp(24px,3vw,36px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:14px}
+.esc-sub{font-size:14px;color:var(--dkm);line-height:1.7;margin-bottom:24px}
+.trust-row{display:flex;flex-wrap:wrap;gap:8px}
+.trust{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:7px 13px;font-size:12px;font-weight:600;color:#ccc}
+.flow{display:flex;flex-direction:column}
+.fstep{display:flex;gap:14px;align-items:flex-start;position:relative;padding-bottom:26px}
+.fstep:last-child{padding-bottom:0}
+.fstep::before{content:'';position:absolute;left:18px;top:40px;bottom:0;width:2px;background:rgba(255,255,255,.1)}
+.fstep:last-child::before{display:none}
+.fnum{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;z-index:1}
+.fn1{background:#6dcc00;color:#000}.fn2{background:var(--o);color:#fff}.fn3{background:#0090c8;color:#fff}.fn4{background:#6dcc00;color:#000}
+.ftitle{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+.fdesc{font-size:12px;color:#888;line-height:1.5}
+
+/* PAYMENTS */
+.pay-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.pay-card{background:var(--w);border:1px solid var(--border);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px;transition:all .2s}
+.pay-card:hover{border-color:var(--g);box-shadow:0 4px 16px rgba(45,122,0,.1);transform:translateY(-3px)}
+.pay-card-top{display:flex;align-items:center;gap:12px}
+.pay-logo{width:46px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-weight:900;flex-shrink:0}
+.pl-mp{background:#ffe600;color:#009ee3;font-size:8px;letter-spacing:-.5px}
+.pl-ap{background:#1c1c1e;color:#fff;font-size:14px}
+.pl-gp{background:linear-gradient(135deg,#4285f4 25%,#34a853 25% 50%,#fbbc05 50% 75%,#ea4335 75%);color:#fff;font-size:7px;letter-spacing:-.5px}
+.pl-st{background:#635bff;color:#fff;font-size:8px}
+.pay-name{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:var(--ink)}
+.pay-desc{font-size:12px;color:var(--ink3);line-height:1.5}
+.pay-tag{font-size:9px;letter-spacing:1px;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:4px;display:inline-block}
+.pt-main{background:var(--gl);color:var(--g)}.pt-bio{background:var(--ol);color:var(--o)}.pt-eu{background:#e8f0fd;color:var(--b)}
+
+/* PRICING */
+.pricing-inner{background:var(--w);border:1px solid var(--border);border-radius:24px;padding:44px;box-shadow:0 4px 24px rgba(0,0,0,.06)}
+.eb-banner{background:linear-gradient(135deg,var(--o),var(--r));border-radius:16px;padding:24px;margin-bottom:28px;display:flex;flex-direction:column;gap:18px}
+.eb-top{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap;justify-content:space-between}
+.eb-eye-lbl{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.75);margin-bottom:4px}
+.eb-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:#fff;line-height:1.1}
+.eb-sub{font-size:13px;color:rgba(255,255,255,.85);margin-top:4px}
+.eb-pills{display:flex;gap:10px;flex-wrap:wrap}
+.eb-pill{flex:1;min-width:140px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:12px;padding:14px 18px;text-align:center;cursor:pointer;transition:all .2s}
+.eb-pill:hover{background:rgba(255,255,255,.28)}
+.eb-amt{font-family:'Unbounded',sans-serif;font-size:30px;font-weight:900;color:#fff;line-height:1}
+.eb-desc{font-size:11px;color:rgba(255,255,255,.9);font-weight:700;margin-top:3px}
+.eb-note{font-size:10px;color:rgba(255,255,255,.6);margin-top:2px}
+/* plan guide */
+.plan-guide{background:var(--gl);border:1px solid #b0db80;border-radius:12px;padding:14px 18px;margin-bottom:24px;font-size:13px;color:var(--g);display:flex;gap:10px;align-items:flex-start}
+/* tiers */
+.tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.tier{background:var(--w);border:2px solid var(--border);border-radius:18px;padding:26px;position:relative;overflow:hidden;transition:all .2s}
+.tier:hover{box-shadow:0 8px 28px rgba(0,0,0,.08)}
+.tier.best{border-color:var(--g)}
+.tier.best::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--g),#6dcc00)}
+.tier.hot{border-color:var(--o);background:var(--ol)}
+.tier.hot::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--o),var(--r))}
+.tbadge{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:100px;display:inline-block;margin-bottom:14px}
+.tb-free{background:var(--bg);color:var(--ink3)}
+.tb-prem{background:var(--g);color:#fff}
+.tb-world{background:linear-gradient(90deg,var(--g),#6dcc00);color:#fff}
+.tb-early{background:linear-gradient(90deg,var(--o),var(--r));color:#fff}
+.popular{position:absolute;top:12px;right:12px;background:var(--g);color:#fff;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:700;padding:3px 10px;border-radius:100px}
+.tname{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:var(--ink);margin-bottom:8px}
+.price-row{display:flex;align-items:baseline;gap:4px;flex-wrap:wrap;margin-bottom:4px}
+.pmain{font-family:'Unbounded',sans-serif;font-size:36px;font-weight:900;color:var(--ink);line-height:1}
+.pper{font-size:13px;color:var(--ink4)}
+.pcross{font-family:'Unbounded',sans-serif;font-size:14px;color:var(--ink4);text-decoration:line-through;margin-left:4px}
+.psave{display:inline-block;font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:14px}
+.ps-g{background:var(--gl);color:var(--g)}.ps-o{background:var(--ol);color:var(--o)}
+.tnote{font-size:12px;color:var(--ink4);margin-bottom:20px}
+.tfeats{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px}
+.tfeats li{display:flex;gap:9px;align-items:flex-start;font-size:13px;color:var(--ink2);line-height:1.4}
+.tfeats li.dim{color:var(--ink4)}
+.tfi{flex-shrink:0;width:18px;font-size:13px;margin-top:1px}
+/* Early bird toggle inside tier */
+.eb-toggle{display:flex;gap:6px;margin-bottom:14px}
+.ebt{font-family:'Unbounded',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--o);color:var(--o);background:transparent;cursor:pointer;transition:all .2s}
+.ebt.on{background:var(--o);color:#fff}
+/* buttons */
+.tbtn{display:block;text-align:center;text-decoration:none;padding:13px;border-radius:12px;font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;transition:all .2s;cursor:pointer;border:none;width:100%}
+.tbtn-free{background:var(--bg);color:var(--ink);border:1.5px solid var(--border2)}
+.tbtn-free:hover{background:var(--border)}
+.tbtn-prem{background:linear-gradient(90deg,var(--g),#6dcc00);color:#fff;box-shadow:0 5px 20px rgba(45,122,0,.25)}
+.tbtn-prem:hover{box-shadow:0 9px 32px rgba(45,122,0,.4);transform:translateY(-2px)}
+.tbtn-early{background:linear-gradient(90deg,var(--o),var(--r));color:#fff;box-shadow:0 5px 20px rgba(201,64,0,.25)}
+.tbtn-early:hover{box-shadow:0 9px 32px rgba(201,64,0,.4);transform:translateY(-2px)}
+
+/* POLICIES */
+.pol-wrap{background:var(--w);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.pol-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto}
+.pol-tabs::-webkit-scrollbar{display:none}
+.ptab{font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:1px;padding:14px 18px;white-space:nowrap;cursor:pointer;color:var(--ink3);border-bottom:2px solid transparent;background:none;border-top:none;border-left:none;border-right:none;transition:all .2s}
+.ptab:hover{color:var(--ink)}.ptab.on{color:var(--o);border-bottom-color:var(--o)}
+.pol-body{padding:28px}
+.pp{display:none}.pp.on{display:block}
+.pol-h{font-family:'Unbounded',sans-serif;font-size:15px;font-weight:700;color:var(--ink);margin-bottom:6px;margin-top:20px}
+.pol-h:first-child{margin-top:0}
+.pol-p{font-size:13px;color:var(--ink3);line-height:1.7;margin-bottom:10px}
+.pol-ul{font-size:13px;color:var(--ink3);line-height:1.7;padding-left:20px;margin-bottom:12px}
+.pol-ul li{margin-bottom:5px}
+.pol-note{background:var(--ol);border-left:3px solid var(--o);padding:12px 16px;border-radius:0 10px 10px 0;font-size:12px;color:var(--ink2);margin-top:10px}
+
+
+/* NEWS & RESULTS */
+.match-row{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px}
+.match-teams{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink)}
+.match-flag{font-size:18px}
+.match-name{min-width:70px}
+.match-score{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:900;color:var(--ink);background:var(--bg);padding:4px 12px;border-radius:8px;border:1px solid var(--border)}
+.live-score{color:var(--o);border-color:var(--o);animation:blink 2s ease-in-out infinite}
+.match-meta{font-size:11px;color:var(--ink4);letter-spacing:.5px}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.news-card{background:var(--w);border:1px solid var(--border);border-radius:18px;overflow:hidden;transition:all .25s;display:flex;flex-direction:column}
+.news-card:hover{border-color:var(--g);box-shadow:0 6px 24px rgba(45,122,0,.1);transform:translateY(-4px)}
+.news-img{height:90px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:40px;border-bottom:1px solid var(--border)}
+.news-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:6px}
+.news-cat{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--o)}
+.news-title{font-family:'Unbounded',sans-serif;font-size:13px;font-weight:700;color:var(--ink);line-height:1.3}
+.news-desc{font-size:12px;color:var(--ink3);line-height:1.5;flex:1}
+.news-time{font-size:10px;color:var(--ink4);letter-spacing:.5px;margin-top:4px}
+
+/* URGENCY */
+.urgency{background:var(--ink);padding:36px 28px}
+.urg-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.urg-title{font-family:'Unbounded',sans-serif;font-size:clamp(20px,2.8vw,34px);font-weight:900;color:#fff;line-height:1.1;margin-bottom:6px}
+.urg-sub{font-size:14px;color:#aaa}.urg-sub strong{color:#6dcc00}
+.cd{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cd-b{text-align:center;min-width:56px}
+.cdn{font-family:'Unbounded',sans-serif;font-size:clamp(28px,3.5vw,46px);font-weight:900;color:#6dcc00;display:block;line-height:1}
+.cdl{font-size:9px;color:#555;letter-spacing:2px;margin-top:2px;display:block}
+.cdsep{font-family:'Unbounded',sans-serif;font-size:26px;color:#333;padding-bottom:12px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:22px;padding:32px;max-width:460px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.2);position:relative;max-height:90vh;overflow-y:auto}
+.modal::-webkit-scrollbar{width:4px}.modal::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.mcl{position:absolute;top:12px;right:14px;font-size:22px;cursor:pointer;color:var(--ink4);background:none;border:none;line-height:1}
+.mcl:hover{color:var(--ink)}
+.m-eye{font-family:'Unbounded',sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--o);margin-bottom:8px}
+.m-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:var(--ink);margin-bottom:6px;line-height:1.1}
+.m-sub{font-size:13px;color:var(--ink3);margin-bottom:20px;line-height:1.5}
+.m-pbox{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:12px;padding:14px 16px;margin-bottom:18px;flex-wrap:wrap}
+.m-pbig{font-family:'Unbounded',sans-serif;font-size:30px;font-weight:900;color:var(--ink)}
+.m-pold{font-family:'Unbounded',sans-serif;font-size:14px;color:var(--ink4);text-decoration:line-through}
+.m-psave{background:var(--gl);color:var(--g);font-size:11px;font-weight:700;padding:3px 10px;border-radius:6px}
+.wallets{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.wl-lbl{font-size:12px;color:var(--ink3)}
+.wbtn{display:flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--border2);border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.wbtn:hover{border-color:var(--ink);background:#fff}
+.wbtn-logo{width:20px;height:14px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:'Unbounded',sans-serif;font-size:6px;font-weight:900;flex-shrink:0}
+.wbl-ap{background:#1c1c1e;color:#fff;font-size:8px}
+.wbl-gp{background:linear-gradient(135deg,#4285f4 25%,#34a853 25% 50%,#fbbc05 50% 75%,#ea4335 75%);color:#fff}
+.divider{text-align:center;font-size:11px;color:var(--ink4);margin-bottom:14px}
+.fg{margin-bottom:12px}
+.fl{font-size:11px;font-weight:600;color:var(--ink3);letter-spacing:.5px;display:block;margin-bottom:5px}
+.fi{width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:11px 16px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:all .2s}
+.fi:focus{border-color:var(--o);box-shadow:0 0 0 3px rgba(201,64,0,.1)}
+.fi.err{border-color:#c00}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.legal{background:var(--bg);border-left:3px solid var(--o);border-radius:0 10px 10px 0;padding:12px;font-size:11px;color:var(--ink3);line-height:1.5;margin-bottom:18px}
+.legal a{color:var(--o)}
+.msubmit{width:100%;padding:14px;border:none;border-radius:12px;cursor:pointer;font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(90deg,var(--o),var(--r));color:#fff;box-shadow:0 5px 20px rgba(201,64,0,.28);transition:all .2s}
+.msubmit:hover{transform:translateY(-2px);box-shadow:0 9px 32px rgba(201,64,0,.4)}
+.msubmit:disabled{opacity:.6;cursor:not-allowed;transform:none}
+.m-mstatus{display:none;padding:9px 14px;border-radius:10px;font-size:13px;font-weight:600;margin-top:10px}
+.m-mstatus.sending{display:block;background:#fff8e8;color:#7a5000;border:1px solid #f0d090}
+.m-mstatus.ok{display:block;background:var(--gl);color:var(--g);border:1px solid #a0cc60}
+.m-success{display:none;text-align:center;padding:12px 0}
+.m-success.show{display:block}
+.ms-ico{font-size:46px;margin-bottom:12px}
+.ms-title{font-family:'Unbounded',sans-serif;font-size:20px;font-weight:900;color:var(--g);margin-bottom:8px}
+.ms-sub{font-size:13px;color:var(--ink3);line-height:1.6}
+
+/* FINAL CTA */
+.final{text-align:center;padding:100px 28px;background:var(--w);position:relative;overflow:hidden}
+.final::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 45% at 50% 50%,rgba(45,122,0,.07),transparent 65%)}
+.final-title{font-family:'Unbounded',sans-serif;font-size:clamp(36px,6vw,72px);font-weight:900;line-height:.95;color:var(--ink);margin-bottom:18px;position:relative;z-index:1}
+.final-title em{font-style:normal;color:var(--o)}
+.final-sub{font-size:16px;color:var(--ink3);margin-bottom:36px;position:relative;z-index:1}
+.final-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.fbtn-free{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:var(--bg);color:var(--ink);padding:15px 28px;border-radius:12px;text-decoration:none;border:1.5px solid var(--border2);transition:all .2s}
+.fbtn-free:hover{background:var(--border)}
+.fbtn-early{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;background:linear-gradient(90deg,var(--o),var(--r));color:#fff;padding:15px 28px;border-radius:12px;border:none;cursor:pointer;box-shadow:0 5px 20px rgba(201,64,0,.25);transition:all .2s}
+.fbtn-early:hover{transform:translateY(-2px);box-shadow:0 9px 32px rgba(201,64,0,.4)}
+
+/* FOOTER */
+footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.f-logo{font-family:'Unbounded',sans-serif;font-size:15px;font-weight:900;color:#fff}
+.f-logo em{font-style:normal;color:#6dcc00}
+.f-note{font-size:11px;color:#555}
+.f-links{display:flex;gap:18px}
+.f-links a{font-size:11px;color:#666;text-decoration:none}
+.f-links a:hover{color:#aaa}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.reveal.vis{opacity:1;transform:none}
+
+/* RESPONSIVE */
+@media(max-width:600px){
+  nav{padding:0 10px;height:auto;min-height:52px;flex-wrap:wrap;gap:6px;padding-top:8px;padding-bottom:8px}
+  .nav-cd{display:none}
+  .nav-right{gap:6px;flex-wrap:nowrap}
+  .nav-news{font-size:9px;padding:7px 10px;letter-spacing:.5px}
+  .nav-cta{font-size:9px;padding:7px 12px;letter-spacing:1px}
+  .lang-trigger{padding:6px 9px}
+  .section{padding:64px 18px}
+  .escrow-body{padding:28px 20px}
+  .pricing-inner{padding:24px 18px}
+  .urgency{padding:28px 18px}
+  .final{padding:72px 18px}
+  footer{padding:22px 18px;flex-direction:column;gap:10px}
+  .modal{padding:24px 18px}
+}
+@media(max-width:380px){
+  .nav-news{display:none}
+  .logo-sub{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="javascript:void(0)" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+    <span>Collexo</span>
+    <span class="logo-sub">The Sticker Exchange Community</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-cd" id="navCd">⚽ World Cup in 41 days</div>
+
+    <!-- LANGUAGE SELECTOR — pure CSS visibility trick, no JS conflicts -->
+    <div class="lang-sel" id="langSel">
+      <div class="lang-trigger" id="langTrigger">
+        <span id="langFlag">🇪🇸</span>
+        <span id="langCode">ES</span>
+        <span class="lang-caret" id="langCaret">▾</span>
+      </div>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-item cur" data-lang="es" onclick="setLang('es')"><span>🇪🇸</span> Español</button>
+        <button class="lang-item" data-lang="en" onclick="setLang('en')"><span>🇺🇸</span> English</button>
+        <button class="lang-item" data-lang="pt" onclick="setLang('pt')"><span>🇧🇷</span> Português</button>
+        <button class="lang-item" data-lang="fr" onclick="setLang('fr')"><span>🇫🇷</span> Français</button>
+      </div>
+    </div>
+
+    <a href="javascript:void(0)" class="nav-cta" id="navCta" onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth',block:'start'})">See pricing</a>
+    <a href="mundial.html" class="nav-news" id="navNews">⚽ <span class="nav-news-txt">World Cup News</span></a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="eyebrow"><div class="pulse"></div><span id="eyebrowText">World Cup 2026 · 980 stickers · Launching soon</span></div>
+  <h1 class="hero-h1">
+    <span class="h1-ghost" id="h1Line1">The sticker</span>
+    <span class="h1-accent" id="h1Line2">marketplace</span>
+    <span id="h1Line3">you needed</span>
+  </h1>
+  <p class="hero-sub" id="heroSub">You know what you have. You know what's missing.<br><strong>Trade and sell directly</strong> with other collectors. With <strong>protected payments</strong> until you confirm receipt.</p>
+
+  <!-- Pay badges -->
+  <div class="pay-row">
+    <div class="pbadge"><div class="plogo pm-mp">MP</div> Mercado Pago</div>
+    <div class="pbadge"><div class="plogo pm-ap">&#xF8FF;</div> Apple Pay</div>
+    <div class="pbadge"><div class="plogo pm-gp">GPay</div> Google Pay</div>
+    <div class="pbadge"><div class="plogo pm-st">ST</div> Stripe</div>
+    <div class="pbadge"><div class="plogo pm-lock">🔒</div><span id="escrowBadge">Escrow</span></div>
+  </div>
+
+  <!-- WAITLIST -->
+  <div class="wl-wrap" id="waitlist">
+    <div class="wl-card">
+      <div id="wlForm">
+        <span class="wl-label" id="wlLabel">Early access — free</span>
+        <div class="wl-row">
+          <input class="wl-inp" type="email" id="wlEmail" placeholder="your@email.com" autocomplete="email">
+          <button class="wl-btn" id="wlBtn" onclick="submitWaitlist()">Join →</button>
+        </div>
+        <div class="chips" id="chipsRow">
+          <div class="chip" onclick="selChip(this)">🇺🇸 USA</div>
+          <div class="chip" onclick="selChip(this)">🇦🇷 Argentina</div>
+          <div class="chip" onclick="selChip(this)">🇨🇴 Colombia</div>
+          <div class="chip" onclick="selChip(this)">🇧🇷 Brazil</div>
+          <div class="chip" onclick="selChip(this)">🌍 Other</div>
+        </div>
+        <div id="wlStatus" class="wl-status"></div>
+        <div class="wl-fine" id="wlFine">🔒 No spam · We'll notify you at launch</div>
+      </div>
+      <div class="wl-success" id="wlSuccess">
+        <div class="ws-ico">🎉</div>
+        <div class="ws-title" id="wsTitle">You're in!</div>
+        <div class="ws-sub" id="wsSub">You're #<span id="myNum">848</span> on the list.<br>Share with collectors 👇</div>
+        <div class="shr-row">
+          <button class="shr shr-wa" onclick="shareWa()">📲 WhatsApp</button>
+          <button class="shr shr-cp" onclick="copyLink()">📋 Copy link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Counters -->
+  <div class="ctr-row">
+    <div class="ctr"><span class="ctr-n g" id="ctrNum">847</span><span class="ctr-l" id="ctrL1">On waitlist</span></div>
+    <div class="ctr-sep"></div>
+    <div class="ctr"><span class="ctr-n">980</span><span class="ctr-l" id="ctrL2">Stickers to track</span></div>
+    <div class="ctr-sep"></div>
+    <div class="ctr"><span class="ctr-n o">48</span><span class="ctr-l" id="ctrL3">National teams</span></div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker"><div class="ticker-inner" id="tickerInner"></div></div>
+
+<!-- HOW IT WORKS -->
+<div class="section reveal">
+  <span class="sec-eye" id="howEye">How it works</span>
+  <h2 class="sec-title" id="howTitle">Simple as<br>peeling a sticker</h2>
+  <div class="steps">
+    <div class="step"><div class="step-ico si1">📋</div><div class="step-title" id="st1">Register your album</div><div class="step-desc" id="sd1">Mark which stickers you have, which are missing and which are duplicates. In seconds, from your phone.</div><div class="step-n">01</div></div>
+    <div class="step"><div class="step-ico si2">🔍</div><div class="step-title" id="st2">Find a match</div><div class="step-desc" id="sd2">The system cross-references your list with duplicates from thousands of users and shows you who has what you need.</div><div class="step-n">02</div></div>
+    <div class="step"><div class="step-ico si3">⇄</div><div class="step-title" id="st3">Trade or sell</div><div class="step-desc" id="sd3">You decide: offer your duplicates in exchange for what you need, or sell them at the price you want.</div><div class="step-n">03</div></div>
+    <div class="step"><div class="step-ico si4">🔒</div><div class="step-title" id="st4">Protected payment</div><div class="step-desc" id="sd4">Money is held in escrow. Released only when you confirm you received the correct sticker.</div><div class="step-n">04</div></div>
+  </div>
+</div>
+
+<!-- ESCROW -->
+<div class="section reveal" style="padding-top:0">
+  <div class="escrow-box">
+    <div class="escrow-bar"></div>
+    <div class="escrow-body">
+      <div class="escrow-grid">
+        <div>
+          <span class="esc-eye" id="escEye">Protected transactions</span>
+          <h2 class="esc-title" id="escTitle">Your money safe until you receive the sticker</h2>
+          <p class="esc-sub" id="escSub">Money never goes directly to the seller. Collexo holds it in escrow and only releases it when you confirm receipt. If there's an issue, open a dispute and we'll refund you.</p>
+          <div class="trust-row">
+            <div class="trust">🔒 Protected payment</div>
+            <div class="trust">🛡️ Anti-fraud</div>
+            <div class="trust">⭐ Reputation</div>
+            <div class="trust">⚖️ Disputes</div>
+            <div class="trust">↩️ Refunds</div>
+          </div>
+        </div>
+        <div class="flow">
+          <div class="fstep"><div class="fnum fn1">1</div><div><div class="ftitle" id="ft1">You buy and pay</div><div class="fdesc" id="fd1">Money is held by Collexo. The seller receives nothing yet.</div></div></div>
+          <div class="fstep"><div class="fnum fn2">2</div><div><div class="ftitle" id="ft2">Seller ships the sticker</div><div class="fdesc" id="fd2">They upload proof of shipping. If nothing sent in 5 days, automatic refund.</div></div></div>
+          <div class="fstep"><div class="fnum fn3">3</div><div><div class="ftitle" id="ft3">You confirm receipt</div><div class="fdesc" id="fd3">You have 72 hours to confirm or open a dispute. No response = automatic release.</div></div></div>
+          <div class="fstep"><div class="fnum fn4">4</div><div><div class="ftitle" id="ft4">Payment released</div><div class="fdesc" id="fd4">Seller receives the money minus Collexo's commission. Transparent.</div></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYMENTS -->
+<div class="section reveal">
+  <span class="sec-eye" id="payEye">Payment methods</span>
+  <h2 class="sec-title" id="payTitle">Pay your<br>way</h2>
+  <div class="pay-grid">
+    <div class="pay-card">
+      <div class="pay-card-top"><div class="pay-logo pl-mp">MP</div><div class="pay-name">Mercado Pago</div></div>
+      <div class="pay-desc" id="pd1">Card, transfer and installments. Full LATAM coverage.</div>
+      <span class="pay-tag pt-main" id="ptag1">Main · LATAM</span>
+    </div>
+    <div class="pay-card">
+      <div class="pay-card-top"><div class="pay-logo pl-ap" style="font-size:16px">&#xF8FF;</div><div class="pay-name">Apple Pay</div></div>
+      <div class="pay-desc" id="pd2">Pay with Face ID or Touch ID. No card details needed.</div>
+      <span class="pay-tag pt-bio" id="ptag2">Face ID / Touch ID</span>
+    </div>
+    <div class="pay-card">
+      <div class="pay-card-top"><div class="pay-logo pl-gp">GPay</div><div class="pay-name">Google Pay</div></div>
+      <div class="pay-desc" id="pd3">One tap on Android. Biometric authentication.</div>
+      <span class="pay-tag pt-bio" id="ptag3">Fingerprint / Face</span>
+    </div>
+    <div class="pay-card">
+      <div class="pay-card-top"><div class="pay-logo pl-st">ST</div><div class="pay-name">Stripe</div></div>
+      <div class="pay-desc" id="pd4">International cards for users in Spain and Europe.</div>
+      <span class="pay-tag pt-eu" id="ptag4">Europe · Global</span>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="section reveal vis" id="pricing">
+  <span class="sec-eye" id="pricingEye">Plans & pricing</span>
+  <h2 class="sec-title" id="pricingTitle">Start free.<br>Trade with Premium.</h2>
+  <div class="pricing-inner">
+
+    <!-- Early Bird banner -->
+    <div class="eb-banner">
+      <div class="eb-top">
+        <div>
+          <div class="eb-eye-lbl" id="ebEyeLbl">⚡ Pre-launch exclusive — limited time</div>
+          <div class="eb-title" id="ebBannerTitle">55% OFF on monthly<br>or World Cup Pass</div>
+          <div class="eb-sub" id="ebBannerSub">We save your card today. No charge until launch. Cancel before with no cost.</div>
+        </div>
+      </div>
+      <div class="eb-pills">
+        <div class="eb-pill" onclick="openModal('early_monthly')">
+          <div class="eb-amt">$2.03</div>
+          <div class="eb-desc" id="ebDesc1">Monthly · 55% OFF</div>
+          <div class="eb-note" id="ebNote1">1st month · then $4.50/mo</div>
+        </div>
+        <div class="eb-pill" onclick="openModal('early_mundial')">
+          <div class="eb-amt">$14.18</div>
+          <div class="eb-desc" id="ebDesc2">World Cup Pass · 55% OFF</div>
+          <div class="eb-note" id="ebNote2">one-time · save $17.32</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Guide -->
+    <div class="plan-guide"><span style="font-size:16px;flex-shrink:0">💡</span><div id="planGuide"><strong>How to choose?</strong> — <strong>Free</strong> to track your album at no cost. <strong>Monthly</strong> to try the market. <strong>World Cup Pass</strong> for the full tournament (best value). <strong>Early Bird</strong> if you pre-order today: 55% OFF on monthly OR on the Pass.</div></div>
+
+    <div class="tiers">
+      <!-- FREE -->
+      <div class="tier">
+        <div class="tbadge tb-free" id="tbFree">Free · always free</div>
+        <div class="tname" id="tnFree">Collector</div>
+        <div class="price-row"><div class="pmain">$0</div></div>
+        <div class="tnote" id="tnoteFree">No card · no time limit</div>
+        <ul class="tfeats">
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="ff1">Track all 980 stickers</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="ff2">See what you have, missing, doubles</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="ff3">Post a wanted listing</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="ff4">Most-wanted ranking</span></li>
+          <li class="dim"><span class="tfi">—</span> <span id="ff5">P2P marketplace</span></li>
+          <li class="dim"><span class="tfi">—</span> <span id="ff6">Sell and trade</span></li>
+          <li class="dim"><span class="tfi">—</span> <span id="ff7">Escrow protection</span></li>
+          <li class="dim"><span class="tfi">—</span> <span id="ff8">Includes ads</span></li>
+        </ul>
+        <a href="#waitlist" class="tbtn tbtn-free" id="btnFree">Start free</a>
+      </div>
+
+      <!-- MONTHLY -->
+      <div class="tier">
+        <div class="tbadge tb-prem" id="tbPrem">Premium monthly</div>
+        <div class="tname" id="tnMonthly">Monthly</div>
+        <div class="price-row"><div class="pmain">$4.50</div><div class="pper">/mo</div></div>
+        <div style="height:22px;margin-bottom:14px"></div>
+        <div class="tnote" id="tnoteMonthly">3 days free · cancel anytime</div>
+        <ul class="tfeats">
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="mf1">Everything in Free</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="mf2">Real P2P marketplace</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="mf3">Sell and trade directly</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="mf4">Escrow protection</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="mf5">Direct chat</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="mf6">Real-time prices</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="mf7">No ads</span></li>
+        </ul>
+        <button class="tbtn tbtn-prem" onclick="openModal('monthly')" id="btnMonthly">3 days free → Start</button>
+      </div>
+
+      <!-- WORLD CUP PASS -->
+      <div class="tier best">
+        <div class="popular" id="bestVal">BEST VALUE</div>
+        <div class="tbadge tb-world" id="tbWorld">🏆 World Cup Pass</div>
+        <div class="tname" id="tnWorld">World Cup 2026</div>
+        <div class="price-row"><div class="pmain" style="color:var(--g)">$18.90</div><div class="pper"> one-time</div><div class="pcross">$31.50</div></div>
+        <div class="psave ps-g">40% OFF · Jun–Dec 2026</div>
+        <div class="tnote" id="tnoteWorld">One payment · covers 7 months</div>
+        <ul class="tfeats">
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="wf1">Everything in Monthly</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <strong id="wf2">One payment, no renewal</strong></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="wf3">Covers Jun to Dec 2026</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="wf4">Equals $2.70/mo</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="wf5">Save $12.60 vs monthly</span></li>
+          <li><span class="tfi" style="color:var(--g)">✓</span> <span id="wf6">"World Cup Fan" badge</span></li>
+        </ul>
+        <button class="tbtn tbtn-prem" onclick="openModal('mundial')" id="btnWorld">Buy World Cup Pass — $18.90</button>
+      </div>
+
+      <!-- EARLY BIRD -->
+      <div class="tier hot">
+        <div class="tbadge tb-early" id="tbEarly">⚡ Pre-order · Today only</div>
+        <div class="tname" id="tnEarly">Early Bird</div>
+        <!-- toggle -->
+        <div class="eb-toggle">
+          <button class="ebt on" id="ebtM" onclick="switchEB('monthly')">Monthly</button>
+          <button class="ebt" id="ebtW" onclick="switchEB('mundial')">World Cup</button>
+        </div>
+        <div id="ebViewM">
+          <div class="price-row"><div class="pmain" style="color:var(--o)">$2.03</div><div class="pper"> 1st mo</div><div class="pcross">$4.50</div></div>
+          <div class="psave ps-o">55% OFF · then $4.50/mo</div>
+          <div class="tnote" id="tnoteEarlyM" style="margin-bottom:0">No charge until launch</div>
+        </div>
+        <div id="ebViewW" style="display:none">
+          <div class="price-row"><div class="pmain" style="color:var(--o)">$14.18</div><div class="pper"> one-time</div><div class="pcross">$31.50</div></div>
+          <div class="psave ps-o">55% OFF · save $17.32</div>
+          <div class="tnote" id="tnoteEarlyW" style="margin-bottom:0">One payment at launch · 7 months</div>
+        </div>
+        <ul class="tfeats" style="margin-top:14px">
+          <li><span class="tfi" style="color:var(--o)">✓</span> <span id="ef1">Everything in Monthly / Pass</span></li>
+          <li><span class="tfi" style="color:var(--o)">✓</span> <strong id="ef2">55% OFF exclusive pre-order</strong></li>
+          <li><span class="tfi" style="color:var(--o)">✓</span> <span id="ef3">Priority access at launch</span></li>
+          <li><span class="tfi" style="color:var(--o)">✓</span> <span id="ef4">"Founder" badge on profile</span></li>
+          <li><span class="tfi" style="color:var(--o)">✓</span> <span id="ef5">Vote on new features</span></li>
+        </ul>
+        <button class="tbtn tbtn-early" id="ebMainBtn" onclick="openModal('early_monthly')">Pre-order monthly — $2.03 first month</button>
+      </div>
+    </div>
+
+    <div style="margin-top:18px;padding:14px;background:var(--bg);border-radius:12px;border:1px solid var(--border);font-size:12px;color:var(--ink3);text-align:center">
+      <span id="priceFooter">All prices in USD · Mercado Pago, Apple Pay, Google Pay & Stripe accepted · <a href="terms.html" style="color:var(--o)" id="fullTermsLink">Full terms</a></span>
+    </div>
+  </div>
+</div>
+
+<!-- POLICIES -->
+<div class="section reveal">
+  <span class="sec-eye" id="polEye">Policies</span>
+  <h2 class="sec-title" id="polTitle">How we<br>operate</h2>
+  <div class="pol-wrap">
+    <div class="pol-tabs">
+      <button class="ptab on" id="ptab1" onclick="showPol(this,'pt1')">Transactions</button>
+      <button class="ptab" id="ptab2" onclick="showPol(this,'pt2')">Escrow</button>
+      <button class="ptab" id="ptab3" onclick="showPol(this,'pt3')">Disputes</button>
+      <button class="ptab" onclick="showPol(this,'pt4')">Payments & plans</button>
+      <button class="ptab" id="ptab5" onclick="showPol(this,'pt5')">Sticker photos</button>
+    </div>
+    <div class="pol-body" id="polBody">
+      <div class="pp on" id="pt1">
+        <div class="pol-h">Collexo commission</div>
+        <p class="pol-p">Collexo charges <strong>8% of the sale price</strong> on each successful transaction. Buyers pay no extra commission. Minimum fee: <strong>$0.50 USD</strong> for low-value transactions.</p>
+        <div class="pol-h">What the commission covers</div>
+        <ul class="pol-ul">
+          <li>Escrow (money custody) system</li>
+          <li>Dispute resolution by our team</li>
+          <li>Payment processing costs</li>
+          <li>Reputation and verification system</li>
+        </ul>
+        <div class="pol-h">Free trades (no money)</div>
+        <p class="pol-p">Pure sticker-for-sticker exchanges between Premium users are commission-free. Both parties coordinate shipping and confirm receipt in the app.</p>
+      </div>
+      <div class="pp" id="pt2">
+        <div class="pol-h">How escrow works</div>
+        <p class="pol-p">When a buyer pays, money is held by Collexo. The seller has <strong>5 business days</strong> to ship and upload proof.</p>
+        <div class="pol-h">When money is released</div>
+        <ul class="pol-ul">
+          <li>Buyer confirms receipt → immediate release</li>
+          <li>Buyer doesn't confirm within 72h of estimated delivery → automatic release</li>
+          <li>Seller doesn't ship in 5 days → automatic refund to buyer</li>
+        </ul>
+        <div class="pol-h">Open disputes</div>
+        <p class="pol-p">If a dispute is opened, money is held until resolved, max <strong>7 business days</strong>.</p>
+      </div>
+      <div class="pp" id="pt3">
+        <div class="pol-h">How to open a dispute</div>
+        <p class="pol-p">Buyer can open a dispute within <strong>72 hours</strong> of receiving the sticker (or before confirming). Must upload photo or evidence of the issue.</p>
+        <div class="pol-h">Valid dispute reasons</div>
+        <ul class="pol-ul">
+          <li>Received sticker doesn't match the listing</li>
+          <li>Sticker arrived damaged</li>
+          <li>Nothing received within the agreed timeframe</li>
+          <li>Seller didn't respond to chat</li>
+        </ul>
+        <div class="pol-h">Sanctions for fraud</div>
+        <p class="pol-p">Confirmed fraud results in <strong>permanent ban</strong>. More than 2 disputes in 30 days triggers automatic preventive suspension.</p>
+      </div>
+      <div class="pp" id="pt4">
+        <div class="pol-h">Monthly Premium</div>
+        <p class="pol-p">Monthly billing. First <strong>3 days are free</strong>; cancel before and no charge.</p>
+        <div class="pol-h">World Cup Pass</div>
+        <p class="pol-p">One-time payment covering Jun–Dec 2026 (7 months). 40% OFF vs monthly ($18.90 vs $31.50).</p>
+        <div class="pol-h">Early Bird pre-order</div>
+        <p class="pol-p">We securely save your card details <strong>without charging anything</strong> until launch day. You'll be notified 48 hours before. The Early Bird 55% OFF applies to the 1st month only (monthly) or the full pass (World Cup).</p>
+        <div class="pol-note">⚠️ If you cancel and want to return, you pay the current price at that time.</div>
+        <div class="pol-h">Cancellation</div>
+        <p class="pol-p">Cancel anytime from the app, no penalties. Access continues until end of paid period.</p>
+      </div>
+      <div class="pp" id="pt5">
+        <div class="pol-h">Status — pending legal review</div>
+        <p class="pol-p">The crowdsourced sticker photo system is <strong>under evaluation with an IP specialist</strong> before implementation.</p>
+        <div class="pol-h">Proposed model</div>
+        <ul class="pol-ul">
+          <li>Users upload photos only of their own physical stickers</li>
+          <li>By uploading, they declare ownership of the photographed sticker</li>
+          <li>Photos used exclusively to identify the sticker in a listing</li>
+          <li>Best photos, with explicit consent, may improve the visual catalog</li>
+        </ul>
+        <div class="pol-note">📋 Final definition subject to legal approval. Implementation after initial launch.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- NEWS & RESULTS SECTION -->
+<div class="section reveal" id="news">
+  <span class="sec-eye" id="newsEye">World Cup 2026 News</span>
+  <h2 class="sec-title" id="newsTitle">Stay updated.<br>Trade smarter.</h2>
+  <p style="font-size:14px;color:var(--ink3);margin-bottom:20px;max-width:600px" id="newsSub">Real-time World Cup news and results help you spot which player stickers spike in demand after a great game.</p>
+
+  <!-- Hub banner -->
+  <div class="news-hub-banner">
+    <div class="nhb-left">
+      <div class="nhb-icon">⚽</div>
+      <div>
+        <div class="nhb-title" id="nhbTitle">Full World Cup 2026 Hub</div>
+        <div class="nhb-sub" id="nhbSub">Groups · Schedule · Stadiums · Format · Live news</div>
+      </div>
+    </div>
+    <a href="mundial.html" class="nhb-btn" id="nhbBtn">Ver todo →</a>
+  </div>
+
+  <!-- Results table -->
+  <div style="background:var(--w);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:28px">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border)">
+      <div style="font-family:'Unbounded',sans-serif;font-size:14px;font-weight:700;color:var(--ink)" id="resultsTitle">Latest Results</div>
+      <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:var(--o);background:var(--ol);border:1px solid #f0c0a0;padding:4px 10px;border-radius:100px">
+        <div style="width:6px;height:6px;border-radius:50%;background:var(--o);animation:blink 1.4s infinite"></div>
+        <span id="liveLabel">LIVE</span>
+      </div>
+    </div>
+    <!-- Opening match confirmed — real data -->
+    <div id="resultsBody">
+      <div class="match-row">
+        <div class="match-teams">
+          <span class="match-flag">🇲🇽</span><span class="match-name" id="mn1a">México</span>
+          <span class="match-score" style="background:var(--gl);border-color:#b0db80;color:var(--g);font-size:11px;padding:4px 10px" id="openingBadge">Opening Match</span>
+          <span class="match-name" id="mn1b">South Africa</span><span class="match-flag">🇿🇦</span>
+        </div>
+        <div class="match-meta"><span id="mgrp1">Group</span> A · 11 Jun · Estadio Azteca</div>
+      </div>
+      <div class="match-row">
+        <div class="match-teams">
+          <span class="match-flag">🇺🇸</span><span class="match-name" id="mn2a">USA</span>
+          <span class="match-score" style="font-size:11px;padding:4px 10px" id="match2Score">vs</span>
+          <span class="match-name" id="mn2b">Paraguay</span><span class="match-flag">🇵🇾</span>
+        </div>
+        <div class="match-meta"><span id="mgrp2">Group</span> D · 12 Jun · SoFi Stadium, LA</div>
+      </div>
+      <div class="match-row" style="border-bottom:none">
+        <div class="match-teams">
+          <span class="match-flag">🇨🇦</span><span class="match-name" id="mn3a">Canada</span>
+          <span class="match-score" style="font-size:11px;padding:4px 10px">vs</span>
+          <span class="match-name" id="mn3b">Bosnia</span><span class="match-flag">🇧🇦</span>
+        </div>
+        <div class="match-meta"><span id="mgrp3">Group</span> B · 12 Jun · BMO Field, Toronto</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- News cards — REAL news May 2026 -->
+  <div class="news-grid">
+    <div class="news-card">
+      <div class="news-img">📦</div>
+      <div class="news-body">
+        <div class="news-cat" id="nc1">Panini 2026</div>
+        <div class="news-title" id="nt1">The biggest album in World Cup history — 980 stickers</div>
+        <div class="news-desc" id="nd1">With 48 teams for the first time, the 2026 Panini album has 980 stickers and 68 special foil editions — the largest collection since 1970. On sale from April 30.</div>
+        <div class="news-time" id="nt1time">· Al Jazeera · Apr 30</div>
+      </div>
+    </div>
+    <div class="news-card">
+      <div class="news-img">🥤</div>
+      <div class="news-body">
+        <div class="news-cat" id="nc2">Collectors</div>
+        <div class="news-title" id="nt2">Coca-Cola hides 12 exclusive stickers behind bottle labels</div>
+        <div class="news-desc" id="nd2">Lamine Yamal, Harry Kane, Lautaro Martínez and 9 more stars are only available inside Coca-Cola bottle labels — over 1 billion bottles worldwide from April 20.</div>
+        <div class="news-time" id="nt2time">· SI.com · Apr 28</div>
+      </div>
+    </div>
+    <div class="news-card">
+      <div class="news-img">💰</div>
+      <div class="news-body">
+        <div class="news-cat" id="nc3">Market</div>
+        <div class="news-title" id="nt3">Completing the album solo costs over $1,000 — trading is the only smart move</div>
+        <div class="news-desc" id="nd3">With 980 stickers at $2/pack (7 stickers), completing without trading costs $1,400+. The secondary sticker market has never been more active.</div>
+        <div class="news-time" id="nt3time">· STV News · Apr 30</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- URGENCY -->
+<div class="urgency reveal">
+  <div class="urg-inner">
+    <div>
+      <div class="urg-title" id="urgTitle">⚽ World Cup starts<br>June 11.</div>
+      <div class="urg-sub" id="urgSub">First 1,000 users: <strong>30 days Premium free.</strong></div>
+    </div>
+    <div class="cd">
+      <div class="cd-b"><span class="cdn" id="cdD">41</span><span class="cdl" id="cdlD">DAYS</span></div>
+      <span class="cdsep">:</span>
+      <div class="cd-b"><span class="cdn" id="cdH">14</span><span class="cdl" id="cdlH">HRS</span></div>
+      <span class="cdsep">:</span>
+      <div class="cd-b"><span class="cdn" id="cdM">32</span><span class="cdl" id="cdlM">MIN</span></div>
+      <span class="cdsep">:</span>
+      <div class="cd-b"><span class="cdn" id="cdS">07</span><span class="cdl" id="cdlS">SEC</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<div class="final reveal">
+  <div class="final-title" id="finalTitle">Join.<br><em>It's free.</em></div>
+  <div class="final-sub" id="finalSub">When we launch, you're first.</div>
+  <div class="final-btns">
+    <a href="#waitlist" class="fbtn-free" id="finalFree">Free waitlist →</a>
+    <button class="fbtn-early" onclick="openModal('early_monthly')" id="finalEarly">⚡ Pre-order Early Bird — 55% OFF</button>
+  </div>
+  <div style="margin-top:12px;font-size:11px;color:var(--ink4)">No spam · No charge until launch · No tricks</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo"><div>Collexo</div><div style="font-family:'Plus Jakarta Sans',sans-serif;font-size:9px;font-weight:600;color:#444;letter-spacing:.5px;text-transform:uppercase;margin-top:2px">The Sticker Exchange Community</div></div>
+  <div class="f-note" id="footerNote">© 2026 Collexo · The Sticker Exchange Community</div>
+  <div class="f-links"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="mailto:hello@collexo.app">Contact</a></div>
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalBox">
+    <button class="mcl" onclick="closeModal()">×</button>
+    <div id="mForm">
+      <div class="m-eye" id="mEye">⚡ Early Bird Pre-order</div>
+      <div class="m-title" id="mTitle">Lock in 55% OFF<br>forever</div>
+      <div class="m-sub" id="mSub">We save your card now. <strong>No charge until launch.</strong> Cancel before with no cost.</div>
+      <div class="m-pbox">
+        <div>
+          <div style="font-size:11px;color:var(--ink4);margin-bottom:2px">Your price</div>
+          <div class="m-pbig" id="mPrice">$2.03<span style="font-size:15px;color:var(--ink4);font-weight:400"> 1st mo</span></div>
+        </div>
+        <div class="m-pold" id="mOld">$4.50</div>
+        <div class="m-psave" id="mSave">55% OFF</div>
+      </div>
+      <div class="wallets">
+        <span class="wl-lbl" id="quickPayLbl">Quick pay:</span>
+        <button class="wbtn" onclick="qPay('apple')"><div class="wbtn-logo wbl-ap">&#xF8FF;</div> Apple Pay</button>
+        <button class="wbtn" onclick="qPay('google')"><div class="wbtn-logo wbl-gp" style="font-size:6px;font-weight:900">G</div> Google Pay</button>
+      </div>
+      <div class="divider" id="cardDivider">— or enter card details —</div>
+      <div class="fg"><label class="fl" id="mlEmail">Email</label><input class="fi" type="email" id="mEmail" placeholder="your@email.com" autocomplete="email"></div>
+      <div class="fg"><label class="fl" id="mlCard">Card number</label><input class="fi" type="text" id="mCard" placeholder="4242 4242 4242 4242" maxlength="19" oninput="fmtCard(this)"></div>
+      <div class="frow">
+        <div class="fg"><label class="fl" id="mlExpiry">Expiry</label><input class="fi" type="text" id="mExp" placeholder="MM/YY" maxlength="5" oninput="fmtExp(this)"></div>
+        <div class="fg"><label class="fl" id="mlCvv">CVV</label><input class="fi" type="text" id="mCvv" placeholder="123" maxlength="4"></div>
+      </div>
+      <div class="fg"><label class="fl" id="mlName">Name on card</label><input class="fi" type="text" id="mName" placeholder="FULL NAME" autocomplete="cc-name"></div>
+      <div class="legal">🔒 Encrypted via <strong>Mercado Pago / Stripe</strong>. Collexo never stores card numbers directly.<br><br>By continuing you accept our <a href="terms.html">Terms</a> and <a href="privacy.html">Privacy Policy</a>. First charge on launch date. Cancel before at no cost.</div>
+      <div id="mStatus" class="m-mstatus"></div>
+      <button class="msubmit" id="mBtn" onclick="submitModal()">Pre-order — No charge until launch</button>
+    </div>
+    <div class="m-success" id="mSuccess">
+      <div class="ms-ico">🎉</div>
+      <div class="ms-title" id="msTitle">Pre-order confirmed!</div>
+      <div class="ms-sub" id="msSub">Your card is saved securely.<br>First charge: <strong id="msP">$2.03 (1st month)</strong> at launch.<br><br>You'll receive a confirmation email 📧<br><br>Share with collectors 👇</div>
+      <div class="shr-row" style="margin-top:16px">
+        <button class="shr shr-wa" onclick="shareWa()">📲 WhatsApp</button>
+        <button class="shr shr-cp" onclick="copyLink()">📋 Copy link</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════
+// TRANSLATIONS
+// ════════════════════════════════
+var T = {
+  en:{
+    navCta:'See pricing', navCdPfx:'⚽ World Cup in', navCdSfx:'days',
+    eyebrow:'Collexo · 980 stickers · Launching soon',
+    h1L1:'The sticker', h1L2:'marketplace', h1L3:'you needed',
+    heroSub:"You know what you have. You know what's missing.<br><strong>Trade and sell directly</strong> with other collectors. With <strong>protected payments</strong> until you confirm receipt.",
+    wlLabel:'Early access — free', wlPh:'your@email.com', wlBtn:'Join →',
+    wlFine:"🔒 No spam · We'll notify you at launch",
+    chips:['🇺🇸 USA','🇦🇷 Argentina','🇨🇴 Colombia','🇧🇷 Brazil','🌍 Other'],
+    wsTitle:"You're in!", wsSub:"You're #{n} on the list.<br>Share with collectors 👇",
+    ctrL1:'On waitlist', ctrL2:'Stickers to track', ctrL3:'National teams',
+    howEye:'How it works', howTitle:'Simple as<br>peeling a sticker',
+    st:['Register your album','Find a match','Trade or sell','Protected payment'],
+    sd:['Mark which stickers you have, missing and doubles. In seconds, from your phone.','The system cross-references your list with duplicates from thousands of users.','You decide: offer your doubles in exchange, or sell them at your price.','Money held in escrow. Released only when you confirm receipt of the correct sticker.'],
+    escEye:'Protected transactions', escTitle:'Your money safe until you receive the sticker',
+    escSub:"Money never goes directly to the seller. Collexo holds it in escrow and only releases it when you confirm receipt. If there's an issue, open a dispute and we'll refund you.",
+    ft:['You buy and pay','Seller ships the sticker','You confirm receipt','Payment released'],
+    fd:['Money held by Collexo. Seller receives nothing yet.','They upload proof of shipping. No ship in 5 days = automatic refund.','72 hours to confirm or dispute. No response = automatic release.','Seller gets money minus commission. Transparent.'],
+    payEye:'Payment methods', payTitle:'Pay your<br>way',
+    pricingEye:'Plans & pricing', pricingTitle:'Start free.<br>Trade with Premium.',
+    ebBannerTitle:'55% OFF on monthly<br>or World Cup Pass',
+    ebBannerSub:'We save your card today. No charge until launch. Cancel before with no cost.',
+    planGuide:'<strong>How to choose?</strong> — <strong>Free</strong> to track. <strong>Monthly $4.50</strong> to try the market. <strong>World Cup Pass $18.90</strong> for the full tournament (40% OFF). <strong>Early Bird</strong> if you pre-order today: 55% OFF monthly or Pass.',
+    urgTitle:'⚽ World Cup starts<br>June 11.', urgSub:'First 1,000 users: <strong>30 days Premium free.</strong>',
+    finalTitle:'Join.<br><em>It\'s free.</em>', finalSub:"When we launch, you're first.",
+    finalFree:'Free waitlist →', finalEarly:'⚡ Pre-order Early Bird — 55% OFF',
+    footerNote:'© 2026 Collexo · The Sticker Exchange Community',
+    cdlD:'DAYS', cdlH:'HRS', cdlM:'MIN', cdlS:'SEC',
+    ticker:[
+      ['@collector_us','joined from USA'],
+      ['Sticker <strong>"00"</strong>','selling for $30+ on secondary market'],
+      ['@panini_ar','joined from Argentina'],
+      ['Completing without trading','costs over <strong>$1,800 USD</strong>'],
+      ['@sticker_br','joined from Brazil'],
+      ['<strong>980 stickers</strong>','biggest Panini album in World Cup history'],
+      ['Metallic shields','most searched this week'],
+    ],
+  },
+  es:{
+    navCta:'Ver precios', navCdPfx:'⚽ Mundial en', navCdSfx:'días',
+    eyebrow:'Collexo · 980 láminas · Próximamente',
+    h1L1:'El mercado', h1L2:'de láminas', h1L3:'que faltaba',
+    heroSub:'Sabes qué tienes. Sabes qué te falta.<br><strong>Intercambia y vende directo</strong> con otros coleccionistas. Con <strong>pago protegido</strong> hasta confirmar la recepción.',
+    wlLabel:'Acceso anticipado — sin costo', wlPh:'tu@email.com', wlBtn:'Unirme →',
+    wlFine:'🔒 Sin spam · Te avisamos al lanzar',
+    chips:['🇦🇷 Argentina','🇨🇴 Colombia','🇲🇽 México','🇪🇸 España','🌍 Otro'],
+    wsTitle:'¡Ya estás dentro!', wsSub:'Eres el #{n} en la lista.<br>Comparte con coleccionistas 👇',
+    ctrL1:'En lista de espera', ctrL2:'Láminas a trackear', ctrL3:'Selecciones',
+    howEye:'Cómo funciona', howTitle:'Simple como<br>pegar una lámina',
+    st:['Registra tu álbum','Encuentra un match','Intercambia o vende','Pago protegido'],
+    sd:['Marca qué láminas tienes, cuáles te faltan y cuáles te sobran. En segundos.','El sistema cruza tu lista con los repetidos de miles de usuarios.','Tú decides: ofrece tus repetidas a cambio de las que necesitas, o véndelas al precio que quieras.','El dinero queda en custodia. Se libera cuando confirmas que recibiste la lámina.'],
+    escEye:'Transacciones protegidas', escTitle:'Tu dinero seguro hasta recibir la lámina',
+    escSub:'El dinero nunca va directo al vendedor. Collexo lo retiene en custodia y solo lo libera cuando confirmas la recepción. Si hay un problema, abres una disputa y te devolvemos todo.',
+    ft:['Compras y pagas','El vendedor envía','Confirmas la recepción','Se libera el pago'],
+    fd:['El dinero queda retenido en Collexo. El vendedor no recibe nada todavía.','Sube prueba del envío. Si no envía en 5 días, devolución automática.','72 horas para confirmar o abrir disputa. Sin respuesta = liberación automática.','El vendedor recibe el dinero menos la comisión. Todo transparente.'],
+    payEye:'Métodos de pago', payTitle:'Paga como<br>quieras',
+    pricingEye:'Planes y precios', pricingTitle:'Empieza gratis.<br>Negocia con Premium.',
+    ebBannerTitle:'55% OFF en mensual<br>o en Pase Mundial',
+    ebBannerSub:'Guardamos tu tarjeta hoy. Sin cobro hasta el lanzamiento. Cancela antes sin cargo.',
+    planGuide:'<strong>¿Cómo elegir?</strong> — <strong>Free</strong> para trackear. <strong>Mensual $4.50</strong> si quieres probar. <strong>Pase Mundial $18.90</strong> para todo el torneo (40% OFF). <strong>Early Bird</strong> si reservas hoy: 55% OFF en mensual o en el Pase.',
+    urgTitle:'⚽ El Mundial empieza<br>el 11 de junio.', urgSub:'Primeros 1.000 usuarios: <strong>Premium gratis 30 días.</strong>',
+    finalTitle:'Únete.<br><em>Es gratis.</em>', finalSub:'Cuando abramos, serás de los primeros.',
+    finalFree:'Lista gratuita →', finalEarly:'⚡ Precomprar Early Bird — 55% OFF',
+    footerNote:'© 2026 Collexo · The Sticker Exchange Community',
+    cdlD:'DÍAS', cdlH:'HRS', cdlM:'MIN', cdlS:'SEG',
+    ticker:[
+      ['@futbolero_ar','se unió desde Argentina'],
+      ['Lámina <strong>"00"</strong>','se vende a más de $30 en el mercado secundario'],
+      ['@coleccionista_co','se unió desde Colombia'],
+      ['Completar sin intercambiar','cuesta más de <strong>$1.800 USD</strong>'],
+      ['@sticker_mx','se unió desde México'],
+      ['<strong>980 láminas</strong>','el álbum más grande en la historia de Panini'],
+      ['Escudos metalizados','los más buscados esta semana'],
+    ],
+  },
+  pt:{
+    navCta:'Ver preços', navCdPfx:'⚽ Copa em', navCdSfx:'dias',
+    eyebrow:'Collexo · 980 figurinhas · Em breve',
+    h1L1:'O mercado de', h1L2:'figurinhas', h1L3:'que faltava',
+    heroSub:'Você sabe o que tem. Sabe o que falta.<br><strong>Troque e venda direto</strong> com outros colecionadores. Com <strong>pagamento protegido</strong>.',
+    wlLabel:'Acesso antecipado — gratuito', wlPh:'seu@email.com', wlBtn:'Unirme →',
+    wlFine:'🔒 Sem spam · Avisamos no lançamento',
+    chips:['🇧🇷 Brasil','🇦🇷 Argentina','🇵🇹 Portugal','🇲🇽 México','🌍 Outro'],
+    wsTitle:'Você está dentro!', wsSub:'Você é o #N na lista.<br>Compartilhe com colecionadores 👇',
+    ctrL1:'Na lista de espera', ctrL2:'Figurinhas para rastrear', ctrL3:'Seleções',
+    howEye:'Como funciona', howTitle:'Simples como<br>colar uma figurinha',
+    st:['Registre seu álbum','Encontre um match','Troque ou venda','Pagamento protegido'],
+    sd:['Marque quais figurinhas tem, quais faltam e quais são repetidas. Em segundos.','O sistema cruza sua lista com as repetidas de milhares de usuários.','Você decide: oferece suas repetidas em troca, ou vende pelo preço que quiser.','Dinheiro fica em custódia. Liberado só quando você confirma o recebimento.'],
+    escEye:'Transações protegidas', escTitle:'Seu dinheiro seguro até receber a figurinha',
+    escSub:'O dinheiro nunca vai direto ao vendedor. Collexo retém em custódia e só libera quando você confirma. Se houver problema, abra uma disputa e devolvemos tudo.',
+    ft:['Você compra e paga','Vendedor envia a figurinha','Você confirma o recebimento','Pagamento liberado'],
+    fd:['Dinheiro retido no Collexo. Vendedor não recebe nada ainda.','Sobe prova do envio. Sem envio em 5 dias = devolução automática.','72 horas para confirmar ou abrir disputa. Sem resposta = liberação automática.','Vendedor recebe menos a comissão. Transparente.'],
+    payEye:'Métodos de pagamento', payTitle:'Pague como<br>quiser',
+    pricingEye:'Planos e preços', pricingTitle:'Comece grátis.<br>Negocie com Premium.',
+    ebBannerTitle:'55% OFF no mensal<br>ou no Passe Copa',
+    ebBannerSub:'Salvamos seu cartão hoje. Sem cobrança até o lançamento.',
+    planGuide:'<strong>Como escolher?</strong> — <strong>Gratuito</strong> para rastrear. <strong>Mensal $4.50</strong> para experimentar. <strong>Passe Copa $18.90</strong> para o torneio completo (40% OFF). <strong>Early Bird</strong> se reservar hoje: 55% OFF.',
+    urgTitle:'⚽ A Copa começa<br>em 11 de junho.', urgSub:'Primeiros 1.000: <strong>30 dias Premium grátis.</strong>',
+    finalTitle:'Entre.<br><em>É grátis.</em>', finalSub:'No lançamento, você é um dos primeiros.',
+    finalFree:'Lista gratuita →', finalEarly:'⚡ Pré-compra Early Bird — 55% OFF',
+    footerNote:'© 2026 Collexo · The Sticker Exchange Community',
+    cdlD:'DIAS', cdlH:'HRS', cdlM:'MIN', cdlS:'SEG',
+    ticker:[
+      ['@colecionador_br','entrou do Brasil'],
+      ['Figurinha <strong>"00"</strong>','vendida por $30+ no mercado secundário'],
+      ['@panini_ar','entrou da Argentina'],
+      ['Completar sem trocar','custa mais de <strong>$1.800 USD</strong>'],
+      ['@sticker_pt','entrou de Portugal'],
+      ['<strong>980 figurinhas</strong>','maior álbum da história da Copa Panini'],
+      ['Escudos metálicos','mais buscados esta semana'],
+    ],
+  },
+  fr:{
+    navCta:'Voir les prix', navCdPfx:'⚽ Mondial dans', navCdSfx:'jours',
+    eyebrow:'Collexo · 980 vignettes · Bientôt',
+    h1L1:'Le marché de', h1L2:'vignettes', h1L3:"qu'il manquait",
+    heroSub:"Vous savez ce que vous avez. Vous savez ce qui manque.<br><strong>Échangez et vendez directement</strong> avec d'autres collectionneurs. Paiement sécurisé jusqu'à confirmation.",
+    wlLabel:'Accès anticipé — gratuit', wlPh:'ton@email.com', wlBtn:'M\'inscrire →',
+    wlFine:"🔒 Sans spam · Vous serez notifié au lancement",
+    chips:['🇫🇷 France','🇧🇪 Belgique','🇨🇭 Suisse','🇨🇦 Canada','🌍 Autre'],
+    wsTitle:'Vous êtes inscrit(e) !', wsSub:"Vous êtes le #{n} sur la liste.<br>Partagez avec des collectionneurs 👇",
+    ctrL1:"Sur liste d'attente", ctrL2:'Vignettes à suivre', ctrL3:'Équipes nationales',
+    howEye:'Comment ça marche', howTitle:'Aussi simple que<br>coller une vignette',
+    st:['Enregistrez votre album','Trouvez un match','Échangez ou vendez','Paiement sécurisé'],
+    sd:['Marque les vignettes que tu as, celles qui manquent et les doubles. En secondes.','Le système croise votre liste avec les doublons de milliers d\'utilisateurs.','Vous décidez : proposez vos doublons en échange, ou vendez au prix souhaité.','Argent mis en séquestre. Libéré seulement quand tu confirmes la réception.'],
+    escEye:'Transactions sécurisées', escTitle:'Votre argent sécurisé jusqu\'à réception',
+    escSub:"L'argent ne va jamais directement au vendeur. Collexo le conserve en séquestre et ne le libère que lorsque vous confirmez. En cas de problème, ouvrez un litige.",
+    ft:['Vous achetez et payez','Le vendeur envoie','Vous confirmez la réception','Paiement libéré'],
+    fd:['Argent retenu par Collexo. Le vendeur ne reçoit rien encore.','Il télécharge la preuve d\'envoi. Sans envoi en 5 jours = remboursement auto.','72h pour confirmer ou ouvrir un litige. Sans réponse = libération auto.','Le vendeur reçoit l\'argent moins la commission. Transparent.'],
+    payEye:'Modes de paiement', payTitle:'Payez comme<br>vous voulez',
+    pricingEye:'Plans et tarifs', pricingTitle:'Commencez gratuit.<br>Tradez avec Premium.',
+    ebBannerTitle:'55% OFF sur le mensuel<br>ou le Pass Mondial',
+    ebBannerSub:'On sauvegarde ta carte aujourd\'hui. Aucun débit jusqu\'au lancement.',
+    planGuide:'<strong>Comment choisir ?</strong> — <strong>Gratuit</strong> pour suivre. <strong>Mensuel $4.50</strong> pour essayer. <strong>Pass Mondial $18.90</strong> pour tout le tournoi (40% OFF). <strong>Early Bird</strong> si vous réservez aujourd\'hui : 55% OFF.',
+    urgTitle:'⚽ La Coupe commence<br>le 11 juin.', urgSub:'1 000 premiers : <strong>30 jours Premium gratuits.</strong>',
+    finalTitle:'Rejoins-nous.<br><em>C\'est gratuit.</em>', finalSub:'Au lancement, vous serez parmi les premiers.',
+    finalFree:'Liste gratuite →', finalEarly:'⚡ Précommande Early Bird — 55% OFF',
+    footerNote:'© 2026 Collexo · The Sticker Exchange Community',
+    cdlD:'JOURS', cdlH:'HRS', cdlM:'MIN', cdlS:'SEC',
+    ticker:[
+      ['@collectionneur_fr','vient de rejoindre depuis la France'],
+      ['Vignette <strong>"00"</strong>','vendue à plus de $30 sur le marché secondaire'],
+      ['@panini_be','vient de rejoindre depuis la Belgique'],
+      ['Compléter sans échanger','coûte plus de <strong>1 800 USD</strong>'],
+      ['@sticker_ca','vient de rejoindre depuis le Canada'],
+      ['<strong>980 vignettes</strong>','le plus grand album Panini de l\'histoire'],
+      ['Les écussons métalliques','les plus recherchés cette semaine'],
+    ],
+    ticker:[
+      ['@collectionneur_fr','vient de rejoindre depuis la France'],
+      ['Vignette <strong>"00"</strong>','vendue à plus de $30 sur le marché secondaire'],
+      ['@panini_be','vient de rejoindre depuis la Belgique'],
+      ['Compléter sans échanger','coûte plus de <strong>1 800 USD</strong>'],
+      ['@sticker_ca','vient de rejoindre depuis le Canada'],
+      ['<strong>980 vignettes</strong>','le plus grand album Panini de l\'histoire'],
+      ['Les écussons métalliques','les plus recherchés cette semaine'],
+    ],
+  }
+};
+
+// ── Flags per language ──
+var LFLAGS = {en:'🇺🇸',es:'🇪🇸',pt:'🇧🇷',fr:'🇫🇷'};
+var LCODES = {en:'EN',es:'ES',pt:'PT',fr:'FR'};
+
+// ── Current language state ──
+var activeLang = 'en';
+var menuOpen = false;
+
+// ── Detect language from browser/timezone ──
+function detectLang(){
+  try{ var s=localStorage.getItem('sm_lang'); if(s && T[s]) return s; }catch(e){}
+  var nav=(navigator.language||'en').toLowerCase().split('-');
+  var l=nav[0], r=nav[1]||'';
+  if(l==='pt') return 'pt';
+  if(l==='fr') return 'fr';
+  if(l==='es') return 'es';
+  // timezone heuristic
+  try{
+    var tz=Intl.DateTimeFormat().resolvedOptions().timeZone||'';
+    var latam=['America/Argentina','America/Bogota','America/Mexico_City','America/Lima','America/Santiago','America/Caracas','America/Montevideo'];
+    for(var i=0;i<latam.length;i++){ if(tz.indexOf(latam[i])===0) return 'es'; }
+    if(tz.indexOf('America/Sao_Paulo')===0||tz.indexOf('America/Manaus')===0) return 'pt';
+    if(tz.indexOf('Europe/Paris')===0||tz.indexOf('Europe/Brussels')===0) return 'fr';
+  }catch(e){}
+  return 'en';
+}
+
+// ── Apply translations ──
+// ── Build ticker from translation data ──
+function buildTicker(items) {
+  var el = document.getElementById('tickerInner');
+  if (!el || !items) return;
+  // Duplicate items for seamless loop
+  var all = items.concat(items);
+  el.innerHTML = all.map(function(item) {
+    return '<span class="tick"><div class="tdot"></div>' + item[0] + ' ' + item[1] + '</span>';
+  }).join('');
+}
+
+function applyLang(lang){
+  var t=T[lang]; if(!t) return;
+  activeLang=lang;
+
+  function setText(id,val){ var el=document.getElementById(id); if(el) el.textContent=val; }
+  function setHtml(id,val){ var el=document.getElementById(id); if(el) el.innerHTML=val; }
+  function setAttr(id,attr,val){ var el=document.getElementById(id); if(el) el[attr]=val; }
+
+  document.documentElement.lang=lang;
+  setText('langFlag',LFLAGS[lang]);
+  setText('langCode',LCODES[lang]);
+
+  // Update active state on menu items
+  var items=document.querySelectorAll('.lang-item');
+  for(var i=0;i<items.length;i++){
+    items[i].className=items[i].dataset.lang===lang?'lang-item cur':'lang-item';
+  }
+
+  setText('navCta',t.navCta);
+  setText('eyebrowText',t.eyebrow);
+  setText('h1Line1',t.h1L1); setText('h1Line2',t.h1L2); setText('h1Line3',t.h1L3);
+  setHtml('heroSub',t.heroSub);
+  setText('wlLabel',t.wlLabel);
+  setAttr('wlEmail','placeholder',t.wlPh);
+  setText('wlBtn',t.wlBtn);
+  setText('wlFine',t.wlFine);
+  setText('wsTitle',t.wsTitle);
+
+  // Chips
+  var chips=document.querySelectorAll('.chip');
+  for(var i=0;i<chips.length&&i<t.chips.length;i++) chips[i].textContent=t.chips[i];
+
+  setText('ctrL1',t.ctrL1); setText('ctrL2',t.ctrL2); setText('ctrL3',t.ctrL3);
+  setText('howEye',t.howEye); setHtml('howTitle',t.howTitle);
+
+  // Steps
+  var stIds=['st1','st2','st3','st4'], sdIds=['sd1','sd2','sd3','sd4'];
+  for(var i=0;i<4;i++){ setText(stIds[i],t.st[i]); setText(sdIds[i],t.sd[i]); }
+
+  setText('escEye',t.escEye); setText('escTitle',t.escTitle); setText('escSub',t.escSub);
+
+  // Flow steps
+  var ftIds=['ft1','ft2','ft3','ft4'], fdIds=['fd1','fd2','fd3','fd4'];
+  for(var i=0;i<4;i++){ setText(ftIds[i],t.ft[i]); setText(fdIds[i],t.fd[i]); }
+
+  setText('payEye',t.payEye); setHtml('payTitle',t.payTitle);
+  setText('pricingEye',t.pricingEye); setHtml('pricingTitle',t.pricingTitle);
+  setHtml('ebBannerTitle',t.ebBannerTitle); setText('ebBannerSub',t.ebBannerSub);
+  setHtml('priceFooter', (lang==='es'?'Todos los precios en USD · Mercado Pago, Apple Pay, Google Pay & Stripe · <a href="terms.html" style="color:var(--o)">Términos completos</a>':lang==='pt'?'Todos os preços em USD · Mercado Pago, Apple Pay, Google Pay & Stripe · <a href="terms.html" style="color:var(--o)">Termos completos</a>':lang==='fr'?'Tous les prix en USD · Mercado Pago, Apple Pay, Google Pay & Stripe · <a href="terms.html" style="color:var(--o)">Conditions complètes</a>':'All prices in USD · Mercado Pago, Apple Pay, Google Pay & Stripe accepted · <a href="terms.html" style="color:var(--o)">Full terms</a>'));
+  setText('ebEyeLbl',   lang==='es'?'⚡ Precompra exclusiva — tiempo limitado':lang==='pt'?'⚡ Pré-compra exclusiva — tempo limitado':lang==='fr'?'⚡ Précommande exclusive — durée limitée':'⚡ Pre-launch exclusive — limited time');
+  setText('ebDesc1',    lang==='es'?'Mensual · 55% OFF':lang==='pt'?'Mensal · 55% OFF':lang==='fr'?'Mensuel · 55% OFF':'Monthly · 55% OFF');
+  setText('ebNote1',    lang==='es'?'1er mes · luego $4.50/mes':lang==='pt'?'1º mês · depois $4,50/mês':lang==='fr'?'1er mois · puis $4,50/mois':'1st month · then $4.50/mo');
+  setText('ebDesc2',    lang==='es'?'Pase Mundial · 55% OFF':lang==='pt'?'Passe Copa · 55% OFF':lang==='fr'?'Pass Mondial · 55% OFF':'World Cup Pass · 55% OFF');
+  setText('ebNote2',    lang==='es'?'pago único · ahorra $17.32':lang==='pt'?'pagamento único · economize $17,32':lang==='fr'?'paiement unique · économisez $17,32':'one-time · save $17.32');
+  setHtml('planGuide',t.planGuide);
+  setHtml('urgTitle',t.urgTitle); setHtml('urgSub',t.urgSub);
+  setHtml('finalTitle',t.finalTitle); setText('finalSub',t.finalSub);
+  setText('finalFree',t.finalFree); setText('finalEarly',t.finalEarly);
+  setText('footerNote',t.footerNote);
+  setText('cdlD',t.cdlD); setText('cdlH',t.cdlH); setText('cdlM',t.cdlM); setText('cdlS',t.cdlS);
+
+  // Countdown prefix
+  var remaining=Math.max(0,Math.floor((new Date('2026-06-11T20:00:00')-new Date())/86400000));
+  setText('navCd',t.navCdPfx+' '+remaining+' '+t.navCdSfx);
+
+
+  // ── Tier content ──
+  setText('tbFree',   t.tbFree   || (lang==='es'?'Free · siempre gratis':lang==='pt'?'Free · sempre grátis':lang==='fr'?'Gratuit · toujours':'Free · always free'));
+  setText('tbPrem',   t.tbPrem   || (lang==='es'?'Premium mensual':lang==='pt'?'Premium mensal':lang==='fr'?'Premium mensuel':'Premium monthly'));
+  setText('tbWorld',  t.tbWorld  || (lang==='es'?'🏆 Pase Mundial':lang==='pt'?'🏆 Passe Copa':lang==='fr'?'🏆 Pass Mondial':'🏆 World Cup Pass'));
+  setText('tbEarly',  t.tbEarly  || (lang==='es'?'⚡ Precompra · Solo hoy':lang==='pt'?'⚡ Pré-compra · Só hoje':lang==='fr'?"⚡ Précommande · Auj. seult":'⚡ Pre-order · Today only'));
+  setText('bestVal',  lang==='es'?'MEJOR VALOR':lang==='pt'?'MELHOR VALOR':lang==='fr'?'MEILLEURE OFFRE':'BEST VALUE');
+  setText('tnFree',   lang==='es'?'Coleccionista':lang==='pt'?'Colecionador':lang==='fr'?'Collectionneur':'Collector');
+  setText('tnoteFree',lang==='es'?'Sin tarjeta · sin límite de tiempo':lang==='pt'?'Sem cartão · sem limite de tempo':lang==='fr'?'Sans carte · sans limite':'No card · no time limit');
+  setText('tnMonthly',lang==='es'?'Mensual':lang==='pt'?'Mensal':lang==='fr'?'Mensuel':'Monthly');
+  setText('tnoteMonthly',lang==='es'?'3 días gratis · cancela cuando quieras':lang==='pt'?'3 dias grátis · cancele quando quiser':lang==='fr'?'3 jours gratuits · annulez quand vous voulez':'3 days free · cancel anytime');
+  setText('tnWorld',  lang==='es'?'Mundial 2026':lang==='pt'?'Copa 2026':lang==='fr'?'Mondial 2026':'World Cup 2026');
+  setText('tnoteWorld',lang==='es'?'Pago único · cubre 7 meses del torneo':lang==='pt'?'Pagamento único · cobre 7 meses':lang==='fr'?'Paiement unique · 7 mois':'One payment · covers 7 months');
+  setText('tnEarly',  lang==='es'?'Early Bird':lang==='pt'?'Early Bird':lang==='fr'?'Early Bird':'Early Bird');
+  setText('tnoteEarlyM',lang==='es'?'Sin cobro hasta el lanzamiento':lang==='pt'?'Sem cobrança até o lançamento':lang==='fr'?"Aucun débit jusqu'au lancement":'No charge until launch');
+  setText('tnoteEarlyW',lang==='es'?'Pago único en el lanzamiento · 7 meses':lang==='pt'?'Pagamento único no lançamento · 7 meses':lang==='fr'?'Paiement unique au lancement · 7 mois':'One payment at launch · 7 months');
+  // Free tier features
+  setText('ff1',lang==='es'?'Seguimiento de las 980 láminas':lang==='pt'?'Rastreio das 980 figurinhas':lang==='fr'?'Suivi des 980 vignettes':'Track all 980 stickers');
+  setText('ff2',lang==='es'?'Ver qué tienes, qué falta y repetidas':lang==='pt'?'Ver o que tem, o que falta, repetidas':lang==='fr'?'Voir ce que vous avez, ce qui manque, les doublons':'See what you have, missing, doubles');
+  setText('ff3',lang==='es'?'Publicar aviso de búsqueda':lang==='pt'?'Publicar aviso de busca':lang==='fr'?'Publier une annonce de recherche':'Post a wanted listing');
+  setText('ff4',lang==='es'?'Ranking de las más buscadas':lang==='pt'?'Ranking das mais procuradas':lang==='fr'?'Classement des plus recherchées':'Most-wanted ranking');
+  setText('ff5',lang==='es'?'Marketplace P2P':lang==='pt'?'Marketplace P2P':lang==='fr'?'Marché P2P':'P2P marketplace');
+  setText('ff6',lang==='es'?'Vender e intercambiar':lang==='pt'?'Vender e trocar':lang==='fr'?'Vendre et échanger':'Sell and trade');
+  setText('ff7',lang==='es'?'Pago protegido (escrow)':lang==='pt'?'Pagamento protegido (escrow)':lang==='fr'?'Paiement sécurisé (séquestre)':'Escrow protection');
+  setText('ff8',lang==='es'?'Con publicidad':lang==='pt'?'Com publicidade':lang==='fr'?'Avec publicité':'Includes ads');
+  // Monthly features
+  setText('mf1',lang==='es'?'Todo lo de Free':lang==='pt'?'Tudo do plano Free':lang==='fr'?'Tout du plan Gratuit':'Everything in Free');
+  setText('mf2',lang==='es'?'Marketplace P2P real':lang==='pt'?'Marketplace P2P real':lang==='fr'?'Marché P2P réel':'Real P2P marketplace');
+  setText('mf3',lang==='es'?'Vender e intercambiar directo':lang==='pt'?'Vender e trocar diretamente':lang==='fr'?'Vendre et échanger directement':'Sell and trade directly');
+  setText('mf4',lang==='es'?'Pago protegido (escrow)':lang==='pt'?'Pagamento protegido (escrow)':lang==='fr'?'Paiement sécurisé':'Escrow protection');
+  setText('mf5',lang==='es'?'Chat directo':lang==='pt'?'Chat direto':lang==='fr'?'Chat direct':'Direct chat');
+  setText('mf6',lang==='es'?'Precios en tiempo real':lang==='pt'?'Preços em tempo real':lang==='fr'?'Prix en temps réel':'Real-time prices');
+  setText('mf7',lang==='es'?'Sin publicidad':lang==='pt'?'Sem publicidade':lang==='fr'?'Sans publicité':'No ads');
+  // World Cup features
+  setText('wf1',lang==='es'?'Todo lo de Mensual':lang==='pt'?'Tudo do plano Mensal':lang==='fr'?'Tout du Mensuel':'Everything in Monthly');
+  setText('wf2',lang==='es'?'Pago único, sin renovación':lang==='pt'?'Pagamento único, sem renovação':lang==='fr'?'Paiement unique, sans renouvellement':'One payment, no renewal');
+  setText('wf3',lang==='es'?'Cubre jun a dic 2026':lang==='pt'?'Cobre jun a dez 2026':lang==='fr'?'Couvre juin à déc. 2026':'Covers Jun to Dec 2026');
+  setText('wf4',lang==='es'?'Equivale a $2.70/mes':lang==='pt'?'Equivale a $2,70/mês':lang==='fr'?'Équivaut à $2.70/mois':'Equals $2.70/mo');
+  setText('wf5',lang==='es'?'Ahorra $12.60 vs mensual':lang==='pt'?'Economize $12,60 vs mensal':lang==='fr'?'Économisez $12.60 vs mensuel':'Save $12.60 vs monthly');
+  setText('wf6',lang==='es'?'Badge "Fan del Mundial" en perfil':lang==='pt'?'Badge "Fã da Copa" no perfil':lang==='fr'?'Badge "Fan Mondial" sur le profil':'"World Cup Fan" badge');
+  // Early Bird features
+  setText('ef1',lang==='es'?'Todo lo de Mensual / Pase':lang==='pt'?'Tudo do Mensal / Passe':lang==='fr'?'Tout du Mensuel / Pass':'Everything in Monthly / Pass');
+  setText('ef2',lang==='es'?'55% OFF exclusivo precompra':lang==='pt'?'55% OFF exclusivo pré-compra':lang==='fr'?'55% OFF exclusif précommande':'55% OFF exclusive pre-order');
+  setText('ef3',lang==='es'?'Acceso prioritario al lanzamiento':lang==='pt'?'Acesso prioritário no lançamento':lang==='fr'?'Accès prioritaire au lancement':'Priority access at launch');
+  setText('ef4',lang==='es'?'Badge "Fundador" en perfil':lang==='pt'?'Badge "Fundador" no perfil':lang==='fr'?'Badge "Fondateur" sur le profil':'"Founder" badge on profile');
+  setText('ef5',lang==='es'?'Voto en nuevas funciones':lang==='pt'?'Voto em novas funções':lang==='fr'?'Vote pour de nouvelles fonctionnalités':'Vote on new features');
+  // Tier buttons
+  var btnFreeEl=document.getElementById('btnFree'); if(btnFreeEl) btnFreeEl.textContent=lang==='es'?'Comenzar gratis':lang==='pt'?'Começar grátis':lang==='fr'?'Commencer gratuitement':'Start free';
+  var btnMEl=document.getElementById('btnMonthly'); if(btnMEl) btnMEl.textContent=lang==='es'?'3 días gratis → Empezar':lang==='pt'?'3 dias grátis → Começar':lang==='fr'?'3 jours gratuits → Commencer':'3 days free → Start';
+  var btnWEl=document.getElementById('btnWorld'); if(btnWEl) btnWEl.textContent=lang==='es'?'Comprar Pase Mundial — $18.90':lang==='pt'?'Comprar Passe Copa — $18.90':lang==='fr'?'Acheter Pass Mondial — $18.90':'Buy World Cup Pass — $18.90';
+  // EB toggle buttons
+  var ebtMEl=document.getElementById('ebtM'); if(ebtMEl) ebtMEl.textContent=lang==='es'?'Mensual':lang==='pt'?'Mensal':lang==='fr'?'Mensuel':'Monthly';
+  var ebtWEl=document.getElementById('ebtW'); if(ebtWEl) ebtWEl.textContent=lang==='es'?'Pase Mundial':lang==='pt'?'Passe Copa':lang==='fr'?'Pass Mondial':'World Cup';
+  // EB main button (keep in sync with current toggle state)
+  var ebMBtn=document.getElementById('ebMainBtn');
+  if(ebMBtn){
+    var isM=document.getElementById('ebViewM')&&document.getElementById('ebViewM').style.display!=='none';
+    ebMBtn.textContent=isM
+      ?(lang==='es'?'Precomprar mensual — $2.03 primer mes':lang==='pt'?'Pré-comprar mensal — $2.03 1º mês':lang==='fr'?'Précommande mensuel — $2.03 1er mois':'Pre-order monthly — $2.03 first month')
+      :(lang==='es'?'Precomprar Pase Mundial — $14.18':lang==='pt'?'Pré-comprar Passe Copa — $14.18':lang==='fr'?'Précommande Pass Mondial — $14.18':'Pre-order World Cup Pass — $14.18');
+  }
+  // Policy section
+  setText('polEye',lang==='es'?'Políticas':lang==='pt'?'Políticas':lang==='fr'?'Politiques':'Policies');
+  setHtml('polTitle',lang==='es'?'Cómo<br>funcionamos':lang==='pt'?'Como<br>funcionamos':lang==='fr'?'Comment<br>on fonctionne':'How we<br>operate');
+  // Policy tabs
+  setText('ptab1',lang==='es'?'Transacciones':lang==='pt'?'Transações':lang==='fr'?'Transactions':'Transactions');
+  setText('ptab2',lang==='es'?'Escrow':lang==='pt'?'Escrow':lang==='fr'?'Séquestre':'Escrow');
+  setText('ptab3',lang==='es'?'Disputas':lang==='pt'?'Disputas':lang==='fr'?'Litiges':'Disputes');
+  setText('ptab4',lang==='es'?'Pagos y planes':lang==='pt'?'Pagamentos e planos':lang==='fr'?'Paiements et plans':'Payments & plans');
+  setText('ptab5',lang==='es'?'Fotos de láminas':lang==='pt'?'Fotos de figurinhas':lang==='fr'?'Photos de vignettes':'Sticker photos');
+  // Payment cards
+  setText('pd1',lang==='es'?'Tarjeta, transferencia y cuotas. Cobertura total en LATAM.':lang==='pt'?'Cartão, transferência e parcelamento. Cobertura LATAM.':lang==='fr'?'Carte, virement et mensualités. Couverture LATAM.':'Card, transfer and installments. Full LATAM coverage.');
+  setText('pd2',lang==='es'?'Paga con Face ID o Touch ID. Sin ingresar datos.':lang==='pt'?'Pague com Face ID ou Touch ID. Sem digitar dados.':lang==='fr'?'Payez avec Face ID ou Touch ID. Sans saisir de données.':'Pay with Face ID or Touch ID. No card details needed.');
+  setText('pd3',lang==='es'?'Un toque desde Android. Autenticación biométrica.':lang==='pt'?'Um toque no Android. Autenticação biométrica.':lang==='fr'?'Un toucher sur Android. Authentification biométrique.':'One tap on Android. Biometric authentication.');
+  setText('pd4',lang==='es'?'Tarjetas internacionales para España y Europa.':lang==='pt'?'Cartões internacionais para Espanha e Europa.':lang==='fr'?'Cartes internationales pour l\'Espagne et l\'Europe.':'International cards for users in Spain and Europe.');
+  setText('ptag1',lang==='es'?'Principal · LATAM':lang==='pt'?'Principal · LATAM':lang==='fr'?'Principal · LATAM':'Main · LATAM');
+  setText('ptag2',lang==='es'?'Face ID / Touch ID':lang==='pt'?'Face ID / Touch ID':lang==='fr'?'Face ID / Touch ID':'Face ID / Touch ID');
+  setText('ptag3',lang==='es'?'Huella / Face Unlock':lang==='pt'?'Digital / Face Unlock':lang==='fr'?'Empreinte / Face Unlock':'Fingerprint / Face');
+  setText('ptag4',lang==='es'?'Europa · Global':lang==='pt'?'Europa · Global':lang==='fr'?'Europe · Mondial':'Europe · Global');
+  // Escrow badge
+  setText('escrowBadge',lang==='es'?'Escrow':lang==='pt'?'Custódia':lang==='fr'?'Séquestre':'Escrow');
+  // Modal form labels
+  setText('mlEmail',lang==='es'?'Email':lang==='pt'?'Email':lang==='fr'?'Email':'Email');
+  setText('mlCard',lang==='es'?'Número de tarjeta':lang==='pt'?'Número do cartão':lang==='fr'?'Numéro de carte':'Card number');
+  setText('mlExpiry',lang==='es'?'Vencimiento':lang==='pt'?'Validade':lang==='fr'?'Expiration':'Expiry');
+  setText('mlCvv',lang==='es'?'CVV':lang==='pt'?'CVV':lang==='fr'?'CVV':'CVV');
+  setText('mlName',lang==='es'?'Nombre en la tarjeta':lang==='pt'?'Nome no cartão':lang==='fr'?'Nom sur la carte':'Name on card');
+  setText('quickPayLbl',lang==='es'?'Pago rápido:':lang==='pt'?'Pagamento rápido:':lang==='fr'?'Paiement rapide :':'Quick pay:');
+  setText('cardDivider',lang==='es'?'— o ingresá los datos de tu tarjeta —':lang==='pt'?'— ou insira os dados do cartão —':lang==='fr'?'— ou entrez les détails de la carte —':'— or enter card details —');
+  setText('msTitle',lang==='es'?'¡Precompra confirmada!':lang==='pt'?'Pré-compra confirmada!':lang==='fr'?'Précommande confirmée !':'Pre-order confirmed!');
+
+  
+
+  // News section
+  // Nav news button text (update inner span only)
+  var navNewsSpan = document.querySelector('#navNews .nav-news-txt');
+  if (navNewsSpan) navNewsSpan.textContent = lang==='es'?'Noticias Mundial':lang==='pt'?'Notícias Copa':lang==='fr'?'Actualités Mondial':'World Cup News';
+  setText('nhbTitle', lang==='es'?'Hub completo del Mundial 2026':lang==='pt'?'Hub completo da Copa 2026':lang==='fr'?'Hub complet du Mondial 2026':'Full World Cup 2026 Hub');
+  setText('nhbSub',   lang==='es'?'Grupos · Calendario · Estadios · Noticias en vivo':lang==='pt'?'Grupos · Calendário · Estádios · Notícias ao vivo':lang==='fr'?'Groupes · Calendrier · Stades · Actualités':'Groups · Schedule · Stadiums · Live news');
+  setText('nhbBtn',   lang==='es'?'Ver todo →':lang==='pt'?'Ver tudo →':lang==='fr'?'Tout voir →':'See all →');
+  // ── Match rows ──
+  var grp = lang==='es'?'Grupo':lang==='pt'?'Grupo':lang==='fr'?'Groupe':'Group';
+  var live = lang==='es'?'En vivo':lang==='pt'?'Ao vivo':lang==='fr'?'En direct':'Live';
+  setText('mgrp1', grp); setText('mgrp2', grp); setText('mgrp3', grp);
+  setText('mlive2', live);
+  setText('liveLabel', lang==='es'?'Próximos partidos':lang==='pt'?'Próximos jogos':lang==='fr'?'Prochains matchs':'Upcoming matches');
+  // Team names per language
+  setText('mn1a', lang==='fr'?'Argentine':'Argentina');
+  setText('mn1b', lang==='fr'?'Mexique':'México');
+  setText('mn2a', lang==='es'?'Brasil':lang==='pt'?'Brasil':lang==='fr'?'Brésil':'Brazil');
+  setText('mn2b', lang==='fr'?'Colombie':'Colombia');
+  setText('mn3a', lang==='es'?'Francia':lang==='pt'?'França':lang==='fr'?'France':'France');
+  setText('mn3b', lang==='es'?'Alemania':lang==='pt'?'Alemanha':lang==='fr'?'Allemagne':'Germany');
+  // Time labels
+  setText('newsEye', lang==='es'?'Noticias del Mundial 2026':lang==='pt'?'Notícias da Copa 2026':lang==='fr'?'Actualités du Mondial 2026':'World Cup 2026 News');
+  setHtml('newsTitle', lang==='es'?'Mantente informado.<br>Negociá más inteligente.':lang==='pt'?'Fique informado.<br>Negocie com inteligência.':lang==='fr'?'Restez informé.<br>Négociez plus intelligemment.':'Stay updated.<br>Trade smarter.');
+  setText('newsSub', lang==='es'?'Noticias y resultados en tiempo real del Mundial te ayudan a detectar qué láminas suben de precio después de un buen partido.':lang==='pt'?'Notícias e resultados em tempo real da Copa ajudam a identificar quais figurinhas sobem de preço após uma boa partida.':lang==='fr'?"Les actualités et résultats en temps réel du Mondial vous aident à repérer quelles vignettes montent en prix après un bon match.":'Real-time World Cup news and results help you spot which stickers spike in demand after a great game.');
+  setText('resultsTitle', lang==='es'?'Próximos partidos':lang==='pt'?'Próximos jogos':lang==='fr'?'Prochains matchs':'Upcoming matches');// lang==='es'?'Últimos resultados':lang==='pt'?'Últimos resultados':lang==='fr'?'Derniers résultats':'Latest Results');
+  setText('liveLabel', 'LIVE');
+  setText('nt1', lang==='es'?'El álbum más grande en la historia del Mundial — 980 láminas':lang==='pt'?'O maior álbum da história da Copa — 980 figurinhas':lang==='fr'?'Le plus grand album de l\'histoire de la Coupe du Monde — 980 vignettes':'The biggest World Cup album ever — 980 stickers');
+  setText('nd1', lang==='es'?'Con 48 equipos por primera vez, el álbum Panini 2026 tiene 980 láminas y 68 especiales brillantes. A la venta desde el 30 de abril.':lang==='pt'?'Com 48 seleções pela primeira vez, o álbum Panini 2026 tem 980 figurinhas e 68 especiais brilhantes. À venda desde 30 de abril.':lang==='fr'?'Avec 48 équipes pour la première fois, l\'album Panini 2026 compte 980 vignettes dont 68 spéciales. En vente depuis le 30 avril.':'With 48 teams for the first time, the 2026 Panini album has 980 stickers and 68 special foil editions. On sale from April 30.');
+  setText('nt1time', lang==='es'?'· Al Jazeera · 30 Abr':lang==='pt'?'· Al Jazeera · 30 Abr':lang==='fr'?'· Al Jazeera · 30 Avr':'· Al Jazeera · Apr 30');
+  setText('nc2', lang==='es'?'Coleccionistas':lang==='pt'?'Colecionadores':lang==='fr'?'Collectionneurs':'Collectors');
+  setText('nt2', lang==='es'?'Coca-Cola esconde 12 láminas exclusivas detrás de sus etiquetas':lang==='pt'?'Coca-Cola esconde 12 figurinhas exclusivas atrás dos rótulos':lang==='fr'?'Coca-Cola cache 12 vignettes exclusives derrière ses étiquettes':'Coca-Cola hides 12 exclusive stickers behind bottle labels');
+  setText('nd2', lang==='es'?'Lamine Yamal, Harry Kane, Lautaro Martínez y 9 estrellas más solo disponibles dentro de botellas Coca-Cola — más de 1.000 millones de botellas desde el 20 de abril.':lang==='pt'?'Lamine Yamal, Harry Kane, Lautaro Martínez e outras 9 estrelas disponíveis apenas dentro de garrafas Coca-Cola — mais de 1 bilhão de garrafas desde 20 de abril.':lang==='fr'?'Lamine Yamal, Harry Kane, Lautaro Martínez et 9 autres stars uniquement disponibles dans les bouteilles Coca-Cola — plus d\'1 milliard de bouteilles depuis le 20 avril.':'Lamine Yamal, Harry Kane, Lautaro Martínez and 9 more stars only inside Coca-Cola bottles — over 1 billion bottles worldwide from April 20.');
+  setText('nt2time', lang==='es'?'· SI.com · 28 Abr':lang==='pt'?'· SI.com · 28 Abr':lang==='fr'?'· SI.com · 28 Avr':'· SI.com · Apr 28');
+  setText('nc3', lang==='es'?'Mercado':lang==='pt'?'Mercado':lang==='fr'?'Marché':'Market');
+  setText('nt3', lang==='es'?'Completar el álbum solo cuesta más de $1.000 — intercambiar es la única opción inteligente':lang==='pt'?'Completar o álbum sozinho custa mais de $1.000 — trocar é a única opção inteligente':lang==='fr'?'Compléter l\'album seul coûte plus de 1 000 $ — échanger est le seul choix intelligent':'Completing the album solo costs over $1,000 — trading is the only smart move');
+  setText('nd3', lang==='es'?'Con 980 láminas a $2 el sobre (7 láminas), completar sin intercambiar cuesta +$1.400. El mercado secundario de láminas nunca había estado tan activo.':lang==='pt'?'Com 980 figurinhas a $2 por pacote (7 figurinhas), completar sem trocar custa +$1.400. O mercado secundário de figurinhas nunca esteve tão ativo.':lang==='fr'?'Avec 980 vignettes à 2 $ le paquet (7 vignettes), compléter sans échanges coûte +1 400 $. Le marché secondaire des vignettes n\'a jamais été aussi actif.':'With 980 stickers at $2/pack (7 stickers), completing without trading costs $1,400+. The secondary sticker market has never been more active.');
+  setText('nt3time', lang==='es'?'· STV News · 30 Abr':lang==='pt'?'· STV News · 30 Abr':lang==='fr'?'· STV News · 30 Avr':'· STV News · Apr 30');
+  // Match data — real fixtures
+  setText('openingBadge', lang==='es'?'Partido inaugural':lang==='pt'?'Jogo de abertura':lang==='fr'?'Match d\'ouverture':'Opening Match');
+  setText('mn1b', lang==='es'||lang==='pt'?'Sudáfrica':lang==='fr'?'Afrique du Sud':'South Africa');
+  setText('mn2a', lang==='fr'?'États-Unis':'USA');
+  setText('mn2b', lang==='es'?'Paraguay':lang==='pt'?'Paraguai':lang==='fr'?'Paraguay':'Paraguay');
+  setText('mn3b', lang==='es'?'Bosnia':lang==='pt'?'Bósnia':lang==='fr'?'Bosnie':'Bosnia');
+  // ── News real content ──
+  setText('nc1', lang==='es'?'Panini 2026':lang==='pt'?'Panini 2026':lang==='fr'?'Panini 2026':'Panini 2026');
+  setText('nt1', lang==='es'?'El álbum más grande en la historia del Mundial: 980 láminas':lang==='pt'?'O maior álbum da história da Copa: 980 figurinhas':lang==='fr'?"Le plus grand album de l'histoire: 980 vignettes":'Biggest World Cup album ever: 980 stickers');
+  setText('nd1', lang==='es'?'Con 48 equipos por primera vez, el álbum Panini 2026 tiene 980 láminas y 68 especiales brillantes. A la venta desde el 30 de abril.':lang==='pt'?'Com 48 seleções pela primeira vez, o álbum tem 980 figurinhas e 68 especiais brilhantes. À venda desde 30 de abril.':lang==='fr'?"Avec 48 équipes pour la première fois, l'album 2026 compte 980 vignettes dont 68 spéciales. En vente depuis le 30 avril.":'With 48 teams for the first time, the 2026 Panini album has 980 stickers and 68 special foil editions. On sale from April 30.');
+  setText('nt1time', lang==='es'?'Al Jazeera · 30 Abr':lang==='pt'?'Al Jazeera · 30 Abr':lang==='fr'?'Al Jazeera · 30 Avr':'Al Jazeera · Apr 30');
+  setText('nc2', lang==='es'?'Coleccionistas':lang==='pt'?'Colecionadores':lang==='fr'?'Collectionneurs':'Collectors');
+  setText('nt2', lang==='es'?'Coca-Cola esconde 12 láminas exclusivas dentro de sus botellas':lang==='pt'?'Coca-Cola esconde 12 figurinhas exclusivas dentro das garrafas':lang==='fr'?"Coca-Cola cache 12 vignettes exclusives dans ses bouteilles":'Coca-Cola hides 12 exclusive stickers inside bottle labels');
+  setText('nd2', lang==='es'?'Yamal, Kane, Lautaro y 9 estrellas más solo disponibles dentro de botellas Coca-Cola. Más de 1.000 millones de botellas en circulación desde el 20 de abril.':lang==='pt'?'Yamal, Kane, Lautaro e 9 estrelas só disponíveis dentro de garrafas Coca-Cola. Mais de 1 bilhão de garrafas em circulação desde 20 de abril.':lang==='fr'?"Yamal, Kane, Lautaro et 9 autres stars uniquement dans les bouteilles Coca-Cola. Plus d'1 milliard de bouteilles en circulation depuis le 20 avril.":'Yamal, Kane, Lautaro and 9 stars only inside Coca-Cola bottles. Over 1 billion bottles in circulation from April 20.');
+  setText('nt2time', lang==='es'?'SI.com · 28 Abr':lang==='pt'?'SI.com · 28 Abr':lang==='fr'?'SI.com · 28 Avr':'SI.com · Apr 28');
+  setText('nc3', lang==='es'?'Mercado':lang==='pt'?'Mercado':lang==='fr'?'Marché':'Market');
+  setText('nt3', lang==='es'?'Completar el álbum solo cuesta más de $1.400 — intercambiar es lo inteligente':lang==='pt'?'Completar o álbum sozinho custa mais de $1.400 — trocar é o mais inteligente':lang==='fr'?"Compléter l'album seul coûte plus de 1 400 $ — échanger est le seul choix intelligent":'Completing the album solo costs $1,400+ — trading is the only smart move');
+  setText('nd3', lang==='es'?'Con 980 láminas a $2 el sobre (7 láminas), completar sin intercambiar cuesta más de $1.400. El mercado secundario nunca había estado tan activo.':lang==='pt'?'Com 980 figurinhas a $2 por pacote (7 figurinhas), completar sem trocar custa mais de $1.400. O mercado secundário nunca esteve tão ativo.':lang==='fr'?"Avec 980 vignettes à 2 $/paquet, compléter sans échanges coûte plus de 1 400 $. Le marché n'a jamais été aussi actif.":'With 980 stickers at $2/pack (7 stickers), completing without trading costs $1,400+. The market has never been more active.');
+  setText('nt3time', lang==='es'?'STV News · 30 Abr':lang==='pt'?'STV News · 30 Abr':lang==='fr'?'STV News · 30 Avr':'STV News · Apr 30');
+  // ── Policy panels ──
+  var polData = {
+    en: {
+      tabs:['Transactions','Escrow','Disputes','Payments & plans','Sticker photos'],
+      pt1:`<div class="pol-h">Collexo commission</div><p class="pol-p">Collexo charges <strong>8% of the sale price</strong> on each successful transaction. Buyers pay no extra. Minimum: <strong>$0.50 USD</strong>.</p><div class="pol-h">What it covers</div><ul class="pol-ul"><li>Escrow system</li><li>Dispute resolution</li><li>Payment processing</li><li>Reputation & verification</li></ul><div class="pol-h">Free trades</div><p class="pol-p">Sticker-for-sticker exchanges between Premium users are commission-free.</p>`,
+      pt2:`<div class="pol-h">How escrow works</div><p class="pol-p">When a buyer pays, money is held by Collexo. Seller has <strong>5 business days</strong> to ship and upload proof.</p><div class="pol-h">When money is released</div><ul class="pol-ul"><li>Buyer confirms receipt → immediate release</li><li>Buyer doesn't confirm within 72h → automatic release</li><li>Seller doesn't ship in 5 days → automatic refund</li></ul>`,
+      pt3:`<div class="pol-h">How to open a dispute</div><p class="pol-p">Buyer can open a dispute within <strong>72 hours</strong> of receiving. Must upload evidence.</p><div class="pol-h">Valid reasons</div><ul class="pol-ul"><li>Sticker doesn't match the listing</li><li>Sticker arrived damaged</li><li>Nothing received in agreed timeframe</li><li>Seller didn't respond</li></ul><div class="pol-h">Sanctions</div><p class="pol-p">Fraud results in <strong>permanent ban</strong>. 2+ disputes in 30 days = preventive suspension.</p>`,
+      pt4:`<div class="pol-h">Monthly Premium</div><p class="pol-p">First <strong>3 days free</strong>. Cancel before = no charge.</p><div class="pol-h">World Cup Pass</div><p class="pol-p">One-time payment Jun–Dec 2026. 40% OFF ($18.90 vs $31.50).</p><div class="pol-h">Early Bird</div><p class="pol-p">Card saved securely. <strong>No charge until launch.</strong> 55% OFF: first month ($2.03) or full pass ($14.18).</p><div class="pol-note">⚠️ If you cancel and return, you pay the current price.</div><div class="pol-h">Cancellation</div><p class="pol-p">Cancel anytime, no penalties.</p>`,
+      pt5:`<div class="pol-h">Status — pending legal review</div><p class="pol-p">Crowdsourced photo system under <strong>IP specialist evaluation</strong> before implementation.</p><div class="pol-h">Proposed model</div><ul class="pol-ul"><li>Users upload photos of their own physical stickers only</li><li>Photos used only to identify the sticker in a listing</li><li>Best photos may improve the catalog (with consent)</li></ul><div class="pol-note">📋 Final definition subject to legal approval.</div>`
+    },
+    es: {
+      tabs:['Transacciones','Escrow','Disputas','Pagos y planes','Fotos de láminas'],
+      pt1:`<div class="pol-h">Comisión de Collexo</div><p class="pol-p">Collexo cobra un <strong>8% sobre el precio de venta</strong> en cada transacción exitosa. El comprador no paga comisión. Mínimo: <strong>$0.50 USD</strong>.</p><div class="pol-h">Qué cubre</div><ul class="pol-ul"><li>Sistema de custodia (escrow)</li><li>Resolución de disputas</li><li>Costos de procesamiento de pago</li><li>Sistema de reputación y verificación</li></ul><div class="pol-h">Intercambios sin dinero</div><p class="pol-p">Los intercambios puros entre usuarios Premium no cobran comisión.</p>`,
+      pt2:`<div class="pol-h">Cómo funciona la custodia</div><p class="pol-p">Al pagar, el dinero queda retenido en Collexo. El vendedor tiene <strong>5 días hábiles</strong> para enviar y subir comprobante.</p><div class="pol-h">Cuándo se libera el dinero</div><ul class="pol-ul"><li>Comprador confirma recepción → liberación inmediata</li><li>Comprador no confirma en 72 hs → liberación automática</li><li>Vendedor no envía en 5 días → devolución automática</li></ul>`,
+      pt3:`<div class="pol-h">Cómo abrir una disputa</div><p class="pol-p">El comprador puede abrir una disputa dentro de las <strong>72 horas</strong>. Debe subir evidencia.</p><div class="pol-h">Causas válidas</div><ul class="pol-ul"><li>La lámina no coincide con la publicada</li><li>La lámina llegó dañada</li><li>No se recibió nada en el plazo acordado</li><li>El vendedor no respondió</li></ul><div class="pol-h">Sanciones</div><p class="pol-p">Fraude comprobado = <strong>expulsión permanente</strong>. Más de 2 disputas en 30 días = suspensión preventiva.</p>`,
+      pt4:`<div class="pol-h">Premium Mensual</div><p class="pol-p">Primeros <strong>3 días gratis</strong>. Cancela antes sin cargo.</p><div class="pol-h">Pase Mundial</div><p class="pol-p">Pago único jun–dic 2026. 40% OFF ($18.90 vs $31.50).</p><div class="pol-h">Early Bird</div><p class="pol-p">Tarjeta guardada con seguridad. <strong>Sin cobro hasta el lanzamiento.</strong> 55% OFF: primer mes ($2.03) o pase completo ($14.18).</p><div class="pol-note">⚠️ Si cancelas y vuelves, pagas el precio vigente en ese momento.</div><div class="pol-h">Cancelación</div><p class="pol-p">Cancela cuando quieras, sin penalizaciones.</p>`,
+      pt5:`<div class="pol-h">Estado — revisión legal pendiente</div><p class="pol-p">El sistema de fotos crowdsourced está <strong>en evaluación con asesor legal en IP</strong>.</p><div class="pol-h">Modelo propuesto</div><ul class="pol-ul"><li>Los usuarios suben fotos solo de sus propias láminas físicas</li><li>Las fotos se usan exclusivamente para identificar la lámina en el listing</li><li>Las mejores fotos pueden mejorar el catálogo (con consentimiento)</li></ul><div class="pol-note">📋 Definición final sujeta a aprobación legal.</div>`
+    },
+    pt: {
+      tabs:['Transações','Escrow','Disputas','Pagamentos e planos','Fotos de figurinhas'],
+      pt1:`<div class="pol-h">Comissão da Collexo</div><p class="pol-p">A Collexo cobra <strong>8% do preço de venda</strong> em cada transação bem-sucedida. O comprador não paga comissão extra. Mínimo: <strong>$0,50 USD</strong>.</p><div class="pol-h">O que cobre</div><ul class="pol-ul"><li>Sistema de custódia (escrow)</li><li>Resolução de disputas</li><li>Custos de processamento de pagamento</li><li>Sistema de reputação e verificação</li></ul><div class="pol-h">Trocas sem dinheiro</div><p class="pol-p">Trocas puras entre usuários Premium são isentas de comissão.</p>`,
+      pt2:`<div class="pol-h">Como funciona o escrow</div><p class="pol-p">Ao pagar, o dinheiro fica retido na Collexo. O vendedor tem <strong>5 dias úteis</strong> para enviar e subir comprovante.</p><div class="pol-h">Quando o dinheiro é liberado</div><ul class="pol-ul"><li>Comprador confirma recebimento → liberação imediata</li><li>Comprador não confirma em 72h → liberação automática</li><li>Vendedor não envia em 5 dias → devolução automática</li></ul>`,
+      pt3:`<div class="pol-h">Como abrir uma disputa</div><p class="pol-p">O comprador pode abrir uma disputa em até <strong>72 horas</strong>. Deve subir evidências.</p><div class="pol-h">Motivos válidos</div><ul class="pol-ul"><li>A figurinha não corresponde ao anúncio</li><li>A figurinha chegou danificada</li><li>Nada recebido no prazo acordado</li><li>O vendedor não respondeu</li></ul><div class="pol-h">Sanções</div><p class="pol-p">Fraude comprovada = <strong>banimento permanente</strong>. Mais de 2 disputas em 30 dias = suspensão preventiva.</p>`,
+      pt4:`<div class="pol-h">Premium Mensal</div><p class="pol-p">Primeiros <strong>3 dias grátis</strong>. Cancele antes = sem cobrança.</p><div class="pol-h">Passe Copa</div><p class="pol-p">Pagamento único jun–dez 2026. 40% OFF ($18,90 vs $31,50).</p><div class="pol-h">Early Bird</div><p class="pol-p">Cartão salvo com segurança. <strong>Sem cobrança até o lançamento.</strong> 55% OFF: 1º mês ($2,03) ou passe completo ($14,18).</p><div class="pol-note">⚠️ Se cancelar e voltar, paga o preço vigente naquele momento.</div><div class="pol-h">Cancelamento</div><p class="pol-p">Cancele quando quiser, sem penalidades.</p>`,
+      pt5:`<div class="pol-h">Status — revisão legal pendente</div><p class="pol-p">O sistema de fotos crowdsourced está <strong>em avaliação com especialista em PI</strong>.</p><div class="pol-h">Modelo proposto</div><ul class="pol-ul"><li>Usuários enviam fotos apenas de suas próprias figurinhas físicas</li><li>Fotos usadas exclusivamente para identificar a figurinha no anúncio</li><li>Melhores fotos podem melhorar o catálogo (com consentimento)</li></ul><div class="pol-note">📋 Definição final sujeita à aprovação legal.</div>`
+    },
+    fr: {
+      tabs:['Transactions','Séquestre','Litiges','Paiements et plans','Photos de vignettes'],
+      pt1:`<div class="pol-h">Commission Collexo</div><p class="pol-p">Collexo prélève <strong>8% du prix de vente</strong> sur chaque transaction réussie. L'acheteur ne paie pas de commission. Minimum : <strong>0,50 USD</strong>.</p><div class="pol-h">Ce que ça couvre</div><ul class="pol-ul"><li>Système de séquestre</li><li>Résolution des litiges</li><li>Frais de traitement des paiements</li><li>Système de réputation et vérification</li></ul><div class="pol-h">Échanges sans argent</div><p class="pol-p">Les échanges purs entre utilisateurs Premium sont sans commission.</p>`,
+      pt2:`<div class="pol-h">Comment fonctionne le séquestre</div><p class="pol-p">Lors du paiement, l'argent est retenu par Collexo. Le vendeur a <strong>5 jours ouvrables</strong> pour envoyer et télécharger la preuve.</p><div class="pol-h">Quand l'argent est libéré</div><ul class="pol-ul"><li>L'acheteur confirme la réception → libération immédiate</li><li>L'acheteur ne confirme pas dans les 72h → libération automatique</li><li>Le vendeur n'envoie pas dans les 5 jours → remboursement automatique</li></ul>`,
+      pt3:`<div class="pol-h">Comment ouvrir un litige</div><p class="pol-p">L'acheteur peut ouvrir un litige dans les <strong>72 heures</strong>. Doit télécharger une preuve.</p><div class="pol-h">Motifs valables</div><ul class="pol-ul"><li>La vignette ne correspond pas à l'annonce</li><li>La vignette est arrivée endommagée</li><li>Rien reçu dans le délai convenu</li><li>Le vendeur n'a pas répondu</li></ul><div class="pol-h">Sanctions</div><p class="pol-p">Fraude confirmée = <strong>bannissement permanent</strong>. 2+ litiges en 30 jours = suspension préventive.</p>`,
+      pt4:`<div class="pol-h">Premium Mensuel</div><p class="pol-p">Premiers <strong>3 jours gratuits</strong>. Annulation avant = sans frais.</p><div class="pol-h">Pass Mondial</div><p class="pol-p">Paiement unique juin–déc. 2026. 40% OFF (18,90 $ vs 31,50 $).</p><div class="pol-h">Early Bird</div><p class="pol-p">Carte sauvegardée en toute sécurité. <strong>Aucun débit jusqu'au lancement.</strong> 55% OFF : 1er mois (2,03 $) ou pass complet (14,18 $).</p><div class="pol-note">⚠️ Si vous annulez et revenez, vous payez le tarif en vigueur.</div><div class="pol-h">Annulation</div><p class="pol-p">Annulez quand vous voulez, sans frais.</p>`,
+      pt5:`<div class="pol-h">Statut — révision légale en cours</div><p class="pol-p">Le système de photos participatives est <strong>en cours d'évaluation par un spécialiste en PI</strong>.</p><div class="pol-h">Modèle proposé</div><ul class="pol-ul"><li>Les utilisateurs téléchargent des photos uniquement de leurs propres vignettes physiques</li><li>Les photos sont utilisées uniquement pour identifier la vignette dans l'annonce</li><li>Les meilleures photos peuvent améliorer le catalogue (avec consentement)</li></ul><div class="pol-note">📋 Définition finale soumise à approbation légale.</div>`
+    }
+  };
+  var pd = polData[lang] || polData.en;
+  // Update tabs
+  ['ptab1','ptab2','ptab3','ptab4','ptab5'].forEach(function(id,i){ setText(id, pd.tabs[i]); });
+  // Update panel content (keep active state)
+  var activePanel='pt1';
+  var panels=document.querySelectorAll('.pp');
+  for(var i=0;i<panels.length;i++){ if(panels[i].classList.contains('on')){ activePanel=panels[i].id; break; } }
+  document.getElementById('pt1') && (document.getElementById('pt1').innerHTML=pd.pt1);
+  document.getElementById('pt2') && (document.getElementById('pt2').innerHTML=pd.pt2);
+  document.getElementById('pt3') && (document.getElementById('pt3').innerHTML=pd.pt3);
+  document.getElementById('pt4') && (document.getElementById('pt4').innerHTML=pd.pt4);
+  document.getElementById('pt5') && (document.getElementById('pt5').innerHTML=pd.pt5);
+  // Restore active
+  document.querySelectorAll('.pp').forEach(function(p){ p.className=p.id===activePanel?'pp on':'pp'; });
+
+
+  // ── Flow steps (escrow) ──
+  setText('ft1', lang==='es'?'Compras y pagas':lang==='pt'?'Você compra e paga':lang==='fr'?'Vous achetez et payez':'You buy and pay');
+  setText('ft2', lang==='es'?'El vendedor envía la lámina':lang==='pt'?'Vendedor envia a figurinha':lang==='fr'?'Le vendeur expédie la vignette':'Seller ships the sticker');
+  setText('ft3', lang==='es'?'Confirmas la recepción':lang==='pt'?'Você confirma o recebimento':lang==='fr'?'Vous confirmez la réception':'You confirm receipt');
+  setText('ft4', lang==='es'?'Se libera el pago':lang==='pt'?'Pagamento liberado':lang==='fr'?'Le paiement est libéré':'Payment released');
+  setText('fd1', lang==='es'?'El dinero queda retenido en Collexo. El vendedor no recibe nada todavía.':lang==='pt'?'Dinheiro retido no Collexo. Vendedor não recebe nada ainda.':lang==='fr'?'L\'argent est retenu par Collexo. Le vendeur ne reçoit rien encore.':'Money is held by Collexo. The seller receives nothing yet.');
+  setText('fd2', lang==='es'?'Sube prueba del envío. Si no envía en 5 días, devolución automática.':lang==='pt'?'Sobe prova do envio. Sem envio em 5 dias = devolução automática.':lang==='fr'?'Il télécharge la preuve. Sans envoi en 5 jours = remboursement automatique.':'They upload proof of shipping. If nothing sent in 5 days, automatic refund.');
+  setText('fd3', lang==='es'?'Tienes 72 horas para confirmar o abrir una disputa. Sin respuesta = liberación automática.':lang==='pt'?'72 horas para confirmar ou abrir disputa. Sem resposta = liberação automática.':lang==='fr'?'72h pour confirmer ou ouvrir un litige. Sans réponse = libération automatique.':'You have 72 hours to confirm or open a dispute. No response = automatic release.');
+  setText('fd4', lang==='es'?'El vendedor recibe el dinero menos la comisión. Todo transparente.':lang==='pt'?'Vendedor recebe menos a comissão. Transparente.':lang==='fr'?'Le vendeur reçoit l\'argent moins la commission. Transparent.':'Seller receives the money minus commission. Transparent.');
+  // ── Steps ──
+  setText('st1', lang==='es'?'Registra tu álbum':lang==='pt'?'Registre seu álbum':lang==='fr'?'Enregistrez votre album':'Register your album');
+  setText('st2', lang==='es'?'Encuentra un match':lang==='pt'?'Encontre um match':lang==='fr'?'Trouvez un match':'Find a match');
+  setText('st3', lang==='es'?'Intercambia o vende':lang==='pt'?'Troque ou venda':lang==='fr'?'Échangez ou vendez':'Trade or sell');
+  setText('st4', lang==='es'?'Pago protegido':lang==='pt'?'Pagamento protegido':lang==='fr'?'Paiement sécurisé':'Protected payment');
+  setText('sd1', lang==='es'?'Marca qué láminas tienes, cuáles te faltan y cuáles te sobran. En segundos, desde el celular.':lang==='pt'?'Marque quais figurinhas tem, quais faltam e quais são repetidas. Em segundos.':lang==='fr'?'Marquez les vignettes que vous avez, celles qui manquent et les doubles. En quelques secondes.':'Mark which stickers you have, which are missing and which are duplicates. In seconds, from your phone.');
+  setText('sd2', lang==='es'?'El sistema cruza tu lista con los repetidos de miles de usuarios y te muestra quién tiene lo que buscas.':lang==='pt'?'O sistema cruza sua lista com as repetidas de milhares de usuários.':lang==='fr'?'Le système croise votre liste avec les doublons de milliers d\'utilisateurs.':'The system cross-references your list with duplicates from thousands of users.');
+  setText('sd3', lang==='es'?'Tú decides: ofrece tus repetidas a cambio de las que necesitas, o véndelas al precio que quieras.':lang==='pt'?'Você decide: oferece suas repetidas em troca, ou vende pelo preço que quiser.':lang==='fr'?'Vous décidez : proposez vos doublons en échange, ou vendez au prix souhaité.':'You decide: offer your duplicates in exchange for what you need, or sell them at your price.');
+  setText('sd4', lang==='es'?'El dinero queda en custodia. Se libera cuando confirmas que recibiste la lámina correcta.':lang==='pt'?'Dinheiro fica em custódia. Liberado só quando você confirma o recebimento.':lang==='fr'?'L\'argent est mis en séquestre. Libéré seulement quand vous confirmez la réception.':'Money is held in escrow. Released only when you confirm you received the correct sticker.');
+  // ── Footer links ──
+  var fLinks = document.querySelectorAll('.f-links a');
+  if (fLinks[0]) fLinks[0].textContent = lang==='es'?'Privacidad':lang==='pt'?'Privacidade':lang==='fr'?'Confidentialité':'Privacy';
+  if (fLinks[1]) fLinks[1].textContent = lang==='es'?'Términos':lang==='pt'?'Termos':lang==='fr'?'Conditions':'Terms';
+  if (fLinks[2]) fLinks[2].textContent = lang==='es'?'Contacto':lang==='pt'?'Contato':lang==='fr'?'Contact':'Contact';
+  // ── Footer terms link (priceFooter handled above, but also update fullTermsLink text) ──
+  setText('fullTermsLink', lang==='es'?'Términos completos':lang==='pt'?'Termos completos':lang==='fr'?'Conditions complètes':'Full terms');
+  // ── Waitlist success sub ──
+  var wsSubEl = document.getElementById('wsSub');
+  if (wsSubEl) {
+    var n = document.getElementById('myNum') ? document.getElementById('myNum').textContent : '848';
+    var tpl = lang==='es'?'Eres el #N en la lista.<br>Comparte con coleccionistas 👇':lang==='pt'?'Você é o #N na lista.<br>Compartilhe com colecionadores 👇':lang==='fr'?'Tu es le #N sur la liste.<br>Partage avec des collectionneurs 👇':'You\'re #N on the list.<br>Share with collectors 👇';
+    wsSubEl.innerHTML = tpl.replace('N', '<span id="myNum">'+n+'</span>');
+  }
+  // ── Modal inputs placeholder ──
+  var mEmailEl=document.getElementById('mEmail'); if(mEmailEl) mEmailEl.placeholder=lang==='es'?'tu@email.com':lang==='pt'?'seu@email.com':lang==='fr'?'ton@email.com':'your@email.com';
+  var mCardEl=document.getElementById('mCard'); if(mCardEl) mCardEl.placeholder='4242 4242 4242 4242';
+  var mExpEl=document.getElementById('mExp'); if(mExpEl) mExpEl.placeholder=lang==='es'||lang==='pt'?'MM/AA':lang==='fr'?'MM/AA':'MM/YY';
+  var mCvvEl=document.getElementById('mCvv'); if(mCvvEl) mCvvEl.placeholder='123';
+  var mNameEl=document.getElementById('mName'); if(mNameEl) mNameEl.placeholder=lang==='es'?'NOMBRE APELLIDO':lang==='pt'?'NOME SOBRENOME':lang==='fr'?'NOM PRÉNOM':'FULL NAME';
+
+  // ── Ticker ──
+  buildTicker(t.ticker || T.en.ticker);
+
+  try{ localStorage.setItem('sm_lang',lang); }catch(e){}
+}
+
+// ── Language menu toggle ──
+function toggleLangMenu(){
+  menuOpen=!menuOpen;
+  var menu=document.getElementById('langMenu');
+  var caret=document.getElementById('langCaret');
+  menu.className=menuOpen?'lang-menu show':'lang-menu';
+  caret.style.transform=menuOpen?'rotate(180deg)':'';
+}
+
+// ── Set language ──
+function setLang(lang){
+  applyLang(lang);
+  menuOpen=false;
+  document.getElementById('langMenu').className='lang-menu';
+  document.getElementById('langCaret').style.transform='';
+}
+
+// ── Close menu on outside click ──
+document.addEventListener('click',function(e){
+  if(!menuOpen) return;
+  var sel=document.getElementById('langSel');
+  if(sel&&!sel.contains(e.target)){
+    menuOpen=false;
+    document.getElementById('langMenu').className='lang-menu';
+    document.getElementById('langCaret').style.transform='';
+  }
+});
+
+// Wire up the trigger button
+document.getElementById('langTrigger').addEventListener('click',function(e){
+  e.stopPropagation();
+  toggleLangMenu();
+});
+
+// ════════════════════════════════
+// APP LOGIC
+// ════════════════════════════════
+var count=847;
+var selectedCountry='';
+var currentPlan='early_monthly';
+
+function selChip(el){
+  var chips=document.querySelectorAll('.chip');
+  for(var i=0;i<chips.length;i++) chips[i].classList.remove('on');
+  el.classList.add('on');
+  selectedCountry=el.textContent.trim();
+}
+
+// ── Waitlist ──
+function submitWaitlist(){
+  var email=document.getElementById('wlEmail').value.trim();
+  var status=document.getElementById('wlStatus');
+  var btn=document.getElementById('wlBtn');
+  if(!email||email.indexOf('@')<0){
+    document.getElementById('wlEmail').classList.add('err');
+    setTimeout(function(){ document.getElementById('wlEmail').classList.remove('err'); },1500);
+    return;
+  }
+  btn.disabled=true; btn.textContent='...';
+  status.className='wl-status sending';
+  status.textContent=activeLang==='es'?'Registrando...':activeLang==='pt'?'Registrando...':activeLang==='fr'?'Inscription...':'Registering...';
+
+  emailjs.send('service_9cp64kk','template_ha3od1v',{
+    user_email: email,
+    country: selectedCountry || '—',
+    date: new Date().toLocaleDateString()
+  }).then(function(){
+    count++;
+    animNum(document.getElementById('ctrNum'),count);
+    document.getElementById('myNum').textContent=count;
+    document.getElementById('wlForm').style.display='none';
+    document.getElementById('wlSuccess').classList.add('show');
+  }).catch(function(err){
+    status.className='wl-status er';
+    status.textContent=activeLang==='es'?'Error al registrar. Intenta de nuevo.':activeLang==='pt'?'Erro ao registrar. Tente novamente.':activeLang==='fr'?'Erreur. Réessayez.':'Error registering. Please try again.';
+    btn.disabled=false;
+    btn.textContent=activeLang==='es'?'Unirme →':'Join →';
+    console.error('EmailJS error:',err);
+  });
+}
+
+// ── Modal ──
+
+function getPlans(){
+  var l=activeLang;
+  var noCharge=l==='es'?'Sin cobro hasta el lanzamiento':l==='pt'?'Sem cobrança até o lançamento':l==='fr'?"Aucun débit jusqu'au lancement":'No charge until launch';
+  var cancelFree=l==='es'?'Cancela antes sin cargo':l==='pt'?'Cancele antes sem custo':l==='fr'?'Annulez avant sans frais':'Cancel before at no cost';
+  return {
+  monthly:{
+    eye:l==='es'?'🎯 Premium Mensual':l==='pt'?'🎯 Premium Mensal':l==='fr'?'🎯 Premium Mensuel':'🎯 Premium Monthly',
+    title:l==='es'?'3 días gratis,<br>luego $4.50/mes':l==='pt'?'3 dias grátis,<br>depois $4.50/mês':l==='fr'?'3 jours gratuits,<br>puis $4.50/mois':'3 days free,<br>then $4.50/mo',
+    sub:l==='es'?'<strong>3 días gratis</strong>, sin cargo. Luego $4.50/mes. Cancela cuando quieras.':l==='pt'?'<strong>3 dias grátis</strong>, sem cobrança. Depois $4,50/mês.':l==='fr'?'<strong>3 jours gratuits</strong>, sans frais. Puis $4,50/mois.':'<strong>3 days free</strong>, no charge. Then $4.50/mo. Cancel anytime.',
+    price:'$4.50<span style="font-size:15px;color:var(--ink4);font-weight:400">/mo</span>',old:'',save:l==='es'?'Precio normal':l==='pt'?'Preço normal':l==='fr'?'Prix normal':'Normal price',
+    btn:l==='es'?'Empezar 3 días gratis':l==='pt'?'Começar 3 dias grátis':l==='fr'?'Commencer 3 jours gratuits':'Start 3 days free',
+    confirm:l==='es'?'$4.50/mes tras el período de prueba':l==='pt'?'$4,50/mês após o período de teste':l==='fr'?'$4,50/mois après la période d\'essai':'$4.50/mo after trial',showOld:false},
+  mundial:{
+    eye:l==='es'?'🏆 Pase Mundial':l==='pt'?'🏆 Passe Copa':l==='fr'?'🏆 Pass Mondial':'🏆 World Cup Pass',
+    title:l==='es'?'Todo el torneo<br>por $18.90':l==='pt'?'Todo o torneio<br>por $18.90':l==='fr'?'Tout le tournoi<br>pour $18,90':'Full tournament<br>for $18.90',
+    sub:l==='es'?'Pago único. Cubre jun–dic 2026. <strong>40% OFF</strong> vs mensual ($31.50).':l==='pt'?'Pagamento único. Cobre jun–dez 2026. <strong>40% OFF</strong> vs mensal ($31,50).':l==='fr'?'Paiement unique. Couvre juin–déc. 2026. <strong>40% OFF</strong> vs mensuel ($31,50).':'One-time payment. Covers Jun–Dec 2026. <strong>40% OFF</strong> vs monthly ($31.50).',
+    price:'$18.90<span style="font-size:15px;color:var(--ink4);font-weight:400"> one-time</span>',old:'$31.50',save:l==='es'?'40% OFF · ahorra $12.60':l==='pt'?'40% OFF · economize $12,60':l==='fr'?'40% OFF · économisez $12,60':'40% OFF · save $12.60',
+    btn:l==='es'?'Comprar Pase Mundial — $18.90':l==='pt'?'Comprar Passe Copa — $18.90':l==='fr'?'Acheter Pass Mondial — $18,90':'Buy World Cup Pass — $18.90',
+    confirm:l==='es'?'$18.90 pago único al lanzamiento':l==='pt'?'$18,90 pagamento único no lançamento':l==='fr'?'$18,90 paiement unique au lancement':'$18.90 one-time at launch',showOld:true},
+  early_monthly:{
+    eye:l==='es'?'⚡ Early Bird — Mensual':l==='pt'?'⚡ Early Bird — Mensal':l==='fr'?'⚡ Early Bird — Mensuel':'⚡ Early Bird — Monthly',
+    title:l==='es'?'Primer mes $2.03,<br>luego $4.50/mes':l==='pt'?'1º mês $2,03,<br>depois $4,50/mês':l==='fr'?'1er mois $2,03,<br>puis $4,50/mois':'First month $2.03,<br>then $4.50/mo',
+    sub:l==='es'?'Guardamos tu tarjeta. <strong>'+noCharge+'.</strong> '+cancelFree+'.':l==='pt'?'Salvamos seu cartão. <strong>'+noCharge+'.</strong> '+cancelFree+'.':l==='fr'?'On sauvegarde votre carte. <strong>'+noCharge+'.</strong> '+cancelFree+'.':'We save your card. <strong>'+noCharge+'.</strong> '+cancelFree+'.',
+    price:'$2.03<span style="font-size:15px;color:var(--ink4);font-weight:400"> 1st mo</span>',old:'$4.50',save:l==='es'?'55% OFF primer mes':l==='pt'?'55% OFF 1º mês':l==='fr'?'55% OFF 1er mois':'55% OFF first month',
+    btn:l==='es'?'Precomprar — Sin cobro hasta el lanzamiento':l==='pt'?'Pré-comprar — Sem cobrança até o lançamento':l==='fr'?"Précommander — Aucun débit jusqu'au lancement":'Pre-order — No charge until launch',
+    confirm:l==='es'?'$2.03 primer mes · luego $4.50/mes':l==='pt'?'$2,03 1º mês · depois $4,50/mês':l==='fr'?'$2,03 1er mois · puis $4,50/mois':'$2.03 first month · then $4.50/mo',showOld:true},
+  early_mundial:{
+    eye:l==='es'?'⚡ Early Bird — Pase Mundial':l==='pt'?'⚡ Early Bird — Passe Copa':l==='fr'?'⚡ Early Bird — Pass Mondial':'⚡ Early Bird — World Cup Pass',
+    title:l==='es'?'Pase Mundial<br>por $14.18':l==='pt'?'Passe Copa<br>por $14,18':l==='fr'?'Pass Mondial<br>pour $14,18':'World Cup Pass<br>for $14.18',
+    sub:l==='es'?'Guardamos tu tarjeta. <strong>'+noCharge+'.</strong> 55% OFF exclusivo precompra.':l==='pt'?'Salvamos seu cartão. <strong>'+noCharge+'.</strong> 55% OFF exclusivo pré-compra.':l==='fr'?'On sauvegarde votre carte. <strong>'+noCharge+'.</strong> 55% OFF exclusif précommande.':'We save your card. <strong>'+noCharge+'.</strong> 55% OFF exclusive pre-order.',
+    price:'$14.18<span style="font-size:15px;color:var(--ink4);font-weight:400"> one-time</span>',old:'$31.50',save:l==='es'?'55% OFF · ahorra $17.32':l==='pt'?'55% OFF · economize $17,32':l==='fr'?'55% OFF · économisez $17,32':'55% OFF · save $17.32',
+    btn:l==='es'?'Precomprar Pase — Sin cobro hasta el lanzamiento':l==='pt'?'Pré-comprar Passe — Sem cobrança':l==='fr'?"Précommander Pass — Aucun débit jusqu'au lancement":'Pre-order Pass — No charge until launch',
+    confirm:l==='es'?'$14.18 pago único al lanzamiento':l==='pt'?'$14,18 pagamento único no lançamento':l==='fr'?'$14,18 paiement unique au lancement':'$14.18 one-time at launch',showOld:true}
+};}
+var PLANS={
+  monthly:{eye:'🎯 Premium Monthly',title:'3 days free,<br>then $4.50/mo',sub:'<strong>3 days free</strong>, no charge. Then $4.50/mo. Cancel anytime.',price:'$4.50<span style="font-size:15px;color:var(--ink4);font-weight:400">/mo</span>',old:'',save:'Normal price',btn:'Start 3 days free',confirm:'$4.50/mo after trial',showOld:false},
+  mundial:{eye:'🏆 World Cup Pass',title:'Full tournament<br>for $18.90',sub:'One-time payment. Covers Jun–Dec 2026. <strong>40% OFF</strong> vs monthly ($31.50).',price:'$18.90<span style="font-size:15px;color:var(--ink4);font-weight:400"> one-time</span>',old:'$31.50',save:'40% OFF · save $12.60',btn:'Buy World Cup Pass — $18.90',confirm:'$18.90 one-time at launch',showOld:true},
+  early_monthly:{eye:'⚡ Early Bird — Monthly',title:'First month $2.03,<br>then $4.50/mo',sub:'We save your card. <strong>No charge until launch.</strong> Cancel before at no cost.',price:'$2.03<span style="font-size:15px;color:var(--ink4);font-weight:400"> 1st mo</span>',old:'$4.50',save:'55% OFF first month',btn:'Pre-order — No charge until launch',confirm:'$2.03 first month · then $4.50/mo',showOld:true},
+  early_mundial:{eye:'⚡ Early Bird — World Cup Pass',title:'World Cup Pass<br>for $14.18',sub:'We save your card. <strong>No charge until launch.</strong> 55% OFF exclusive pre-order.',price:'$14.18<span style="font-size:15px;color:var(--ink4);font-weight:400"> one-time</span>',old:'$31.50',save:'55% OFF · save $17.32',btn:'Pre-order Pass — No charge until launch',confirm:'$14.18 one-time at launch',showOld:true}
+};
+
+function openModal(plan){
+  currentPlan=plan;
+  var PLANS=getPlans(); var p=PLANS[plan]||PLANS.early_monthly;
+  document.getElementById('mEye').textContent=p.eye;
+  document.getElementById('mTitle').innerHTML=p.title;
+  document.getElementById('mSub').innerHTML=p.sub;
+  document.getElementById('mPrice').innerHTML=p.price;
+  document.getElementById('mOld').textContent=p.old;
+  document.getElementById('mOld').style.display=p.showOld?'':'none';
+  document.getElementById('mSave').textContent=p.save;
+  document.getElementById('mBtn').textContent=p.btn;
+  document.getElementById('msP').textContent=p.confirm;
+  // reset
+  document.getElementById('mForm').style.display='';
+  document.getElementById('mSuccess').classList.remove('show');
+  document.getElementById('mStatus').className='m-mstatus';
+  document.getElementById('mStatus').textContent='';
+  document.getElementById('mBtn').disabled=false;
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('overlay').addEventListener('click',function(e){
+  if(e.target===this) closeModal();
+});
+
+function submitModal(){
+  var email=document.getElementById('mEmail').value.trim();
+  var card=document.getElementById('mCard').value.replace(/\s/g,'');
+  var btn=document.getElementById('mBtn');
+  var status=document.getElementById('mStatus');
+  if(!email||email.indexOf('@')<0){ document.getElementById('mEmail').classList.add('err'); setTimeout(function(){document.getElementById('mEmail').classList.remove('err');},1500); return; }
+  if(card.length<15){ document.getElementById('mCard').classList.add('err'); setTimeout(function(){document.getElementById('mCard').classList.remove('err');},1500); return; }
+  btn.disabled=true;
+  btn.textContent=activeLang==='es'?'Procesando...':activeLang==='pt'?'Processando...':activeLang==='fr'?'Traitement...':'Processing...';
+  status.className='m-mstatus sending';
+  status.textContent=activeLang==='es'?'Guardando...':activeLang==='pt'?'Salvando...':activeLang==='fr'?'Enregistrement...':'Saving...';
+
+  var PLANS=getPlans();
+  var p=PLANS[currentPlan]||PLANS.early_monthly;
+  emailjs.send('service_9cp64kk','template_zewjx2b',{
+    user_email: email,
+    plan: p.eye + ' — ' + p.confirm,
+    date: new Date().toLocaleDateString()
+  }).then(function(){
+    document.getElementById('mForm').style.display='none';
+    document.getElementById('mSuccess').classList.add('show');
+  }).catch(function(err){
+    status.className='m-mstatus sending';
+    status.textContent=activeLang==='es'?'Error. Intenta de nuevo.':activeLang==='pt'?'Erro. Tente novamente.':activeLang==='fr'?'Erreur. Réessayez.':'Error. Please try again.';
+    btn.disabled=false;
+    console.error('EmailJS error:',err);
+  });
+}
+
+function qPay(p){ alert('In production this opens '+(p==='apple'?'Apple Pay':'Google Pay')+' with biometric auth.'); }
+
+// ── Early Bird toggle in card ──
+function switchEB(type){
+  var isM=(type==='monthly');
+  document.getElementById('ebtM').className=isM?'ebt on':'ebt';
+  document.getElementById('ebtW').className=isM?'ebt':'ebt on';
+  document.getElementById('ebViewM').style.display=isM?'':'none';
+  document.getElementById('ebViewW').style.display=isM?'none':'';
+  document.getElementById('ebMainBtn').textContent=isM?'Pre-order monthly — $2.03 first month':'Pre-order World Cup Pass — $14.18';
+  document.getElementById('ebMainBtn').onclick=function(){ openModal(isM?'early_monthly':'early_mundial'); };
+}
+
+// ── Card formatting ──
+function fmtCard(el){ var v=el.value.replace(/\D/g,'').substring(0,16); el.value=v.match(/.{1,4}/g)?v.match(/.{1,4}/g).join(' '):v; }
+function fmtExp(el){ var v=el.value.replace(/\D/g,'').substring(0,4); if(v.length>=2) v=v.substring(0,2)+'/'+v.substring(2); el.value=v; }
+
+// ── Policy tabs ──
+function showPol(btn,id){
+  var tabs=document.querySelectorAll('.ptab');
+  var panels=document.querySelectorAll('.pp');
+  for(var i=0;i<tabs.length;i++) tabs[i].className='ptab';
+  for(var i=0;i<panels.length;i++) panels[i].className='pp';
+  btn.className='ptab on';
+  document.getElementById(id).className='pp on';
+}
+
+// ── Countdown ──
+function tick(){
+  var diff=new Date('2026-06-11T20:00:00')-new Date();
+  if(diff<=0) return;
+  var pad=function(n){return String(n).padStart(2,'0');};
+  var d=Math.floor(diff/86400000);
+  document.getElementById('cdD').textContent=pad(d);
+  document.getElementById('cdH').textContent=pad(Math.floor((diff%86400000)/3600000));
+  document.getElementById('cdM').textContent=pad(Math.floor((diff%3600000)/60000));
+  document.getElementById('cdS').textContent=pad(Math.floor((diff%60000)/1000));
+  // Update nav countdown with current lang
+  var t=T[activeLang]||T.en;
+  document.getElementById('navCd').textContent=t.navCdPfx+' '+d+' '+t.navCdSfx;
+}
+tick(); setInterval(tick,1000);
+
+// ── Animate counter ──
+function animNum(el,target){
+  var start=parseInt(el.textContent)||0,t0=performance.now();
+  (function f(now){
+    var p=Math.min((now-t0)/700,1),ease=1-Math.pow(1-p,3);
+    el.textContent=Math.round(start+(target-start)*ease);
+    if(p<1) requestAnimationFrame(f); else el.textContent=target;
+  })(t0);
+}
+window.addEventListener('load',function(){ setTimeout(function(){ animNum(document.getElementById('ctrNum'),847); },400); });
+
+// ── Reveal on scroll ──
+var io=new IntersectionObserver(function(entries){ entries.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('vis'); }); },{threshold:.08});
+document.querySelectorAll('.reveal').forEach(function(el){ io.observe(el); });
+
+// ── Share ──
+var SITEURL='https://collexo.app';
+function shareWa(){ window.open('https://wa.me/?text='+encodeURIComponent('⚽ The app for trading and selling World Cup 2026 stickers with protected payments — '+SITEURL)); }
+function copyLink(){ try{ navigator.clipboard.writeText(SITEURL).then(function(){ alert('Link copied!'); }); }catch(e){ prompt('Copy this link:',SITEURL); } }
+
+// ── INIT — detect and apply language ──
+activeLang=detectLang();
+applyLang(activeLang);
+</script>
+</body>
+</html>

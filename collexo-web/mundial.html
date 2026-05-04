@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collexo — World Cup 2026 Hub</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Unbounded:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --g:#2d7a00;--gl:#e8f5d8;--gb:#b0db80;
+  --o:#c94000;--ol:#fff0e8;--ob:#f0c0a0;
+  --b:#1a3a8a;--bl:#e8f0fd;
+  --ink:#0d0d0d;--ink2:#222;--ink3:#444;--ink4:#777;--ink5:#aaa;
+  --w:#fff;--bg:#f5f4f0;--bg2:#eeede8;--border:#ddddd6;--border2:#c8c8be;
+  --lime:#7ec800;--red:#c00030;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;line-height:1.6;color:var(--ink)}
+
+/* LANG SELECTOR — standalone, no conflicts */
+.lang-sel{position:relative}
+.lang-trigger{display:flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:7px 11px;font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;color:var(--ink2);cursor:pointer;transition:all .2s;user-select:none}
+.lang-trigger:hover{border-color:var(--ink);background:#fff}
+.lang-caret{font-size:8px;color:var(--ink4);display:inline-block;transition:transform .2s}
+.lang-menu{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border:1px solid var(--border2);border-radius:12px;padding:6px;box-shadow:0 8px 32px rgba(0,0,0,.12);min-width:155px;z-index:9999;visibility:hidden;opacity:0;transform:translateY(-6px);transition:all .15s;pointer-events:none}
+.lang-menu.show{visibility:visible;opacity:1;transform:translateY(0);pointer-events:auto}
+.lang-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:background .1s}
+.lang-item:hover{background:var(--bg)}
+.lang-item.cur{background:var(--gl);color:var(--g)}
+
+
+/* ── TOP BAR ── */
+.hub-topbar{display:flex;align-items:center;justify-content:space-between;padding:8px 20px;border-bottom:1px solid var(--border);background:var(--w)}
+.back-btn{display:flex;align-items:center;gap:10px;text-decoration:none;background:var(--ink);color:#fff;border-radius:12px;padding:8px 18px;transition:all .2s}
+.back-btn:hover{background:var(--o);transform:translateX(-2px)}
+.back-arrow{font-size:16px;color:rgba(255,255,255,.7);flex-shrink:0}
+.back-logo{font-family:'Unbounded',sans-serif;font-size:14px;font-weight:900;color:#fff}
+.back-logo em{font-style:normal;color:var(--lime)}
+.back-sub{font-family:'Plus Jakarta Sans',sans-serif;font-size:9px;color:rgba(255,255,255,.45);letter-spacing:.5px;text-transform:uppercase}
+@media(max-width:500px){.back-sub{display:none}}
+
+/* ── HERO ── */
+.hero{background:var(--ink);position:relative;overflow:hidden;padding:52px 32px 44px}
+.hero-mesh{position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(ellipse 60% 80% at 0% 50%,rgba(45,122,0,.2),transparent 55%),
+  radial-gradient(ellipse 50% 60% at 100% 30%,rgba(201,64,0,.18),transparent 55%)}
+.hero-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;position:relative;z-index:1}
+.hero-logo-link{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:1.5px;margin-bottom:14px;text-decoration:none;display:inline-flex;align-items:center;gap:8px}
+.hero-logo-link span{color:var(--lime)}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,88px);line-height:.92;letter-spacing:.02em;color:#fff;margin-bottom:10px}
+.hero-title em{font-style:normal;color:var(--lime)}
+.hero-dates{font-size:12px;color:rgba(255,255,255,.4);letter-spacing:.5px;margin-bottom:20px}
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.hp{border-radius:100px;padding:5px 14px;font-family:'Unbounded',sans-serif;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.hp-g{background:rgba(126,200,0,.15);border:1px solid rgba(126,200,0,.3);color:var(--lime)}
+.hp-o{background:rgba(201,64,0,.18);border:1px solid rgba(201,64,0,.3);color:#ff7040}
+.hp-w{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6)}
+
+
+/* ── NAV ── */
+.hub-nav-wrap{background:var(--w);border-bottom:2px solid var(--border);position:sticky;top:0;z-index:100}
+.hub-nav{max-width:1060px;margin:0 auto;display:flex;overflow-x:auto;scrollbar-width:none;padding:0 8px}
+.hub-nav::-webkit-scrollbar{display:none}
+.hub-tab{font-family:'Unbounded',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:16px 20px;white-space:nowrap;cursor:pointer;color:var(--ink4);border:none;background:none;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .18s}
+.hub-tab:hover{color:var(--ink)}
+.hub-tab.on{color:var(--o);border-bottom-color:var(--o)}
+
+/* ── PANELS ── */
+.hub-panel{display:none}
+.hub-panel.on{display:block}
+.panel-inner{max-width:1060px;margin:0 auto;padding:36px 28px}
+
+/* ── NEWS ── */
+.news-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.news-h{font-family:'Unbounded',sans-serif;font-size:15px;font-weight:900;color:var(--ink)}
+.news-refresh{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink4);background:var(--bg);border:1px solid var(--border);border-radius:100px;padding:6px 14px;cursor:pointer;transition:all .2s;font-family:'Unbounded',sans-serif;letter-spacing:.5px}
+.news-refresh:hover{border-color:var(--ink);color:var(--ink)}
+.nr-dot{width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 1.8s ease-in-out infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
+.news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:28px}
+.nc{background:var(--w);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:all .22s;cursor:pointer;display:flex;flex-direction:column}
+.nc:hover{border-color:var(--border2);box-shadow:0 6px 24px rgba(0,0,0,.08);transform:translateY(-3px)}
+.nc-img{height:120px;overflow:hidden;position:relative;flex-shrink:0}
+.nc-img svg{width:100%;height:100%}
+.nc-body{padding:16px;flex:1;display:flex;flex-direction:column;gap:5px}
+.nc-cat{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--o)}
+.nc-title{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--ink);line-height:1.3;flex:1}
+.nc-desc{font-size:12px;color:var(--ink3);line-height:1.55}
+.nc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px}
+.nc-src{font-size:10px;color:var(--ink5)}
+.nc-tag{font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;font-family:'Unbounded',sans-serif;letter-spacing:.5px}
+.nt-wc{background:var(--gl);color:var(--g);border:1px solid var(--gb)}
+.nt-mk{background:var(--ol);color:var(--o);border:1px solid var(--ob)}
+.nt-new{background:var(--bl);color:var(--b);border:1px solid #a0b8f0}
+.ai-loading{display:none;text-align:center;padding:40px;color:var(--ink4)}
+.ai-loading.show{display:block}
+.ai-spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--o);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── GROUPS ── */
+.groups-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.gc{background:var(--w);border:1.5px solid var(--border);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.gc:hover{border-color:var(--border2)}
+.gc-hd{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:6px}
+.gc-name{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--ink)}
+.gc-tag{font-family:'Unbounded',sans-serif;font-size:8px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:100px}
+.gt-host{background:var(--gl);color:var(--g);border:1px solid var(--gb)}
+.gt-fire{background:var(--ol);color:var(--o);border:1px solid var(--ob)}
+.gt-easy{background:var(--gl);color:var(--g);border:1px solid var(--gb)}
+.gc-teams{padding:4px 0}
+.gc-team{display:flex;align-items:center;gap:9px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--ink2);transition:background .12s}
+.gc-team:hover{background:var(--bg)}
+.gc-flag{font-size:16px;width:22px;flex-shrink:0}
+.gc-star{margin-left:auto;font-family:'Bebas Neue',sans-serif;font-size:11px;color:var(--o);letter-spacing:.5px}
+
+/* ── SCHEDULE ── */
+.sched-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.sf{font-family:'Unbounded',sans-serif;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:7px 16px;border-radius:9px;border:1.5px solid var(--border2);color:var(--ink3);background:transparent;cursor:pointer;transition:all .15s}
+.sf:hover{border-color:var(--ink);color:var(--ink)}
+.sf.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.md{margin-bottom:22px}
+.md-lbl{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.md-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+.mr{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--w);border:1.5px solid var(--border);border-radius:12px;margin-bottom:7px;transition:all .18s;flex-wrap:wrap}
+.mr:hover{border-color:var(--border2);box-shadow:0 3px 14px rgba(0,0,0,.06)}
+.mr-teams{display:flex;align-items:center;gap:8px;flex:1;min-width:210px}
+.mr-flag{font-size:19px;flex-shrink:0}
+.mr-name{font-size:13px;font-weight:700;color:var(--ink);min-width:70px}
+.mr-vs{font-family:'Unbounded',sans-serif;font-size:10px;color:var(--ink5);padding:0 3px}
+.mr-info{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-left:auto}
+.mi-group{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:3px 8px}
+.mi-date{font-size:11px;color:var(--ink3);white-space:nowrap}
+.mi-venue{font-size:11px;color:var(--ink4);max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opening-tag{font-family:'Unbounded',sans-serif;font-size:8px;color:var(--g);background:var(--gl);border:1px solid var(--gb);border-radius:5px;padding:3px 8px;letter-spacing:.5px;flex-shrink:0}
+.final-row{background:var(--ink)!important;border-color:var(--ink)!important}
+.final-row .mr-name,.final-row .mi-date{color:#fff}
+.final-row .mr-vs{color:#555}
+.final-row .mi-venue{color:#666}
+.final-row .mi-group{background:rgba(126,200,0,.15);border-color:rgba(126,200,0,.3);color:var(--lime)}
+
+/* ── STADIUMS ── */
+.stad-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.sc{background:var(--w);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:all .22s}
+.sc:hover{border-color:var(--border2);box-shadow:0 6px 24px rgba(0,0,0,.08);transform:translateY(-3px)}
+.sc-img{height:130px;overflow:hidden;position:relative;background:var(--bg2)}
+.sc-img svg{width:100%;height:100%}
+.sc-body{padding:16px}
+.sc-nation{font-size:20px;margin-bottom:6px}
+.sc-name{font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.2}
+.sc-city{font-size:12px;color:var(--ink3);margin-bottom:8px}
+.sc-cap{font-size:11px;color:var(--ink4);display:flex;align-items:center;gap:5px}
+.sc-cap::before{content:'';width:3px;height:3px;border-radius:50%;background:var(--o);flex-shrink:0}
+.sc-badge{font-family:'Unbounded',sans-serif;font-size:8px;font-weight:700;padding:3px 8px;border-radius:5px;letter-spacing:.5px}
+.sb-m{background:var(--gl);color:var(--g);border:1px solid var(--gb)}
+.sb-f{background:var(--ol);color:var(--o);border:1px solid var(--ob)}
+
+/* ── FORMAT ── */
+.flow{display:flex;align-items:center;gap:0;overflow-x:auto;padding-bottom:10px;margin-bottom:28px}
+.flow::-webkit-scrollbar{height:4px}
+.flow::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.fstage{flex-shrink:0;display:flex;flex-direction:column;align-items:center;min-width:115px}
+.farrow{flex-shrink:0;color:var(--border2);font-size:22px;padding:0 6px;margin-top:22px}
+.fstage-lbl{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);text-align:center;margin-bottom:8px;padding:4px 8px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;width:100%}
+.fstage-box{background:var(--w);border:1.5px solid var(--border);border-radius:12px;padding:16px 12px;text-align:center;width:100%}
+.fstage-n{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--ink);line-height:1;letter-spacing:.02em}
+.fstage-d{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.4}
+.fstage-date{font-family:'Unbounded',sans-serif;font-size:9px;color:var(--o);margin-top:5px;letter-spacing:.5px}
+.fstage.final .fstage-box{background:var(--ink);border-color:var(--ink)}
+.fstage.final .fstage-n{color:var(--lime)}
+.fstage.final .fstage-d{color:#777}
+.fstage.final .fstage-date{color:#c94000}
+.fstage.final .fstage-lbl{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);color:#555}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:10px;margin-bottom:28px}
+.fact{background:var(--w);border:1.5px solid var(--border);border-radius:12px;padding:16px}
+.fact-n{font-family:'Bebas Neue',sans-serif;font-size:40px;line-height:1;letter-spacing:.02em;margin-bottom:3px}
+.fact-l{font-size:12px;color:var(--ink3);line-height:1.4}
+.fn-g{color:var(--g)}.fn-o{color:var(--o)}.fn-b{color:var(--b)}.fn-r{color:var(--red)}.fn-k{color:var(--ink)}
+.rule-box{border-radius:14px;padding:18px 20px;margin-bottom:14px;font-size:13px;line-height:1.65}
+.rb-g{background:var(--gl);border:1px solid var(--gb);color:#1a4000}
+.rb-g strong{color:var(--g)}
+.rb-o{background:var(--ol);border:1px solid var(--ob);color:#5a2000}
+.rb-o strong{color:var(--o)}
+.hub-credit{text-align:center;padding:20px;font-size:11px;color:var(--ink5);border-top:1px solid var(--border);background:var(--w)}
+.hub-credit a{color:var(--ink4)}
+
+@media(max-width:600px){
+  .hero{padding:36px 16px 32px}
+  .panel-inner{padding:24px 16px}
+  .hub-tab{padding:13px 12px;font-size:9px}
+  .groups-grid{grid-template-columns:1fr 1fr}
+  .fstage{min-width:90px}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-inner">
+    <div>
+
+      <h1 class="hero-title">FIFA<br>WORLD<br>CUP <em>2026</em></h1>
+      <div class="hero-dates" id="heroDates">June 11 – July 19, 2026 · USA · Canada · Mexico</div>
+      <div class="hero-pills">
+        <div class="hp hp-g" id="pill48">48 Teams</div>
+        <div class="hp hp-o" id="pill104">104 Matches</div>
+        <div class="hp hp-w" id="pill16">16 Venues</div>
+      </div>
+
+    </div>
+    <svg width="110" height="148" viewBox="0 0 120 160" fill="none" opacity=".8">
+      <path d="M35 20 Q35 8 60 8 Q85 8 85 20 L80 85 Q78 105 60 112 Q42 105 40 85 Z" fill="rgba(126,200,0,0.15)" stroke="rgba(126,200,0,0.5)" stroke-width="1.5"/>
+      <path d="M35 30 Q18 30 18 50 Q18 68 35 68" stroke="rgba(126,200,0,0.4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M85 30 Q102 30 102 50 Q102 68 85 68" stroke="rgba(126,200,0,0.4)" stroke-width="2" fill="none" stroke-linecap="round"/>
+      <path d="M52 112 L48 130 L72 130 L68 112" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+      <rect x="36" y="130" width="48" height="8" rx="3" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+      <text x="60" y="72" font-family="sans-serif" font-size="30" fill="rgba(126,200,0,0.5)" text-anchor="middle">★</text>
+    </svg>
+  </div>
+</div>
+
+<!-- TABS + TOP NAV -->
+<div class="hub-nav-wrap">
+  <!-- Top bar: lang selector + back button -->
+  <div class="hub-topbar">
+    <div class="lang-sel" id="langSel">
+      <div class="lang-trigger" id="langTrigger">
+        <span id="langFlag">🇺🇸</span>
+        <span id="langCode">EN</span>
+        <span class="lang-caret" id="langCaret">▾</span>
+      </div>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-item" data-lang="es" onclick="setLang('es')"><span>🇪🇸</span> Español</button>
+        <button class="lang-item cur" data-lang="en" onclick="setLang('en')"><span>🇺🇸</span> English</button>
+        <button class="lang-item" data-lang="pt" onclick="setLang('pt')"><span>🇧🇷</span> Português</button>
+        <button class="lang-item" data-lang="fr" onclick="setLang('fr')"><span>🇫🇷</span> Français</button>
+      </div>
+    </div>
+    <a href="index.html" class="back-btn">
+      <span class="back-arrow">←</span>
+      <span class="back-logo">Colle<em>xo</em></span>
+      <span class="back-sub" id="backSub">The Sticker Exchange Community</span>
+    </a>
+  </div>
+  <!-- Tabs -->
+  <div class="hub-nav">
+    <button class="hub-tab on" onclick="showTab(this,'tab-news')" id="t-news">📰 <span id="tabNews">News</span></button>
+    <button class="hub-tab" onclick="showTab(this,'tab-groups')" id="t-groups">🏳️ <span id="tabGroups">Groups</span></button>
+    <button class="hub-tab" onclick="showTab(this,'tab-schedule')" id="t-schedule">📅 <span id="tabSchedule">Schedule</span></button>
+    <button class="hub-tab" onclick="showTab(this,'tab-stadiums')" id="t-stadiums">🏟️ <span id="tabStadiums">Stadiums</span></button>
+    <button class="hub-tab" onclick="showTab(this,'tab-format')" id="t-format">🗂️ <span id="tabFormat">Format</span></button>
+  </div>
+</div>
+<!-- ══ NEWS ══ -->
+<div class="hub-panel on" id="tab-news">
+<div class="panel-inner">
+  <div class="news-header">
+    <div class="news-h" id="newsH">World Cup 2026 — Latest</div>
+    <button class="news-refresh" onclick="refreshNews()">
+      <div class="nr-dot"></div>
+      <span id="refreshLabel">Refresh with AI</span>
+    </button>
+  </div>
+  <div class="ai-loading" id="aiLoading">
+    <div class="ai-spinner"></div>
+    <div class="ai-msg">Searching latest World Cup news with Claude AI...</div>
+  </div>
+  <div id="newsGrid" class="news-grid">
+
+    <!-- Card 1 — Stadium SVG illustration -->
+    <div class="nc">
+      <div class="nc-img">
+        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="120" fill="#1a1a2e"/>
+          <!-- Night sky -->
+          <circle cx="40" cy="20" r="1.5" fill="rgba(255,255,255,0.6)"/>
+          <circle cx="80" cy="12" r="1" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="200" cy="8" r="1.5" fill="rgba(255,255,255,0.4)"/>
+          <circle cx="260" cy="18" r="1" fill="rgba(255,255,255,0.5)"/>
+          <!-- Stadium silhouette — bowl shape -->
+          <path d="M20 95 Q60 30 150 28 Q240 30 280 95 L280 105 Q240 75 150 73 Q60 75 20 105 Z" fill="#2a2a4a" stroke="rgba(126,200,0,0.3)" stroke-width="1"/>
+          <!-- Roof arch -->
+          <path d="M30 90 Q150 20 270 90" fill="none" stroke="rgba(126,200,0,0.5)" stroke-width="2"/>
+          <!-- Field green -->
+          <ellipse cx="150" cy="100" rx="100" ry="18" fill="rgba(45,122,0,0.5)"/>
+          <ellipse cx="150" cy="100" rx="80" ry="13" fill="rgba(45,122,0,0.4)"/>
+          <!-- Field lines -->
+          <ellipse cx="150" cy="100" rx="60" ry="10" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <line x1="150" y1="87" x2="150" y2="113" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <!-- Stadium lights -->
+          <circle cx="60" cy="35" r="5" fill="rgba(255,220,100,0.6)"/>
+          <circle cx="240" cy="35" r="5" fill="rgba(255,220,100,0.6)"/>
+          <line x1="60" y1="38" x2="80" y2="90" stroke="rgba(255,220,100,0.15)" stroke-width="8"/>
+          <line x1="240" y1="38" x2="220" y2="90" stroke="rgba(255,220,100,0.15)" stroke-width="8"/>
+          <!-- Label -->
+          <text x="150" y="18" font-family="monospace" font-size="8" fill="rgba(126,200,0,0.7)" text-anchor="middle" letter-spacing="2">PANINI 2026</text>
+        </svg>
+      </div>
+      <div class="nc-body">
+        <div class="nc-cat" id="nc1">Panini 2026</div>
+        <div class="nc-title" id="nt1">980 stickers — biggest World Cup album in history</div>
+        <div class="nc-desc" id="nd1">48 teams, 980 stickers, 68 special foil editions. Launched April 30 at Wembley. Includes a Coca-Cola partnership with 12 hidden stars.</div>
+        <div class="nc-foot">
+          <span class="nc-src" id="ns1">Al Jazeera · Apr 30</span>
+          <span class="nc-tag nt-wc">Album</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="nc">
+      <div class="nc-img">
+        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="120" fill="#0d1a08"/>
+          <!-- Green field -->
+          <rect x="0" y="60" width="300" height="60" fill="#1a3a10"/>
+          <!-- Field stripes -->
+          <rect x="0" y="60" width="50" height="60" fill="rgba(255,255,255,0.03)"/>
+          <rect x="100" y="60" width="50" height="60" fill="rgba(255,255,255,0.03)"/>
+          <rect x="200" y="60" width="50" height="60" fill="rgba(255,255,255,0.03)"/>
+          <!-- Bottle shape -->
+          <path d="M125 10 L120 30 L118 55 L118 90 L182 90 L182 55 L180 30 L175 10 Z" fill="rgba(201,64,0,0.2)" stroke="rgba(201,64,0,0.5)" stroke-width="1.5"/>
+          <path d="M133 10 L167 10 L167 16 L133 16 Z" fill="rgba(201,64,0,0.35)" stroke="rgba(201,64,0,0.5)" stroke-width="1"/>
+          <!-- Sticker on bottle -->
+          <rect x="125" y="50" width="50" height="30" rx="4" fill="rgba(126,200,0,0.2)" stroke="rgba(126,200,0,0.5)" stroke-width="1"/>
+          <text x="150" y="68" font-family="monospace" font-size="10" fill="rgba(126,200,0,0.8)" text-anchor="middle">★</text>
+          <text x="150" y="78" font-family="monospace" font-size="7" fill="rgba(126,200,0,0.5)" text-anchor="middle">HIDDEN</text>
+          <!-- Sticker flying out -->
+          <rect x="185" y="35" width="35" height="25" rx="4" fill="rgba(126,200,0,0.15)" stroke="rgba(126,200,0,0.4)" stroke-width="1" transform="rotate(-15 202 47)"/>
+          <text x="202" y="50" font-family="monospace" font-size="8" fill="rgba(126,200,0,0.7)" text-anchor="middle" transform="rotate(-15 202 47)">YAMAL</text>
+          <text x="155" y="22" font-family="monospace" font-size="7" fill="rgba(201,64,0,0.6)" text-anchor="middle" letter-spacing="1">COCA-COLA × PANINI</text>
+        </svg>
+      </div>
+      <div class="nc-body">
+        <div class="nc-cat" id="nc2">Collectors</div>
+        <div class="nc-title" id="nt2">Coca-Cola hides 12 exclusive stickers in bottle labels</div>
+        <div class="nc-desc" id="nd2">Yamal, Kane, Lautaro, Alphonso Davies and 8 more stars hidden behind 1 billion+ Coca-Cola bottles worldwide. Available from April 20.</div>
+        <div class="nc-foot">
+          <span class="nc-src" id="ns2">SI.com · Apr 28</span>
+          <span class="nc-tag nt-mk">Exclusive</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="nc">
+      <div class="nc-img">
+        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="120" fill="#f9f4e8"/>
+          <!-- Album shape -->
+          <rect x="50" y="8" width="80" height="104" rx="5" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+          <rect x="58" y="18" width="64" height="85" rx="3" fill="#f5f5f0"/>
+          <!-- Album rows of sticker slots -->
+          <rect x="62" y="22" width="28" height="20" rx="2" fill="#e8e8e0" stroke="#ccc" stroke-width="1"/>
+          <rect x="94" y="22" width="24" height="20" rx="2" fill="#e8f5d8" stroke="#b0db80" stroke-width="1"/>
+          <rect x="62" y="46" width="24" height="20" rx="2" fill="#e8f5d8" stroke="#b0db80" stroke-width="1"/>
+          <rect x="90" y="46" width="28" height="20" rx="2" fill="#fff0e8" stroke="#f0c0a0" stroke-width="1"/>
+          <rect x="62" y="70" width="28" height="20" rx="2" fill="#e8e8e0" stroke="#ccc" stroke-width="1"/>
+          <rect x="94" y="70" width="24" height="20" rx="2" fill="#e8f5d8" stroke="#b0db80" stroke-width="1"/>
+          <!-- Price tag -->
+          <rect x="160" y="25" width="90" height="50" rx="10" fill="#fff" stroke="#ddd" stroke-width="1.5"/>
+          <text x="205" y="47" font-family="monospace" font-size="18" font-weight="bold" fill="#0d0d0d" text-anchor="middle">$1,400</text>
+          <text x="205" y="65" font-family="monospace" font-size="9" fill="#888" text-anchor="middle">to complete alone</text>
+          <!-- Arrow pointing up from stack -->
+          <path d="M185 90 L205 75 L225 90" fill="none" stroke="#c94000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <text x="205" y="108" font-family="monospace" font-size="8" fill="#c94000" text-anchor="middle">TRADING IS SMARTER</text>
+        </svg>
+      </div>
+      <div class="nc-body">
+        <div class="nc-cat" id="nc3">Market</div>
+        <div class="nc-title" id="nt3">Completing the album solo costs $1,400+ — trading essential</div>
+        <div class="nc-desc" id="nd3">At $2/pack (7 stickers), buying duplicates until completion costs over $1,400. The secondary sticker market has never been more active.</div>
+        <div class="nc-foot">
+          <span class="nc-src" id="ns3">STV News · Apr 30</span>
+          <span class="nc-tag nt-mk">Market</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="nc">
+      <div class="nc-img">
+        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="120" fill="#1a0a18"/>
+          <!-- Italian flag colors faded -->
+          <rect x="0" y="0" width="100" height="120" fill="rgba(0,140,69,0.15)"/>
+          <rect x="100" y="0" width="100" height="120" fill="rgba(255,255,255,0.05)"/>
+          <rect x="200" y="0" width="100" height="120" fill="rgba(206,43,55,0.15)"/>
+          <!-- Broken trophy -->
+          <path d="M130 20 L130 60 L170 60 L170 20 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <!-- Crack -->
+          <path d="M148 20 L152 40 L145 60" fill="none" stroke="rgba(255,100,100,0.6)" stroke-width="2"/>
+          <path d="M152 40 L158 60" fill="none" stroke="rgba(255,100,100,0.4)" stroke-width="1.5"/>
+          <!-- X mark -->
+          <line x1="125" y1="15" x2="175" y2="65" stroke="rgba(200,0,0,0.4)" stroke-width="3" stroke-linecap="round"/>
+          <line x1="175" y1="15" x2="125" y2="65" stroke="rgba(200,0,0,0.4)" stroke-width="3" stroke-linecap="round"/>
+          <text x="150" y="90" font-family="monospace" font-size="9" fill="rgba(255,100,100,0.6)" text-anchor="middle">ITALY — 3RD CONSECUTIVE</text>
+          <text x="150" y="105" font-family="monospace" font-size="8" fill="rgba(255,100,100,0.4)" text-anchor="middle">ABSENCE</text>
+          <text x="150" y="18" font-family="monospace" font-size="8" fill="rgba(255,255,255,0.25)" text-anchor="middle" letter-spacing="1">UEFA PLAYOFF FINAL</text>
+        </svg>
+      </div>
+      <div class="nc-body">
+        <div class="nc-cat" id="nc4">Qualifying</div>
+        <div class="nc-title" id="nt4">Italy miss World Cup for third straight time</div>
+        <div class="nc-desc" id="nd4">Lost to Bosnia on penalties in the UEFA playoff. Bastoni red card in 41'. Bosnia won 4-1 on penalties. Historic low for Italian football.</div>
+        <div class="nc-foot">
+          <span class="nc-src" id="ns4">NBC Sports · Mar 31</span>
+          <span class="nc-tag nt-new">Qualifying</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="nc">
+      <div class="nc-img">
+        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="120" fill="#0d1520"/>
+          <!-- Plane silhouette -->
+          <path d="M80 55 L220 45 L230 55 L220 65 L80 65 Z" fill="rgba(100,160,255,0.15)" stroke="rgba(100,160,255,0.3)" stroke-width="1"/>
+          <path d="M180 45 L200 30 L205 35 L190 50" fill="rgba(100,160,255,0.2)" stroke="rgba(100,160,255,0.35)" stroke-width="1"/>
+          <path d="M155 65 L165 80 L170 78 L162 63" fill="rgba(100,160,255,0.2)" stroke="rgba(100,160,255,0.35)" stroke-width="1"/>
+          <!-- Iraq flag colors -->
+          <rect x="30" y="30" width="45" height="30" rx="3" fill="rgba(0,0,0,0.4)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <rect x="30" y="30" width="45" height="10" rx="3" fill="rgba(200,0,0,0.4)"/>
+          <rect x="30" y="40" width="45" height="10" fill="rgba(255,255,255,0.12)"/>
+          <rect x="30" y="50" width="45" height="10" rx="0" fill="rgba(0,140,0,0.4)"/>
+          <text x="53" y="47" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.5)" text-anchor="middle">🇮🇶</text>
+          <!-- Path line -->
+          <path d="M75 55 Q150 20 240 55" fill="none" stroke="rgba(126,200,0,0.25)" stroke-width="1.5" stroke-dasharray="4,4"/>
+          <!-- Arrow -->
+          <path d="M235 50 L245 55 L235 60" fill="none" stroke="rgba(126,200,0,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- WC logo area -->
+          <circle cx="250" cy="55" r="20" fill="rgba(126,200,0,0.1)" stroke="rgba(126,200,0,0.3)" stroke-width="1"/>
+          <text x="250" y="59" font-family="monospace" font-size="11" fill="rgba(126,200,0,0.6)" text-anchor="middle">⚽</text>
+          <text x="150" y="100" font-family="monospace" font-size="8" fill="rgba(126,200,0,0.4)" text-anchor="middle">FIFA ARRANGED CHARTER FLIGHT</text>
+          <text x="150" y="112" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.2)" text-anchor="middle">IRAQ — 40 YEAR ABSENCE ENDS</text>
+        </svg>
+      </div>
+      <div class="nc-body">
+        <div class="nc-cat" id="nc5">Qualifying</div>
+        <div class="nc-title" id="nt5">Iraq return after 40 years — FIFA arranges charter flight</div>
+        <div class="nc-desc" id="nd5">Iraqi airspace closed during qualification. FIFA arranged a charter. Beat Bolivia 2-1. End a 40-year World Cup absence — extraordinary story.</div>
+        <div class="nc-foot">
+          <span class="nc-src" id="ns5">Yahoo Sports · Mar 31</span>
+          <span class="nc-tag nt-new">Historic</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 6 — Opening match -->
+    <div class="nc">
+      <div class="nc-img">
+        <svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
+          <rect width="300" height="120" fill="#0a1a08"/>
+          <!-- Estadio Azteca silhouette -->
+          <!-- Bowl shape -->
+          <ellipse cx="150" cy="85" rx="130" ry="25" fill="rgba(45,122,0,0.4)" stroke="rgba(45,122,0,0.4)" stroke-width="0"/>
+          <!-- Outer ring -->
+          <path d="M20 80 Q20 35 150 30 Q280 35 280 80 L270 85 Q260 55 150 50 Q40 55 30 85 Z" fill="#1a3020" stroke="rgba(45,122,0,0.4)" stroke-width="1.5"/>
+          <!-- Inner bowl -->
+          <path d="M50 78 Q50 50 150 47 Q250 50 250 78 L245 82 Q240 60 150 57 Q60 60 55 82 Z" fill="#224422" stroke="rgba(45,122,0,0.35)" stroke-width="1"/>
+          <!-- Field -->
+          <ellipse cx="150" cy="78" rx="85" ry="16" fill="rgba(45,122,0,0.6)"/>
+          <ellipse cx="150" cy="78" rx="65" ry="12" fill="rgba(55,140,30,0.5)"/>
+          <!-- Center circle -->
+          <ellipse cx="150" cy="78" rx="20" ry="6" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <!-- Mexico flag mini -->
+          <rect x="12" y="8" width="36" height="24" rx="2" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <rect x="12" y="8" width="12" height="24" fill="rgba(0,130,50,0.7)"/>
+          <rect x="24" y="8" width="12" height="24" fill="rgba(255,255,255,0.2)"/>
+          <rect x="36" y="8" width="12" height="24" rx="0" fill="rgba(200,0,0,0.7)"/>
+          <text x="58" y="22" font-family="monospace" font-size="9" fill="rgba(255,255,255,0.6)">vs</text>
+          <!-- SA flag mini -->
+          <rect x="70" y="8" width="36" height="24" rx="2" fill="rgba(0,0,0,0.5)" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <rect x="70" y="8" width="36" height="8" fill="rgba(0,120,0,0.7)"/>
+          <rect x="70" y="16" width="36" height="8" fill="rgba(255,180,0,0.5)"/>
+          <rect x="70" y="24" width="36" height="8" fill="rgba(0,70,160,0.7)"/>
+          <text x="150" y="18" font-family="monospace" font-size="8" fill="rgba(126,200,0,0.7)" text-anchor="middle" letter-spacing="1">OPENING MATCH</text>
+          <text x="150" y="30" font-family="monospace" font-size="7" fill="rgba(255,255,255,0.3)" text-anchor="middle">ESTADIO AZTECA · JUNE 11</text>
+        </svg>
+      </div>
+      <div class="nc-body">
+        <div class="nc-cat" id="nc6">World Cup 2026</div>
+        <div class="nc-title" id="nt6">Opening match: Mexico vs South Africa at Estadio Azteca</div>
+        <div class="nc-desc" id="nd6">June 11, 3pm ET. Mexico hosts the first match of the biggest World Cup in history. 87,500-seat Azteca packed for the 4th time hosting a World Cup opener.</div>
+        <div class="nc-foot">
+          <span class="nc-src" id="ns6">FIFA · Jun 11</span>
+          <span class="nc-tag nt-wc">Opening</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- end news grid -->
+</div>
+</div>
+
+
+<!-- ══ GROUPS ══ -->
+<div class="hub-panel" id="tab-groups">
+<div class="panel-inner">
+  <div style="font-family:'Unbounded',sans-serif;font-size:15px;font-weight:900;color:var(--ink);margin-bottom:6px" id="groupsTitle">12 Groups · 48 Teams</div>
+  <div style="font-size:13px;color:var(--ink3);margin-bottom:22px" id="groupsRule">Top 2 from each group + 8 best third-placed teams → Round of 32</div>
+  <div class="groups-grid">
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group A</div><div class="gc-tag gt-host">Host</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇲🇽</span>Mexico<span class="gc-star">HOST</span></div><div class="gc-team"><span class="gc-flag">🇰🇷</span>South Korea</div><div class="gc-team"><span class="gc-flag">🇿🇦</span>South Africa</div><div class="gc-team"><span class="gc-flag">🇨🇿</span>Czechia</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group B</div><div class="gc-tag gt-host">Host</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇨🇦</span>Canada<span class="gc-star">HOST</span></div><div class="gc-team"><span class="gc-flag">🇨🇭</span>Switzerland</div><div class="gc-team"><span class="gc-flag">🇶🇦</span>Qatar</div><div class="gc-team"><span class="gc-flag">🇧🇦</span>Bosnia & Herz.</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group C</div><div class="gc-tag gt-fire">🔥 Tough</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇧🇷</span>Brazil<span class="gc-star">FAV</span></div><div class="gc-team"><span class="gc-flag">🇲🇦</span>Morocco</div><div class="gc-team"><span class="gc-flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span>Scotland</div><div class="gc-team"><span class="gc-flag">🇭🇹</span>Haiti</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group D</div><div class="gc-tag gt-host">Host</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇺🇸</span>USA<span class="gc-star">HOST</span></div><div class="gc-team"><span class="gc-flag">🇵🇾</span>Paraguay</div><div class="gc-team"><span class="gc-flag">🇦🇺</span>Australia</div><div class="gc-team"><span class="gc-flag">🇹🇷</span>Türkiye</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group E</div><div class="gc-tag gt-easy">Easy</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇩🇪</span>Germany<span class="gc-star">FAV</span></div><div class="gc-team"><span class="gc-flag">🇨🇮</span>Ivory Coast</div><div class="gc-team"><span class="gc-flag">🇪🇨</span>Ecuador</div><div class="gc-team"><span class="gc-flag">🇨🇼</span>Curaçao</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group F</div><div class="gc-tag gt-fire">🔥 Toughest</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇳🇱</span>Netherlands<span class="gc-star">FAV</span></div><div class="gc-team"><span class="gc-flag">🇯🇵</span>Japan</div><div class="gc-team"><span class="gc-flag">🇸🇪</span>Sweden</div><div class="gc-team"><span class="gc-flag">🇹🇳</span>Tunisia</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group G</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇧🇪</span>Belgium<span class="gc-star">FAV</span></div><div class="gc-team"><span class="gc-flag">🇮🇷</span>Iran</div><div class="gc-team"><span class="gc-flag">🇳🇿</span>New Zealand</div><div class="gc-team"><span class="gc-flag">🇪🇬</span>Egypt</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group H</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇪🇸</span>Spain<span class="gc-star">#1</span></div><div class="gc-team"><span class="gc-flag">🇨🇻</span>Cabo Verde</div><div class="gc-team"><span class="gc-flag">🇸🇦</span>Saudi Arabia</div><div class="gc-team"><span class="gc-flag">🇺🇾</span>Uruguay</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group I</div><div class="gc-tag gt-fire">🔥 Brutal</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇫🇷</span>France<span class="gc-star">#3</span></div><div class="gc-team"><span class="gc-flag">🇸🇳</span>Senegal</div><div class="gc-team"><span class="gc-flag">🇳🇴</span>Norway</div><div class="gc-team"><span class="gc-flag">🇮🇶</span>Iraq</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group J</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇦🇷</span>Argentina<span class="gc-star">#2</span></div><div class="gc-team"><span class="gc-flag">🇩🇿</span>Algeria</div><div class="gc-team"><span class="gc-flag">🇦🇹</span>Austria</div><div class="gc-team"><span class="gc-flag">🇺🇿</span>Uzbekistan</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group K</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🇵🇹</span>Portugal<span class="gc-star">FAV</span></div><div class="gc-team"><span class="gc-flag">🇯🇴</span>Jordan</div><div class="gc-team"><span class="gc-flag">🇨🇴</span>Colombia</div><div class="gc-team"><span class="gc-flag">🇨🇩</span>DR Congo</div></div></div>
+    <div class="gc"><div class="gc-hd"><div class="gc-name">Group L</div><div class="gc-tag gt-fire">Rivalry</div></div><div class="gc-teams"><div class="gc-team"><span class="gc-flag">🏴󠁧󠁢󠁥󠁮󠁧󠁿</span>England<span class="gc-star">#4</span></div><div class="gc-team"><span class="gc-flag">🇭🇷</span>Croatia</div><div class="gc-team"><span class="gc-flag">🇬🇭</span>Ghana</div><div class="gc-team"><span class="gc-flag">🇵🇦</span>Panama</div></div></div>
+  </div>
+</div>
+</div>
+
+
+<!-- ══ SCHEDULE ══ -->
+<div class="hub-panel" id="tab-schedule">
+<div class="panel-inner">
+  <div style="font-family:'Unbounded',sans-serif;font-size:15px;font-weight:900;color:var(--ink);margin-bottom:18px" id="schedTitle">Group Stage · Jun 11–27</div>
+  <div class="sched-filters">
+    <button class="sf on" onclick="filterM(this,'all')" id="sf-all" id="sfAll">All</button>
+    <button class="sf" onclick="filterM(this,'mexico')" id="sfMex">🇲🇽 Mexico</button>
+    <button class="sf" onclick="filterM(this,'canada')" id="sfCan">🇨🇦 Canada</button>
+    <button class="sf" onclick="filterM(this,'usa')" id="sfUsa">🇺🇸 USA</button>
+  </div>
+  <div id="matchList">
+    <div class="md"><div class="md-lbl" id="mdJun11">June 11 · Opening Day</div>
+      <div class="mr" data-host="mexico"><div class="mr-teams"><span class="mr-flag">🇲🇽</span><span class="mr-name">Mexico</span><span class="mr-vs">vs</span><span class="mr-flag">🇿🇦</span><span class="mr-name">South Africa</span></div><div class="mr-info"><span class="opening-tag" id="openingTag">⚑ Opening</span><span class="mi-group">Grp A</span><span class="mi-date">11 Jun · 3pm ET</span><span class="mi-venue">Estadio Azteca · Mexico City</span></div></div>
+      <div class="mr" data-host="mexico"><div class="mr-teams"><span class="mr-flag">🇰🇷</span><span class="mr-name">S. Korea</span><span class="mr-vs">vs</span><span class="mr-flag">🇨🇿</span><span class="mr-name">Czechia</span></div><div class="mr-info"><span class="mi-group">Grp A</span><span class="mi-date">11 Jun · 10pm ET</span><span class="mi-venue">Estadio Akron · Guadalajara</span></div></div>
+    </div>
+    <div class="md"><div class="md-lbl" id="mdJun12">June 12</div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇺🇸</span><span class="mr-name">USA</span><span class="mr-vs">vs</span><span class="mr-flag">🇵🇾</span><span class="mr-name">Paraguay</span></div><div class="mr-info"><span class="mi-group">Grp D</span><span class="mi-date">12 Jun · 9pm ET</span><span class="mi-venue">SoFi Stadium · Los Angeles</span></div></div>
+      <div class="mr" data-host="canada"><div class="mr-teams"><span class="mr-flag">🇨🇦</span><span class="mr-name">Canada</span><span class="mr-vs">vs</span><span class="mr-flag">🇧🇦</span><span class="mr-name">Bosnia</span></div><div class="mr-info"><span class="mi-group">Grp B</span><span class="mi-date">12 Jun · 6pm ET</span><span class="mi-venue">BMO Field · Toronto</span></div></div>
+      <div class="mr" data-host="canada"><div class="mr-teams"><span class="mr-flag">🇦🇺</span><span class="mr-name">Australia</span><span class="mr-vs">vs</span><span class="mr-flag">🇹🇷</span><span class="mr-name">Türkiye</span></div><div class="mr-info"><span class="mi-group">Grp D</span><span class="mi-date">13 Jun · 12am ET</span><span class="mi-venue">BC Place · Vancouver</span></div></div>
+    </div>
+    <div class="md"><div class="md-lbl">June 13</div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇧🇷</span><span class="mr-name">Brazil</span><span class="mr-vs">vs</span><span class="mr-flag">🇲🇦</span><span class="mr-name">Morocco</span></div><div class="mr-info"><span class="mi-group">Grp C</span><span class="mi-date">13 Jun · 6pm ET</span><span class="mi-venue">MetLife Stadium · NY/NJ</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🏴󠁧󠁢󠁳󠁣󠁴󠁿</span><span class="mr-name">Scotland</span><span class="mr-vs">vs</span><span class="mr-flag">🇭🇹</span><span class="mr-name">Haiti</span></div><div class="mr-info"><span class="mi-group">Grp C</span><span class="mi-date">13 Jun · 9pm ET</span><span class="mi-venue">Gillette Stadium · Boston</span></div></div>
+    </div>
+    <div class="md"><div class="md-lbl">June 14</div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇩🇪</span><span class="mr-name">Germany</span><span class="mr-vs">vs</span><span class="mr-flag">🇨🇼</span><span class="mr-name">Curaçao</span></div><div class="mr-info"><span class="mi-group">Grp E</span><span class="mi-date">14 Jun · 1pm ET</span><span class="mi-venue">NRG Stadium · Houston</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇨🇮</span><span class="mr-name">Ivory Coast</span><span class="mr-vs">vs</span><span class="mr-flag">🇪🇨</span><span class="mr-name">Ecuador</span></div><div class="mr-info"><span class="mi-group">Grp E</span><span class="mi-date">14 Jun · 7pm ET</span><span class="mi-venue">Lincoln Financial · Philadelphia</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇳🇱</span><span class="mr-name">Netherlands</span><span class="mr-vs">vs</span><span class="mr-flag">🇯🇵</span><span class="mr-name">Japan</span></div><div class="mr-info"><span class="mi-group">Grp F</span><span class="mi-date">14 Jun · 4pm ET</span><span class="mi-venue">AT&T Stadium · Dallas</span></div></div>
+      <div class="mr" data-host="mexico"><div class="mr-teams"><span class="mr-flag">🇸🇪</span><span class="mr-name">Sweden</span><span class="mr-vs">vs</span><span class="mr-flag">🇹🇳</span><span class="mr-name">Tunisia</span></div><div class="mr-info"><span class="mi-group">Grp F</span><span class="mi-date">14 Jun · 10pm ET</span><span class="mi-venue">Estadio BBVA · Monterrey</span></div></div>
+    </div>
+    <div class="md"><div class="md-lbl">June 15</div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇧🇪</span><span class="mr-name">Belgium</span><span class="mr-vs">vs</span><span class="mr-flag">🇪🇬</span><span class="mr-name">Egypt</span></div><div class="mr-info"><span class="mi-group">Grp G</span><span class="mi-date">15 Jun · 3pm ET</span><span class="mi-venue">Lumen Field · Seattle</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇮🇷</span><span class="mr-name">Iran</span><span class="mr-vs">vs</span><span class="mr-flag">🇳🇿</span><span class="mr-name">New Zealand</span></div><div class="mr-info"><span class="mi-group">Grp G</span><span class="mi-date">15 Jun · 9pm ET</span><span class="mi-venue">SoFi Stadium · Los Angeles</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇪🇸</span><span class="mr-name">Spain</span><span class="mr-vs">vs</span><span class="mr-flag">🇨🇻</span><span class="mr-name">Cabo Verde</span></div><div class="mr-info"><span class="mi-group">Grp H</span><span class="mi-date">15 Jun · 12pm ET</span><span class="mi-venue">Mercedes-Benz · Atlanta</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇸🇦</span><span class="mr-name">Saudi Arabia</span><span class="mr-vs">vs</span><span class="mr-flag">🇺🇾</span><span class="mr-name">Uruguay</span></div><div class="mr-info"><span class="mi-group">Grp H</span><span class="mi-date">15 Jun · 6pm ET</span><span class="mi-venue">Hard Rock Stadium · Miami</span></div></div>
+    </div>
+    <div class="md"><div class="md-lbl">June 16</div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇫🇷</span><span class="mr-name">France</span><span class="mr-vs">vs</span><span class="mr-flag">🇸🇳</span><span class="mr-name">Senegal</span></div><div class="mr-info"><span class="mi-group">Grp I</span><span class="mi-date">16 Jun · 3pm ET</span><span class="mi-venue">MetLife Stadium · NY/NJ</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇮🇶</span><span class="mr-name">Iraq</span><span class="mr-vs">vs</span><span class="mr-flag">🇳🇴</span><span class="mr-name">Norway</span></div><div class="mr-info"><span class="mi-group">Grp I</span><span class="mi-date">16 Jun</span><span class="mi-venue">Arrowhead · Kansas City</span></div></div>
+      <div class="mr" data-host="usa"><div class="mr-teams"><span class="mr-flag">🇦🇷</span><span class="mr-name">Argentina</span><span class="mr-vs">vs</span><span class="mr-flag">🇩🇿</span><span class="mr-name">Algeria</span></div><div class="mr-info"><span class="mi-group">Grp J</span><span class="mi-date">16 Jun</span><span class="mi-venue">Arrowhead · Kansas City</span></div></div>
+    </div>
+    <!-- FINAL -->
+    <div class="md"><div class="md-lbl" id="mdFinal">July 19 · Final</div>
+      <div class="mr final-row"><div class="mr-teams"><span class="mr-flag">🏆</span><span class="mr-name">Champion</span><span class="mr-vs">vs</span><span class="mr-flag">🥈</span><span class="mr-name">Runner-Up</span></div><div class="mr-info"><span class="mi-group">FINAL</span><span class="mi-date">Jul 19 · 3pm ET</span><span class="mi-venue">MetLife Stadium · New York/NJ</span></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- ══ STADIUMS ══ -->
+<div class="hub-panel" id="tab-stadiums">
+<div class="panel-inner">
+  <div style="font-family:'Unbounded',sans-serif;font-size:15px;font-weight:900;color:var(--ink);margin-bottom:20px" id="stadTitle">16 Host Venues</div>
+  <div class="stad-grid">
+
+    <!-- Each stadium gets a custom SVG silhouette -->
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#0d1a0d"/>
+          <!-- MetLife — rectangular modern stadium -->
+          <path d="M20 95 Q20 40 130 35 Q240 40 240 95 L235 100 Q225 55 130 50 Q35 55 25 100 Z" fill="#182818" stroke="rgba(126,200,0,0.35)" stroke-width="1.5"/>
+          <path d="M35 92 Q35 55 130 50 Q225 55 225 92 L220 96 Q212 62 130 58 Q48 62 40 96 Z" fill="#1f3320" stroke="rgba(126,200,0,0.25)" stroke-width="1"/>
+          <ellipse cx="130" cy="90" rx="80" ry="14" fill="rgba(45,122,0,0.5)"/>
+          <ellipse cx="130" cy="90" rx="60" ry="10" fill="rgba(55,140,30,0.4)"/>
+          <line x1="130" y1="77" x2="130" y2="103" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <ellipse cx="130" cy="90" rx="25" ry="6" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <!-- Roof trusses -->
+          <path d="M25 88 L20 55 L130 40 L240 55 L235 88" fill="none" stroke="rgba(126,200,0,0.2)" stroke-width="1"/>
+          <!-- Stars (NY night) -->
+          <circle cx="50" cy="18" r="1" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="90" cy="12" r="1" fill="rgba(255,255,255,0.4)"/>
+          <circle cx="180" cy="10" r="1.5" fill="rgba(255,255,255,0.5)"/>
+          <circle cx="220" cy="16" r="1" fill="rgba(255,255,255,0.4)"/>
+          <text x="130" y="25" font-family="monospace" font-size="7" fill="rgba(126,200,0,0.5)" text-anchor="middle" letter-spacing="1.5">NEW YORK · NJ</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇺🇸</div>
+        <div class="sc-name">MetLife Stadium</div>
+        <div class="sc-city">East Rutherford, New Jersey</div>
+        <div class="sc-meta"><div class="sc-cap">82,500 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">8 matches</span><span class="sc-badge sb-f" style="margin-left:4px">★ FINAL</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#1a1008"/>
+          <!-- AT&T Stadium Dallas — dome/retractable roof -->
+          <path d="M15 95 Q15 30 130 25 Q245 30 245 95" fill="none" stroke="rgba(201,64,0,0.4)" stroke-width="2"/>
+          <path d="M25 95 Q25 40 130 35 Q235 40 235 95 L228 100 Q220 55 130 50 Q40 55 32 100 Z" fill="#2a1808" stroke="rgba(201,64,0,0.3)" stroke-width="1.5"/>
+          <!-- Roof panels -->
+          <path d="M15 70 Q75 45 130 42 Q185 45 245 70" fill="none" stroke="rgba(201,64,0,0.2)" stroke-width="6" stroke-linecap="round"/>
+          <!-- Field -->
+          <ellipse cx="130" cy="90" rx="82" ry="14" fill="rgba(45,122,0,0.45)"/>
+          <ellipse cx="130" cy="90" rx="60" ry="10" fill="rgba(55,140,30,0.35)"/>
+          <!-- End zones (American football) -->
+          <rect x="50" y="77" width="22" height="25" fill="rgba(201,64,0,0.1)"/>
+          <rect x="188" y="77" width="22" height="25" fill="rgba(201,64,0,0.1)"/>
+          <text x="130" y="22" font-family="monospace" font-size="7" fill="rgba(201,64,0,0.5)" text-anchor="middle" letter-spacing="1.5">DALLAS · TEXAS</text>
+          <text x="130" y="115" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.15)" text-anchor="middle">9 MATCHES · MOST OF ANY VENUE</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇺🇸</div>
+        <div class="sc-name">AT&T Stadium</div>
+        <div class="sc-city">Arlington, Texas (Dallas area)</div>
+        <div class="sc-meta"><div class="sc-cap">80,000 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">9 matches</span><span class="sc-badge" style="margin-left:4px;background:var(--ol);color:var(--o);border:1px solid var(--ob)">Most matches</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#080d18"/>
+          <!-- Azteca — iconic round stadium -->
+          <circle cx="130" cy="75" r="65" fill="none" stroke="rgba(0,170,0,0.3)" stroke-width="1.5"/>
+          <circle cx="130" cy="75" r="50" fill="rgba(0,80,0,0.3)" stroke="rgba(0,170,0,0.25)" stroke-width="1"/>
+          <circle cx="130" cy="75" r="35" fill="rgba(45,122,0,0.5)"/>
+          <circle cx="130" cy="75" r="22" fill="rgba(55,140,30,0.4)"/>
+          <!-- Center circle -->
+          <circle cx="130" cy="75" r="10" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+          <line x1="130" y1="53" x2="130" y2="97" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <!-- Columns -->
+          <line x1="75" y1="115" x2="75" y2="40" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+          <line x1="105" y1="118" x2="100" y2="28" stroke="rgba(255,255,255,0.07)" stroke-width="2"/>
+          <line x1="155" y1="118" x2="160" y2="28" stroke="rgba(255,255,255,0.07)" stroke-width="2"/>
+          <line x1="185" y1="115" x2="185" y2="40" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+          <!-- Mexico flag colors glow -->
+          <path d="M0 0 L87 0 L87 130 L0 130 Z" fill="rgba(0,130,50,0.06)"/>
+          <path d="M173 0 L260 0 L260 130 L173 130 Z" fill="rgba(200,0,0,0.05)"/>
+          <text x="130" y="18" font-family="monospace" font-size="7" fill="rgba(0,200,80,0.5)" text-anchor="middle" letter-spacing="1.5">ESTADIO AZTECA · CDMX</text>
+          <text x="130" y="122" font-family="monospace" font-size="6" fill="rgba(255,255,255,0.15)" text-anchor="middle">OPENING MATCH · JUN 11</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇲🇽</div>
+        <div class="sc-name">Estadio Azteca</div>
+        <div class="sc-city">Mexico City, Mexico</div>
+        <div class="sc-meta"><div class="sc-cap">87,523 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">5 matches</span><span class="sc-badge" style="margin-left:4px;background:var(--gl);color:var(--g);border:1px solid var(--gb)">⚑ Opening</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#08101a"/>
+          <!-- SoFi — modern open roof with canopy -->
+          <!-- Canopy roof -->
+          <path d="M10 50 Q130 10 250 50 L250 60 Q130 22 10 62 Z" fill="rgba(100,140,200,0.15)" stroke="rgba(100,140,200,0.3)" stroke-width="1"/>
+          <!-- Bowl -->
+          <path d="M30 95 Q30 50 130 45 Q230 50 230 95 L225 100 Q218 60 130 55 Q42 60 35 100 Z" fill="#121c28" stroke="rgba(100,140,200,0.3)" stroke-width="1.5"/>
+          <!-- Field -->
+          <ellipse cx="130" cy="90" rx="78" ry="14" fill="rgba(45,122,0,0.45)"/>
+          <ellipse cx="130" cy="90" rx="56" ry="10" fill="rgba(55,140,30,0.35)"/>
+          <line x1="130" y1="77" x2="130" y2="103" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <ellipse cx="130" cy="90" rx="22" ry="5" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+          <!-- LA hills background -->
+          <path d="M0 55 Q40 35 80 45 Q110 30 150 40 Q190 28 230 38 Q250 32 260 40 L260 55 Z" fill="rgba(30,30,30,0.5)"/>
+          <text x="130" y="22" font-family="monospace" font-size="7" fill="rgba(100,140,200,0.5)" text-anchor="middle" letter-spacing="1.5">LOS ANGELES · CALIFORNIA</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇺🇸</div>
+        <div class="sc-name">SoFi Stadium</div>
+        <div class="sc-city">Inglewood, Los Angeles</div>
+        <div class="sc-meta"><div class="sc-cap">70,240 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">8 matches</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#100818"/>
+          <!-- Mercedes-Benz Atlanta — dome -->
+          <!-- Distinctive petal roof -->
+          <path d="M65 55 Q130 20 195 55 L185 65 Q130 32 75 65 Z" fill="rgba(200,50,200,0.08)" stroke="rgba(200,100,255,0.2)" stroke-width="1"/>
+          <path d="M75 60 Q130 28 185 60 L178 68 Q130 38 82 68 Z" fill="rgba(150,50,200,0.08)" stroke="rgba(150,80,255,0.2)" stroke-width="1"/>
+          <!-- Retractable opening at top -->
+          <path d="M100 45 Q130 35 160 45" fill="none" stroke="rgba(200,150,255,0.3)" stroke-width="2" stroke-dasharray="3,3"/>
+          <!-- Bowl -->
+          <ellipse cx="130" cy="80" rx="90" ry="40" fill="none" stroke="rgba(150,80,255,0.2)" stroke-width="1.5"/>
+          <!-- Field -->
+          <ellipse cx="130" cy="88" rx="70" ry="13" fill="rgba(45,122,0,0.45)"/>
+          <ellipse cx="130" cy="88" rx="52" ry="9" fill="rgba(55,140,30,0.35)"/>
+          <line x1="130" y1="76" x2="130" y2="100" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <text x="130" y="22" font-family="monospace" font-size="7" fill="rgba(150,80,255,0.4)" text-anchor="middle" letter-spacing="1.5">ATLANTA · GEORGIA</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇺🇸</div>
+        <div class="sc-name">Mercedes-Benz Stadium</div>
+        <div class="sc-city">Atlanta, Georgia</div>
+        <div class="sc-meta"><div class="sc-cap">71,000 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">7 matches</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#0a1a10"/>
+          <!-- BC Place Vancouver — inflatable dome, distinctive white bubble -->
+          <!-- Mountain backdrop -->
+          <path d="M0 65 Q50 30 90 50 Q120 20 150 45 Q180 15 220 40 Q240 30 260 45 L260 65 Z" fill="rgba(30,50,40,0.6)"/>
+          <!-- Dome bubble -->
+          <path d="M25 95 Q25 45 130 38 Q235 45 235 95" fill="rgba(200,220,255,0.1)" stroke="rgba(200,220,255,0.35)" stroke-width="2"/>
+          <path d="M35 95 Q35 52 130 45 Q225 52 225 95 L218 100 Q210 60 130 53 Q50 60 42 100 Z" fill="#152215" stroke="rgba(200,220,255,0.2)" stroke-width="1"/>
+          <!-- Inflatable cables on dome -->
+          <path d="M55 75 Q130 48 205 75" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+          <path d="M80 92 Q130 68 180 92" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+          <!-- Field -->
+          <ellipse cx="130" cy="90" rx="75" ry="13" fill="rgba(45,122,0,0.45)"/>
+          <ellipse cx="130" cy="90" rx="55" ry="9" fill="rgba(55,140,30,0.35)"/>
+          <!-- Maple leaf hint -->
+          <text x="130" y="22" font-family="monospace" font-size="7" fill="rgba(200,220,255,0.4)" text-anchor="middle" letter-spacing="1.5">VANCOUVER · CANADA</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇨🇦</div>
+        <div class="sc-name">BC Place</div>
+        <div class="sc-city">Vancouver, Canada</div>
+        <div class="sc-meta"><div class="sc-cap">54,500 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">7 matches</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#1a1208"/>
+          <!-- NRG Houston — retractable roof -->
+          <path d="M20 95 Q30 40 130 32 Q230 40 240 95 L235 100 Q225 55 130 48 Q35 55 25 100 Z" fill="#22180a" stroke="rgba(255,160,0,0.3)" stroke-width="1.5"/>
+          <!-- Roof panels (retractable) -->
+          <path d="M30 70 L130 50 L230 70" fill="rgba(255,160,0,0.06)" stroke="rgba(255,160,0,0.15)" stroke-width="1" stroke-dasharray="6,3"/>
+          <!-- Field -->
+          <ellipse cx="130" cy="90" rx="80" ry="14" fill="rgba(45,122,0,0.45)"/>
+          <ellipse cx="130" cy="90" rx="58" ry="10" fill="rgba(55,140,30,0.35)"/>
+          <line x1="130" y1="77" x2="130" y2="103" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <text x="130" y="22" font-family="monospace" font-size="7" fill="rgba(255,160,0,0.4)" text-anchor="middle" letter-spacing="1.5">HOUSTON · TEXAS</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇺🇸</div>
+        <div class="sc-name">NRG Stadium</div>
+        <div class="sc-city">Houston, Texas</div>
+        <div class="sc-meta"><div class="sc-cap">72,220 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">7 matches</span></div>
+      </div>
+    </div>
+
+    <div class="sc">
+      <div class="sc-img">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg">
+          <rect width="260" height="130" fill="#081018"/>
+          <!-- Hard Rock Miami — open air near ocean -->
+          <!-- Ocean/sky hint -->
+          <rect x="0" y="0" width="260" height="50" fill="rgba(0,80,160,0.1)"/>
+          <!-- Stadium open top -->
+          <path d="M20 95 Q25 50 130 42 Q235 50 240 95 L235 100 Q228 58 130 50 Q32 58 25 100 Z" fill="#101820" stroke="rgba(0,120,200,0.35)" stroke-width="1.5"/>
+          <!-- Field -->
+          <ellipse cx="130" cy="90" rx="80" ry="14" fill="rgba(45,122,0,0.45)"/>
+          <ellipse cx="130" cy="90" rx="58" ry="10" fill="rgba(55,140,30,0.35)"/>
+          <line x1="130" y1="77" x2="130" y2="103" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+          <!-- Palm tree silhouettes -->
+          <line x1="40" y1="90" x2="40" y2="35" stroke="rgba(0,180,80,0.3)" stroke-width="2"/>
+          <path d="M40 35 Q55 25 60 30" stroke="rgba(0,180,80,0.25)" stroke-width="1.5" fill="none"/>
+          <path d="M40 35 Q25 25 20 30" stroke="rgba(0,180,80,0.25)" stroke-width="1.5" fill="none"/>
+          <line x1="220" y1="90" x2="220" y2="40" stroke="rgba(0,180,80,0.3)" stroke-width="2"/>
+          <path d="M220 40 Q235 30 240 35" stroke="rgba(0,180,80,0.25)" stroke-width="1.5" fill="none"/>
+          <text x="130" y="22" font-family="monospace" font-size="7" fill="rgba(0,120,200,0.5)" text-anchor="middle" letter-spacing="1.5">MIAMI · FLORIDA</text>
+        </svg>
+      </div>
+      <div class="sc-body">
+        <div class="sc-nation">🇺🇸</div>
+        <div class="sc-name">Hard Rock Stadium</div>
+        <div class="sc-city">Miami, Florida</div>
+        <div class="sc-meta"><div class="sc-cap">65,326 seats</div></div>
+        <div style="margin-top:6px"><span class="sc-badge sb-m">7 matches</span></div>
+      </div>
+    </div>
+
+  </div>
+  <div style="margin-top:12px;font-size:12px;color:var(--ink4);text-align:center">Also hosting: Lumen Field (Seattle), Gillette Stadium (Boston), Lincoln Financial (Philadelphia), Levi's Stadium (San Francisco), Arrowhead (Kansas City), BMO Field (Toronto), Estadio Akron (Guadalajara), Estadio BBVA (Monterrey)</div>
+</div>
+</div>
+
+
+<!-- ══ FORMAT ══ -->
+<div class="hub-panel" id="tab-format">
+<div class="panel-inner">
+  <div style="font-family:'Unbounded',sans-serif;font-size:15px;font-weight:900;color:var(--ink);margin-bottom:20px" id="formatTitle">Tournament Format · 2026</div>
+
+  <div class="rule-box rb-g" style="margin-bottom:14px">
+    <strong>Group Stage (Jun 11–27):</strong> 48 teams in 12 groups of 4. Each team plays 3 matches. <strong>Top 2 from each group</strong> advance automatically (24 teams). The <strong>8 best third-placed teams</strong> also advance = <strong>32 teams total</strong> in the knockout stage.
+  </div>
+  <div class="rule-box rb-o">
+    🆕 <strong>New for 2026 — Round of 32:</strong> First time in World Cup history. Replaces the old Round of 16 as the first knockout stage. 32 teams, single elimination. Lose = go home. No second chances.
+  </div>
+
+  <div style="font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--ink3);margin:24px 0 14px;display:flex;align-items:center;gap:10px">Knockout bracket <span style="flex:1;height:1px;background:var(--border);display:block"></span></div>
+  <div class="flow">
+    <div class="fstage"><div class="fstage-lbl">Group Stage</div><div class="fstage-box"><div class="fstage-n">48</div><div class="fstage-d">teams<br>12 groups</div><div class="fstage-date">Jun 11–27</div></div></div>
+    <div class="farrow">→</div>
+    <div class="fstage"><div class="fstage-lbl">Round of 32 🆕</div><div class="fstage-box"><div class="fstage-n">32</div><div class="fstage-d">teams<br>16 matches</div><div class="fstage-date">Jun 29–Jul 2</div></div></div>
+    <div class="farrow">→</div>
+    <div class="fstage"><div class="fstage-lbl">Round of 16</div><div class="fstage-box"><div class="fstage-n">16</div><div class="fstage-d">teams<br>8 matches</div><div class="fstage-date">Jul 4–6</div></div></div>
+    <div class="farrow">→</div>
+    <div class="fstage"><div class="fstage-lbl">Quarterfinals</div><div class="fstage-box"><div class="fstage-n">8</div><div class="fstage-d">teams<br>4 matches</div><div class="fstage-date">Jul 9–11</div></div></div>
+    <div class="farrow">→</div>
+    <div class="fstage"><div class="fstage-lbl">Semifinals</div><div class="fstage-box"><div class="fstage-n">4</div><div class="fstage-d">teams<br>2 matches</div><div class="fstage-date">Jul 14–15</div></div></div>
+    <div class="farrow">→</div>
+    <div class="fstage final"><div class="fstage-lbl">🏆 Final</div><div class="fstage-box"><div class="fstage-n">2</div><div class="fstage-d">MetLife<br>NY / NJ</div><div class="fstage-date">Jul 19</div></div></div>
+  </div>
+
+  <div style="font-family:'Unbounded',sans-serif;font-size:12px;font-weight:700;color:var(--ink3);margin:24px 0 14px;display:flex;align-items:center;gap:10px">Key numbers <span style="flex:1;height:1px;background:var(--border);display:block"></span></div>
+  <div class="fact-grid">
+    <div class="fact"><div class="fact-n fn-k">104</div><div class="fact-l">Total matches (up from 64 in 2022)</div></div>
+    <div class="fact"><div class="fact-n fn-g">48</div><div class="fact-l">Teams for the first time in history</div></div>
+    <div class="fact"><div class="fact-n fn-o">3</div><div class="fact-l">Host nations — first time ever</div></div>
+    <div class="fact"><div class="fact-n fn-b">39</div><div class="fact-l">Days of tournament (Jun 11–Jul 19)</div></div>
+    <div class="fact"><div class="fact-n fn-k">8</div><div class="fact-l">Matches played by finalists (was 7)</div></div>
+    <div class="fact"><div class="fact-n fn-r">0</div><div class="fact-l">Italy appearances — 3rd consecutive absence</div></div>
+  </div>
+</div>
+</div>
+
+
+<!-- FOOTER -->
+<div class="hub-credit" id="hubCredit">
+  Data: FIFA.com · NBC Sports · Yahoo Sports · Wikipedia · <a href="index.html">collexo.app</a> · Stadium illustrations are original SVG art.
+</div>
+
+<script>
+var HUB_T = {
+  en:{
+    heroDates:'June 11 – July 19, 2026 · USA · Canada · Mexico',
+    pill48:'48 Teams', pill104:'104 Matches', pill16:'16 Venues',
+    tabNews:'News', tabGroups:'Groups', tabSchedule:'Schedule', tabStadiums:'Stadiums', tabFormat:'Format',
+    newsH:'World Cup 2026 — Latest', refreshLabel:'Refresh with AI',
+    groupsTitle:'12 Groups · 48 Teams', groupsRule:'Top 2 from each group + 8 best third-placed teams → Round of 32',
+    schedTitle:'Group Stage · Jun 11–27', sfAll:'All', sfMex:'🇲🇽 Mexico', sfCan:'🇨🇦 Canada', sfUsa:'🇺🇸 USA',
+    mdJun11:'June 11 · Opening Day', mdJun12:'June 12', mdFinal:'July 19 · Final',
+    openingTag:'⚑ Opening', stadTitle:'16 Host Venues', formatTitle:'Tournament Format · 2026',
+    ruleG:'<strong>Group Stage (Jun 11–27):</strong> 48 teams in 12 groups of 4. Each team plays 3 matches. <strong>Top 2 from each group</strong> advance automatically (24 teams). The <strong>8 best third-placed teams</strong> also advance = <strong>32 teams total</strong> in the knockout stage.',
+    ruleO:'🆕 <strong>New for 2026 — Round of 32:</strong> First time in World Cup history. Replaces the old Round of 16 as the first knockout stage. 32 teams, single elimination.',
+    bracketLabel:'Knockout bracket', factsLabel:'Key numbers',
+    bsLabels:['Group Stage','Round of 32 🆕','Round of 16','Quarterfinals','Semifinals','🏆 Final'],
+    bsDates:['Jun 11–27','Jun 29–Jul 2','Jul 4–6','Jul 9–11','Jul 14–15','Jul 19'],
+    factLabels:['Total matches (up from 64 in 2022)','Teams — first time in history','Host nations — first time ever','Days (Jun 11–Jul 19)','Matches played by finalists','Italy absent — 3rd consecutive'],
+    hubCredit:'Data: FIFA.com · NBC Sports · Yahoo Sports · Wikipedia · stadium illustrations are original SVG art.',
+    // News cards
+    nc:['Panini 2026','Collectors','Market','Qualifying','Qualifying','World Cup'],
+    nt:['980 stickers — biggest World Cup album in history',
+        'Coca-Cola hides 12 exclusive stickers in bottle labels',
+        'Completing the album solo costs $1,400+ — trading essential',
+        'Italy miss World Cup for third straight time',
+        'Iraq return after 40 years — FIFA arranges charter flight',
+        'Opening match: Mexico vs South Africa at Estadio Azteca'],
+    nd:['48 teams, 980 stickers, 68 special foil editions. Launched April 30 at Wembley. Includes a Coca-Cola partnership with 12 hidden stars.',
+        'Yamal, Kane, Lautaro, Alphonso Davies and 8 more stars hidden behind 1 billion+ Coca-Cola bottles worldwide. Available from April 20.',
+        'At $2/pack (7 stickers), buying duplicates until completion costs over $1,400. The secondary sticker market has never been more active.',
+        'Lost to Bosnia on penalties in the UEFA playoff. Bastoni red card in 41\'. Bosnia won 4-1 on penalties. Historic low for Italian football.',
+        'Iraqi airspace closed during qualification. FIFA arranged a charter. Beat Bolivia 2-1. End a 40-year World Cup absence.',
+        'June 11, 3pm ET. Mexico hosts the first match of the biggest World Cup in history at 87,500-seat Estadio Azteca.'],
+    ns:['Al Jazeera · Apr 30','SI.com · Apr 28','STV News · Apr 30','NBC Sports · Mar 31','Yahoo Sports · Mar 31','FIFA · Jun 11'],
+  },
+  es:{
+    heroDates:'11 Jun – 19 Jul, 2026 · EE.UU. · Canadá · México',
+    pill48:'48 Selecciones', pill104:'104 Partidos', pill16:'16 Estadios',
+    tabNews:'Noticias', tabGroups:'Grupos', tabSchedule:'Calendario', tabStadiums:'Estadios', tabFormat:'Formato',
+    newsH:'Mundial 2026 — Últimas noticias', refreshLabel:'Actualizar con IA',
+    groupsTitle:'12 Grupos · 48 Selecciones', groupsRule:'Los 2 primeros de cada grupo + los 8 mejores terceros → Ronda de 32',
+    schedTitle:'Fase de Grupos · 11–27 Jun', sfAll:'Todos', sfMex:'🇲🇽 México', sfCan:'🇨🇦 Canadá', sfUsa:'🇺🇸 EE.UU.',
+    mdJun11:'11 de junio · Partido inaugural', mdJun12:'12 de junio', mdFinal:'19 de julio · Final',
+    openingTag:'⚑ Inaugural', stadTitle:'16 Sedes', formatTitle:'Formato del torneo · 2026',
+    ruleG:'<strong>Fase de grupos (11–27 jun):</strong> 48 equipos en 12 grupos de 4. Cada equipo juega 3 partidos. <strong>Los 2 primeros de cada grupo</strong> avanzan automáticamente (24 equipos). Los <strong>8 mejores terceros</strong> también avanzan = <strong>32 equipos</strong> en fase eliminatoria.',
+    ruleO:'🆕 <strong>Novedad 2026 — Ronda de 32:</strong> Primera vez en la historia del Mundial. Reemplaza a los octavos de final como primera fase eliminatoria. 32 equipos, eliminación directa.',
+    bracketLabel:'Cuadro eliminatorio', factsLabel:'Datos clave',
+    bsLabels:['Fase de grupos','Ronda de 32 🆕','Octavos de final','Cuartos de final','Semifinales','🏆 Final'],
+    bsDates:['11–27 Jun','29 Jun–2 Jul','4–6 Jul','9–11 Jul','14–15 Jul','19 Jul'],
+    factLabels:['Partidos totales (vs 64 en 2022)','Equipos — primera vez en la historia','Países anfitriones — primera vez','Días de torneo (11 Jun–19 Jul)','Partidos de los finalistas','Italia ausente — 3ra vez seguida'],
+    hubCredit:'Datos: FIFA.com · NBC Sports · Yahoo Sports · Wikipedia · ilustraciones de estadios son arte SVG original.',
+    nc:['Panini 2026','Coleccionistas','Mercado','Clasificación','Clasificación','Mundial 2026'],
+    nt:['980 láminas — el álbum más grande en la historia del Mundial',
+        'Coca-Cola esconde 12 láminas exclusivas dentro de sus botellas',
+        'Completar el álbum solo cuesta más de $1.400 — intercambiar es esencial',
+        'Italia se queda fuera del Mundial por tercera vez consecutiva',
+        'Irak regresa tras 40 años — FIFA organiza vuelo chárter',
+        'Partido inaugural: México vs Sudáfrica en el Estadio Azteca'],
+    nd:['48 equipos, 980 láminas, 68 especiales brillantes. Lanzado el 30 de abril en Wembley. Incluye asociación con Coca-Cola con 12 estrellas ocultas.',
+        'Yamal, Kane, Lautaro, Alphonso Davies y 8 estrellas más escondidas en más de 1.000 millones de botellas de Coca-Cola. Disponible desde el 20 de abril.',
+        'A $2 el sobre (7 láminas), completar comprando repetidas cuesta más de $1.400. El mercado secundario de láminas nunca estuvo tan activo.',
+        'Perdió con Bosnia en penales en la final del playoff de la UEFA. Roja a Bastoni en el 41\'. Bosnia ganó 4-1 en penales.',
+        'Espacio aéreo de Irak cerrado durante la clasificación. FIFA organizó un vuelo chárter. Ganaron 2-1 a Bolivia. Regresan tras 40 años de ausencia.',
+        '11 de junio, 3pm ET. México recibe el primer partido del Mundial más grande de la historia en el Azteca (87.500 espectadores).'],
+    ns:['Al Jazeera · 30 Abr','SI.com · 28 Abr','STV News · 30 Abr','NBC Sports · 31 Mar','Yahoo Sports · 31 Mar','FIFA · 11 Jun'],
+  },
+  pt:{
+    heroDates:'11 Jun – 19 Jul, 2026 · EUA · Canadá · México',
+    pill48:'48 Seleções', pill104:'104 Partidas', pill16:'16 Estádios',
+    tabNews:'Notícias', tabGroups:'Grupos', tabSchedule:'Calendário', tabStadiums:'Estádios', tabFormat:'Formato',
+    newsH:'Copa 2026 — Últimas notícias', refreshLabel:'Atualizar com IA',
+    groupsTitle:'12 Grupos · 48 Seleções', groupsRule:'Os 2 primeiros de cada grupo + 8 melhores terceiros → Rodada de 32',
+    schedTitle:'Fase de Grupos · 11–27 Jun', sfAll:'Todos', sfMex:'🇲🇽 México', sfCan:'🇨🇦 Canadá', sfUsa:'🇺🇸 EUA',
+    mdJun11:'11 de junho · Jogo inaugural', mdJun12:'12 de junho', mdFinal:'19 de julho · Final',
+    openingTag:'⚑ Inaugural', stadTitle:'16 Sedes', formatTitle:'Formato do torneio · 2026',
+    ruleG:'<strong>Fase de grupos (11–27 jun):</strong> 48 seleções em 12 grupos de 4. Cada seleção joga 3 partidas. <strong>Os 2 primeiros de cada grupo</strong> avançam automaticamente (24 seleções). Os <strong>8 melhores terceiros</strong> também avançam = <strong>32 seleções</strong> na fase eliminatória.',
+    ruleO:'🆕 <strong>Novidade 2026 — Rodada de 32:</strong> Primeira vez na história da Copa. Substitui as oitavas de final como primeira fase eliminatória. 32 seleções, eliminação direta.',
+    bracketLabel:'Chaveamento eliminatório', factsLabel:'Dados-chave',
+    bsLabels:['Fase de grupos','Rodada de 32 🆕','Oitavas de final','Quartas de final','Semifinais','🏆 Final'],
+    bsDates:['11–27 Jun','29 Jun–2 Jul','4–6 Jul','9–11 Jul','14–15 Jul','19 Jul'],
+    factLabels:['Partidas totais (vs 64 em 2022)','Seleções — primeira vez na história','Países-sede — primeira vez','Dias de torneio (11 Jun–19 Jul)','Partidas dos finalistas','Itália ausente — 3ª vez seguida'],
+    hubCredit:'Dados: FIFA.com · NBC Sports · Yahoo Sports · Wikipedia · ilustrações de estádios são arte SVG original.',
+    nc:['Panini 2026','Colecionadores','Mercado','Classificação','Classificação','Copa 2026'],
+    nt:['980 figurinhas — o maior álbum da Copa na história',
+        'Coca-Cola esconde 12 figurinhas exclusivas dentro das garrafas',
+        'Completar o álbum sozinho custa mais de $1.400 — trocar é essencial',
+        'Itália fica fora da Copa pela terceira vez consecutiva',
+        'Iraque retorna após 40 anos — FIFA organiza voo fretado',
+        'Jogo inaugural: México vs África do Sul no Estadio Azteca'],
+    nd:['48 seleções, 980 figurinhas, 68 especiais brilhantes. Lançado em 30 de abril no Wembley.',
+        'Yamal, Kane, Lautaro, Alphonso Davies e 8 estrelas escondidas em mais de 1 bilhão de garrafas Coca-Cola. Disponível desde 20 de abril.',
+        'A $2 por pacote (7 figurinhas), completar comprando repetidas custa mais de $1.400. O mercado secundário nunca esteve tão ativo.',
+        'Perdeu para a Bósnia nos pênaltis na final do playoff da UEFA. Vermelho para Bastoni no 41\'. Bósnia venceu 4-1.',
+        'Espaço aéreo do Iraque fechado. FIFA organizou voo fretado. Venceu a Bolívia 2-1. Fim de 40 anos de ausência.',
+        '11 de junho, 3pm ET. México recebe a primeira partida da maior Copa da história no Azteca (87.500 espectadores).'],
+    ns:['Al Jazeera · 30 Abr','SI.com · 28 Abr','STV News · 30 Abr','NBC Sports · 31 Mar','Yahoo Sports · 31 Mar','FIFA · 11 Jun'],
+  },
+  fr:{
+    heroDates:'11 juin – 19 juil. 2026 · États-Unis · Canada · Mexique',
+    pill48:'48 Équipes', pill104:'104 Matchs', pill16:'16 Stades',
+    tabNews:'Actualités', tabGroups:'Groupes', tabSchedule:'Calendrier', tabStadiums:'Stades', tabFormat:'Format',
+    newsH:'Mondial 2026 — Dernières actualités', refreshLabel:"Actualiser avec l'IA",
+    groupsTitle:'12 Groupes · 48 Équipes', groupsRule:'Les 2 premiers de chaque groupe + 8 meilleurs troisièmes → Tour de 32',
+    schedTitle:'Phase de groupes · 11–27 juin', sfAll:'Tous', sfMex:'🇲🇽 Mexique', sfCan:'🇨🇦 Canada', sfUsa:'🇺🇸 États-Unis',
+    mdJun11:'11 juin · Match inaugural', mdJun12:'12 juin', mdFinal:'19 juillet · Finale',
+    openingTag:'⚑ Inaugural', stadTitle:'16 Enceintes', formatTitle:'Format du tournoi · 2026',
+    ruleG:"<strong>Phase de groupes (11–27 juin) :</strong> 48 équipes en 12 groupes de 4. Chaque équipe joue 3 matchs. <strong>Les 2 premiers de chaque groupe</strong> avancent automatiquement (24 équipes). Les <strong>8 meilleurs troisièmes</strong> avancent aussi = <strong>32 équipes</strong> en phase éliminatoire.",
+    ruleO:"🆕 <strong>Nouveauté 2026 — Tour de 32 :</strong> Première fois dans l'histoire de la Coupe du Monde. Remplace les huitièmes de finale. 32 équipes, élimination directe.",
+    bracketLabel:'Tableau éliminatoire', factsLabel:'Chiffres clés',
+    bsLabels:['Phase de groupes','Tour de 32 🆕','Huitièmes de finale','Quarts de finale','Demi-finales','🏆 Finale'],
+    bsDates:['11–27 juin','29 juin–2 juil.','4–6 juil.','9–11 juil.','14–15 juil.','19 juil.'],
+    factLabels:['Matchs au total (vs 64 en 2022)','Équipes — première fois','Nations hôtes — première fois','Jours de tournoi (11 juin–19 juil.)','Matchs des finalistes','Italie absente — 3e fois consécutive'],
+    hubCredit:"Données : FIFA.com · NBC Sports · Yahoo Sports · Wikipédia · Les illustrations des stades sont des SVG originaux.",
+    nc:['Panini 2026','Collectionneurs','Marché','Qualification','Qualification','Mondial 2026'],
+    nt:["980 vignettes — le plus grand album Panini de l'histoire de la Coupe du Monde",
+        "Coca-Cola cache 12 vignettes exclusives derrière les étiquettes de ses bouteilles",
+        "Compléter l'album seul coûte plus de 1 400 $ — échanger est indispensable",
+        "L'Italie manque le Mondial pour la troisième fois consécutive",
+        "L'Irak de retour après 40 ans — la FIFA organise un vol charter",
+        "Match inaugural : Mexique vs Afrique du Sud à l'Estadio Azteca"],
+    nd:["48 équipes, 980 vignettes, 68 spéciales dorées. Lancé le 30 avril au Wembley. Inclut un partenariat Coca-Cola avec 12 stars cachées.",
+        "Yamal, Kane, Lautaro, Alphonso Davies et 8 autres stars cachés derrière les étiquettes d'un milliard de bouteilles Coca-Cola. Dès le 20 avril.",
+        "À 2 $/paquet (7 vignettes), compléter en achetant des doublons coûte plus de 1 400 $. Le marché secondaire n'a jamais été aussi actif.",
+        "Défaite contre la Bosnie aux tirs au but en finale du barrage UEFA. Carton rouge pour Bastoni à la 41e. Bosnie gagne 4-1.",
+        "L'espace aérien irakien était fermé. La FIFA a organisé un vol charter. Victoire 2-1 contre la Bolivie. Fin de 40 ans d'absence.",
+        "11 juin, 3h PM ET. Le Mexique accueille le premier match du plus grand Mondial de l'histoire à l'Azteca (87 500 places)."],
+    ns:['Al Jazeera · 30 avr.','SI.com · 28 avr.','STV News · 30 avr.','NBC Sports · 31 mars','Yahoo Sports · 31 mars','FIFA · 11 juin'],
+  }
+};
+
+
+var LFLAGS = {en:'🇺🇸', es:'🇪🇸', pt:'🇧🇷', fr:'🇫🇷'};
+var LCODES  = {en:'EN',  es:'ES',  pt:'PT',  fr:'FR'};
+var activeLang = 'en';
+var menuOpen   = false;
+
+
+var TEAM_NAMES = {
+  en: {
+    'Mexico':'Mexico','South Korea':'South Korea','South Africa':'South Africa','Czechia':'Czechia',
+    'Canada':'Canada','Switzerland':'Switzerland','Qatar':'Qatar','Bosnia & Herz.':'Bosnia & Herz.',
+    'Brazil':'Brazil','Morocco':'Morocco','Scotland':'Scotland','Haiti':'Haiti',
+    'USA':'USA','Paraguay':'Paraguay','Australia':'Australia',
+    'Germany':'Germany','Ivory Coast':'Ivory Coast','Ecuador':'Ecuador','Curaçao':'Curaçao',
+    'Netherlands':'Netherlands','Japan':'Japan','Sweden':'Sweden','Tunisia':'Tunisia',
+    'Belgium':'Belgium','Iran':'Iran','New Zealand':'New Zealand','Egypt':'Egypt',
+    'Spain':'Spain','Cabo Verde':'Cabo Verde','Saudi Arabia':'Saudi Arabia','Uruguay':'Uruguay',
+    'France':'France','Senegal':'Senegal','Norway':'Norway','Iraq':'Iraq',
+    'Argentina':'Argentina','Algeria':'Algeria','Austria':'Austria','Uzbekistan':'Uzbekistan',
+    'Portugal':'Portugal','Jordan':'Jordan','Colombia':'Colombia','DR Congo':'DR Congo',
+    'England':'England','Croatia':'Croatia','Ghana':'Ghana','Panama':'Panama',
+    'Türkiye':'Türkiye','S. Korea':'S. Korea','Bosnia':'Bosnia',
+    'Champion':'Champion','Runner-Up':'Runner-Up'
+  },
+  es: {
+    'Mexico':'México','South Korea':'Corea del Sur','South Africa':'Sudáfrica','Czechia':'Chequia',
+    'Canada':'Canadá','Switzerland':'Suiza','Qatar':'Qatar','Bosnia & Herz.':'Bosnia y Herz.',
+    'Brazil':'Brasil','Morocco':'Marruecos','Scotland':'Escocia','Haiti':'Haití',
+    'USA':'EE.UU.','Paraguay':'Paraguay','Australia':'Australia',
+    'Germany':'Alemania','Ivory Coast':'Costa de Marfil','Ecuador':'Ecuador','Curaçao':'Curazao',
+    'Netherlands':'Países Bajos','Japan':'Japón','Sweden':'Suecia','Tunisia':'Túnez',
+    'Belgium':'Bélgica','Iran':'Irán','New Zealand':'Nueva Zelanda','Egypt':'Egipto',
+    'Spain':'España','Cabo Verde':'Cabo Verde','Saudi Arabia':'Arabia Saudita','Uruguay':'Uruguay',
+    'France':'Francia','Senegal':'Senegal','Norway':'Noruega','Iraq':'Irak',
+    'Argentina':'Argentina','Algeria':'Argelia','Austria':'Austria','Uzbekistan':'Uzbekistán',
+    'Portugal':'Portugal','Jordan':'Jordania','Colombia':'Colombia','DR Congo':'RD Congo',
+    'England':'Inglaterra','Croatia':'Croacia','Ghana':'Ghana','Panama':'Panamá',
+    'Türkiye':'Turquía','S. Korea':'Corea del Sur','Bosnia':'Bosnia',
+    'Champion':'Campeón','Runner-Up':'Subcampeón'
+  },
+  pt: {
+    'Mexico':'México','South Korea':'Coreia do Sul','South Africa':'África do Sul','Czechia':'Tchéquia',
+    'Canada':'Canadá','Switzerland':'Suíça','Qatar':'Catar','Bosnia & Herz.':'Bósnia e Herz.',
+    'Brazil':'Brasil','Morocco':'Marrocos','Scotland':'Escócia','Haiti':'Haiti',
+    'USA':'EUA','Paraguay':'Paraguai','Australia':'Austrália',
+    'Germany':'Alemanha','Ivory Coast':'Costa do Marfim','Ecuador':'Equador','Curaçao':'Curaçao',
+    'Netherlands':'Países Baixos','Japan':'Japão','Sweden':'Suécia','Tunisia':'Tunísia',
+    'Belgium':'Bélgica','Iran':'Irã','New Zealand':'Nova Zelândia','Egypt':'Egito',
+    'Spain':'Espanha','Cabo Verde':'Cabo Verde','Saudi Arabia':'Arábia Saudita','Uruguay':'Uruguai',
+    'France':'França','Senegal':'Senegal','Norway':'Noruega','Iraq':'Iraque',
+    'Argentina':'Argentina','Algeria':'Argélia','Austria':'Áustria','Uzbekistan':'Uzbequistão',
+    'Portugal':'Portugal','Jordan':'Jordânia','Colombia':'Colômbia','DR Congo':'RD Congo',
+    'England':'Inglaterra','Croatia':'Croácia','Ghana':'Gana','Panama':'Panamá',
+    'Türkiye':'Turquia','S. Korea':'Coreia do Sul','Bosnia':'Bósnia',
+    'Champion':'Campeão','Runner-Up':'Vice-campeão'
+  },
+  fr: {
+    'Mexico':'Mexique','South Korea':'Corée du Sud','South Africa':'Afrique du Sud','Czechia':'Tchéquie',
+    'Canada':'Canada','Switzerland':'Suisse','Qatar':'Qatar','Bosnia & Herz.':'Bosnie-Herzégovine',
+    'Brazil':'Brésil','Morocco':'Maroc','Scotland':'Écosse','Haiti':'Haïti',
+    'USA':'États-Unis','Paraguay':'Paraguay','Australia':'Australie',
+    'Germany':'Allemagne','Ivory Coast':'Côte d\'Ivoire','Ecuador':'Équateur','Curaçao':'Curaçao',
+    'Netherlands':'Pays-Bas','Japan':'Japon','Sweden':'Suède','Tunisia':'Tunisie',
+    'Belgium':'Belgique','Iran':'Iran','New Zealand':'Nouvelle-Zélande','Egypt':'Égypte',
+    'Spain':'Espagne','Cabo Verde':'Cap-Vert','Saudi Arabia':'Arabie saoudite','Uruguay':'Uruguay',
+    'France':'France','Senegal':'Sénégal','Norway':'Norvège','Iraq':'Irak',
+    'Argentina':'Argentine','Algeria':'Algérie','Austria':'Autriche','Uzbekistan':'Ouzbékistan',
+    'Portugal':'Portugal','Jordan':'Jordanie','Colombia':'Colombie','DR Congo':'RD Congo',
+    'England':'Angleterre','Croatia':'Croatie','Ghana':'Ghana','Panama':'Panama',
+    'Türkiye':'Turquie','S. Korea':'Corée du Sud','Bosnia':'Bosnie',
+    'Champion':'Champion','Runner-Up':'Finaliste'
+  }
+};
+
+function translateTeams(lang) {
+  var t = TEAM_NAMES[lang] || TEAM_NAMES.en;
+
+  // ── Groups: .gc-team has structure: <span.gc-flag>🏳</span>TeamName<span.gc-star>...</span>
+  document.querySelectorAll('.gc-team').forEach(function(el) {
+    var saved = el.getAttribute('data-en');
+    if (!saved) {
+      // Find the text node that is NOT inside a span (it's between the flag span and star span)
+      for (var i = 0; i < el.childNodes.length; i++) {
+        var node = el.childNodes[i];
+        if (node.nodeType === 3 && node.textContent.trim()) {
+          saved = node.textContent.trim();
+          el.setAttribute('data-en', saved);
+          el.setAttribute('data-node-idx', i);
+          break;
+        }
+      }
+    }
+    if (saved) {
+      var idx = parseInt(el.getAttribute('data-node-idx') || 1);
+      var node = el.childNodes[idx];
+      if (node && node.nodeType === 3) {
+        node.textContent = (t[saved] || saved);
+      }
+    }
+  });
+
+  // ── Schedule: .mr-name is a <span> with just text ──
+  document.querySelectorAll('.mr-name').forEach(function(el) {
+    var saved = el.getAttribute('data-en');
+    if (!saved) {
+      saved = el.textContent.trim();
+      if (saved) el.setAttribute('data-en', saved);
+    }
+    if (saved && t[saved]) el.textContent = t[saved];
+  });
+}
+
+// ── Apply hub translations ──
+function applyLang(lang) {
+  var t = HUB_T[lang] || HUB_T.en;
+  activeLang = lang;
+  document.documentElement.lang = lang;
+
+  var flagEl = document.getElementById('langFlag');
+  var codeEl = document.getElementById('langCode');
+  if (flagEl) flagEl.textContent = LFLAGS[lang];
+  if (codeEl) codeEl.textContent = LCODES[lang];
+
+  document.querySelectorAll('.lang-item').forEach(function(el) {
+    el.className = el.dataset.lang === lang ? 'lang-item cur' : 'lang-item';
+  });
+
+  function setText(id, val) { var el = document.getElementById(id); if (el) el.textContent = val; }
+  function setHtml(id, val) { var el = document.getElementById(id); if (el) el.innerHTML = val; }
+
+  setText('heroDates',     t.heroDates);
+  setText('pill48',        t.pill48);
+  setText('pill104',       t.pill104);
+  setText('pill16',        t.pill16);
+  setText('tabNews',       t.tabNews);
+  setText('tabGroups',     t.tabGroups);
+  setText('tabSchedule',   t.tabSchedule);
+  setText('tabStadiums',   t.tabStadiums);
+  setText('tabFormat',     t.tabFormat);
+  setText('newsH',         t.newsH);
+  setText('refreshLabel',  t.refreshLabel);
+  setText('groupsTitle',   t.groupsTitle);
+  setText('groupsRule',    t.groupsRule);
+  setText('schedTitle',    t.schedTitle);
+  setText('sfAll',         t.sfAll);
+  setText('sfMex',         t.sfMex);
+  setText('sfCan',         t.sfCan);
+  setText('sfUsa',         t.sfUsa);
+  setText('mdJun11',       t.mdJun11);
+  setText('mdJun12',       t.mdJun12);
+  setText('mdFinal',       t.mdFinal);
+  setText('openingTag',    t.openingTag);
+  setText('stadTitle',     t.stadTitle);
+  setText('formatTitle',   t.formatTitle);
+  setHtml('ruleG',         t.ruleG);
+  setHtml('ruleO',         t.ruleO);
+  setText('bracketLabel',  t.bracketLabel);
+  setText('factsLabel',    t.factsLabel);
+  setText('hubCredit', t.hubCredit);
+  setText('backSub', lang==='es'?'La comunidad de intercambio':lang==='pt'?'A comunidade de troca':lang==='fr'?'La communauté d\'échange':'The Sticker Exchange Community');
+
+  // News cards
+  for (var i = 1; i <= 6; i++) {
+    setText('nc' + i, t.nc[i-1]);
+    setText('nt' + i, t.nt[i-1]);
+    setText('nd' + i, t.nd[i-1]);
+    setText('ns' + i, t.ns[i-1]);
+  }
+
+  // Bracket labels
+  var bsLbls = document.querySelectorAll('.fstage-lbl');
+  var bsDts  = document.querySelectorAll('.fstage-date');
+  for (var i = 0; i < bsLbls.length && i < t.bsLabels.length; i++) bsLbls[i].textContent = t.bsLabels[i];
+  for (var i = 0; i < bsDts.length  && i < t.bsDates.length;  i++) bsDts[i].textContent  = t.bsDates[i];
+
+  // Fact labels
+  var facts = document.querySelectorAll('.fact-l');
+  for (var i = 0; i < facts.length && i < t.factLabels.length; i++) facts[i].textContent = t.factLabels[i];
+
+  translateTeams(lang);
+  try { localStorage.setItem('sm_lang', lang); } catch(e) {}
+}
+
+// ── Language menu ──
+function toggleLangMenu() {
+  menuOpen = !menuOpen;
+  var menu  = document.getElementById('langMenu');
+  var caret = document.getElementById('langCaret');
+  if (menu)  menu.className = menuOpen ? 'lang-menu show' : 'lang-menu';
+  if (caret) caret.style.transform = menuOpen ? 'rotate(180deg)' : '';
+}
+
+function setLang(lang) {
+  applyLang(lang);
+  menuOpen = false;
+  var menu  = document.getElementById('langMenu');
+  var caret = document.getElementById('langCaret');
+  if (menu)  menu.className = 'lang-menu';
+  if (caret) caret.style.transform = '';
+}
+
+// ── Tabs ──
+function showTab(btn, id) {
+  document.querySelectorAll('.hub-tab').forEach(function(t) { t.className = 'hub-tab'; });
+  document.querySelectorAll('.hub-panel').forEach(function(p) { p.className = 'hub-panel'; });
+  btn.className = 'hub-tab on';
+  document.getElementById(id).className = 'hub-panel on';
+}
+
+// ── Schedule filter ──
+function filterM(btn, host) {
+  document.querySelectorAll('.sf').forEach(function(b) { b.classList.remove('on'); });
+  btn.classList.add('on');
+  document.querySelectorAll('.mr:not(.final-row)').forEach(function(row) {
+    row.style.display = (host === 'all' || row.dataset.host === host) ? '' : 'none';
+  });
+  document.querySelectorAll('.md').forEach(function(day) {
+    var vis = [].filter.call(day.querySelectorAll('.mr'), function(r) { return r.style.display !== 'none'; });
+    day.style.display = vis.length ? '' : 'none';
+  });
+}
+
+// ── AI News Refresh ──
+async function refreshNews() {
+  var btn     = document.querySelector('.news-refresh');
+  var grid    = document.getElementById('newsGrid');
+  var loading = document.getElementById('aiLoading');
+  var label   = document.getElementById('refreshLabel');
+  var t       = HUB_T[activeLang] || HUB_T.en;
+
+  if (!btn || !grid || !loading || !label) return;
+  btn.style.opacity = '.5';
+  btn.style.pointerEvents = 'none';
+  label.textContent = activeLang === 'es' ? 'Buscando...' : activeLang === 'pt' ? 'Buscando...' : activeLang === 'fr' ? 'Recherche...' : 'Searching...';
+  grid.style.display = 'none';
+  loading.classList.add('show');
+
+  var langNote = {
+    es: 'Responde SOLO en ESPAÑOL.',
+    pt: 'Responda APENAS em PORTUGUÊS.',
+    fr: 'Répondez UNIQUEMENT en FRANÇAIS.',
+    en: 'Respond in English only.'
+  };
+
+  try {
+    var resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        system: 'You are a World Cup 2026 news aggregator for Collexo. Search for 3 recent FIFA World Cup 2026 or Panini sticker news. ' + (langNote[activeLang]||langNote.en) + ' Return ONLY a JSON array, no markdown or preamble.',
+
+        messages: [{ role: 'user', content: 'Search for 3 recent FIFA World Cup 2026 news today. Return JSON only.' }]
+      })
+    });
+    var data = await resp.json();
+    var text = data.content.filter(function(b) { return b.type === 'text'; }).map(function(b) { return b.text; }).join('');
+    var stories = JSON.parse(text.replace(/```json|```/g, '').trim());
+    var tagColors = { Album:'nt-wc', Market:'nt-mk', 'World Cup':'nt-wc', Qualifying:'nt-new', Historic:'nt-new', Result:'nt-wc' };
+    var svgs = [].map.call(document.querySelectorAll('#newsGrid .nc-img'), function(el) { return el.innerHTML; });
+    var newCards = stories.slice(0, 3).map(function(s, i) {
+      return '<div class="nc"><div class="nc-img">' + (svgs[i] || svgs[0] || '') + '</div><div class="nc-body">' +
+             '<div class="nc-cat">' + s.category + '</div>' +
+             '<div class="nc-title">' + s.title + '</div>' +
+             '<div class="nc-desc">' + s.desc + '</div>' +
+             '<div class="nc-foot"><span class="nc-src">' + s.source + '</span>' +
+             '<span class="nc-tag ' + (tagColors[s.tag] || 'nt-wc') + '">' + s.tag + '</span></div>' +
+             '</div></div>';
+    }).join('');
+    var updLabel = activeLang === 'es' ? '🔄 Actualizado por Claude AI' : activeLang === 'pt' ? '🔄 Atualizado por Claude AI' : activeLang === 'fr' ? '🔄 Mis à jour par Claude AI' : '🔄 Updated by Claude AI';
+    grid.innerHTML = '<div style="grid-column:1/-1;font-family:Unbounded,sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--g);padding:4px 0">' + updLabel + '</div>' + newCards + grid.innerHTML;
+  } catch(e) {
+    console.error('Refresh error:', e);
+  } finally {
+    loading.classList.remove('show');
+    grid.style.display = '';
+    btn.style.opacity = '';
+    btn.style.pointerEvents = '';
+    label.textContent = t.refreshLabel;
+  }
+}
+
+// ── DOM Ready — wire everything up ──
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Close menu on outside click
+  document.addEventListener('click', function(e) {
+    if (!menuOpen) return;
+    var sel = document.getElementById('langSel');
+    if (sel && !sel.contains(e.target)) {
+      menuOpen = false;
+      var menu  = document.getElementById('langMenu');
+      var caret = document.getElementById('langCaret');
+      if (menu)  menu.className = 'lang-menu';
+      if (caret) caret.style.transform = '';
+    }
+  });
+
+  // Lang trigger button
+  var trigger = document.getElementById('langTrigger');
+  if (trigger) {
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      toggleLangMenu();
+    });
+  }
+
+  // Detect and apply language
+  var lang = 'en';
+  try { var saved = localStorage.getItem('sm_lang'); if (saved && HUB_T[saved]) lang = saved; } catch(e) {}
+  if (lang === 'en' && !localStorage.getItem('sm_lang')) {
+    var nav = (navigator.language || 'en').toLowerCase();
+    if (nav.indexOf('pt') === 0)      lang = 'pt';
+    else if (nav.indexOf('fr') === 0) lang = 'fr';
+    else if (nav.indexOf('es') === 0) lang = 'es';
+    else {
+      try {
+        var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+        var latam = ['America/Argentina','America/Bogota','America/Mexico_City','America/Lima','America/Santiago'];
+        for (var i = 0; i < latam.length; i++) { if (tz.indexOf(latam[i]) === 0) { lang = 'es'; break; } }
+        if (lang === 'en' && tz.indexOf('America/Sao_Paulo') === 0) lang = 'pt';
+      } catch(e) {}
+    }
+  }
+  applyLang(lang);
+});
+</script>
+</body>
+</html>
