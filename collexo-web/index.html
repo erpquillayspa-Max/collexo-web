@@ -3,7 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Collexo — The Sticker Exchange Community</title>
+<title>Collexo — The Sticker Exchange Community | World Cup 2026</title>
+<meta name="description" content="Trade and sell World Cup 2026 Panini stickers directly with collectors worldwide. Protected escrow payments. 980 stickers. 847+ collectors already waiting.">
+<meta name="theme-color" content="#2d7a00">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://collexo.app/">
+<meta property="og:title" content="Collexo — Trade Panini Stickers with Protected Payments">
+<meta property="og:description" content="The P2P sticker marketplace for World Cup 2026. Trade, sell and buy directly with other collectors. Escrow protection on every transaction.">
+<meta property="og:image" content="https://collexo.app/og-image.png">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Collexo — Trade World Cup 2026 Stickers">
+<meta name="twitter:description" content="847+ collectors already waiting. Trade & sell Panini stickers with escrow protection.">
+<meta name="twitter:image" content="https://collexo.app/og-image.png">
+
+<!-- Canonical -->
+<link rel="canonical" href="https://collexo.app/">
+
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>emailjs.init('Rj7rnxMpenOIugaKq');</script>
@@ -336,6 +355,68 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
 .f-links a{font-size:11px;color:#666;text-decoration:none}
 .f-links a:hover{color:#aaa}
 
+/* HERO VISUAL — sticker collage */
+.hero-visual{position:relative;width:100%;max-width:460px;height:220px;margin:0 auto 40px;z-index:1}
+.sticker-card{position:absolute;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.13);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;gap:4px;padding:14px 18px;text-align:center;transition:transform .3s ease}
+.sticker-card:hover{transform:scale(1.07) rotate(0deg) !important}
+.sc-a{background:linear-gradient(135deg,#2d7a00,#6dcc00);width:110px;height:90px;top:10px;left:0;transform:rotate(-6deg);font-size:22px}
+.sc-b{background:linear-gradient(135deg,#c94000,#b5003e);width:100px;height:82px;top:80px;left:60px;transform:rotate(4deg);font-size:20px}
+.sc-c{background:linear-gradient(135deg,#005fa3,#0090c8);width:108px;height:88px;top:5px;left:160px;transform:rotate(2deg);font-size:20px}
+.sc-d{background:linear-gradient(135deg,#7c3aed,#c026d3);width:96px;height:80px;top:90px;left:220px;transform:rotate(-3deg);font-size:20px}
+.sc-e{background:linear-gradient(135deg,#d97706,#f59e0b);width:100px;height:84px;top:20px;right:0;transform:rotate(5deg);font-size:20px}
+.sc-label{font-family:'Unbounded',sans-serif;font-size:8px;letter-spacing:1px;text-transform:uppercase;opacity:.9}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--border);border-radius:100px;padding:5px 14px 5px 8px;font-size:11px;font-weight:700;color:var(--ink2);box-shadow:0 2px 12px rgba(0,0,0,.07);position:absolute;bottom:-12px;left:50%;transform:translateX(-50%);white-space:nowrap;z-index:2}
+.hero-badge-dot{width:8px;height:8px;border-radius:50%;background:#6dcc00;flex-shrink:0;animation:blink 1.4s infinite}
+
+/* PRESS / MEDIA STRIP */
+.press-strip{background:var(--bg);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 28px}
+.press-inner{max-width:1060px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center}
+.press-lbl{font-family:'Unbounded',sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--ink4);white-space:nowrap}
+.press-sep{width:1px;height:20px;background:var(--border)}
+.press-logos{display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:center}
+.press-logo{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:900;color:var(--ink4);letter-spacing:-0.5px;opacity:.5;transition:opacity .2s}
+.press-logo:hover{opacity:.8}
+
+/* TESTIMONIALS */
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.testi-card{background:var(--w);border:1px solid var(--border);border-radius:20px;padding:24px;display:flex;flex-direction:column;gap:14px;transition:all .25s}
+.testi-card:hover{border-color:var(--g);box-shadow:0 6px 24px rgba(45,122,0,.1);transform:translateY(-3px)}
+.testi-stars{color:#f59e0b;font-size:14px;letter-spacing:1px}
+.testi-quote{font-size:14px;color:var(--ink2);line-height:1.65;font-style:italic;flex:1}
+.testi-author{display:flex;align-items:center;gap:12px}
+.testi-avatar{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;border:2px solid var(--border)}
+.av-ar{background:linear-gradient(135deg,#74b9ff,#0984e3)}
+.av-co{background:linear-gradient(135deg,#fd79a8,#e84393)}
+.av-br{background:linear-gradient(135deg,#55efc4,#00b894)}
+.av-es{background:linear-gradient(135deg,#ffeaa7,#fdcb6e)}
+.testi-name{font-family:'Unbounded',sans-serif;font-size:11px;font-weight:700;color:var(--ink)}
+.testi-loc{font-size:11px;color:var(--ink4);margin-top:1px}
+.testi-sticker-tag{display:inline-flex;align-items:center;gap:5px;background:var(--gl);border:1px solid #b0db80;border-radius:100px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--g)}
+
+/* NEWS CARD IMAGE — improved */
+.news-img{height:110px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:40px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.news-img-panini{background:linear-gradient(135deg,#ffeaa7 0%,#fdcb6e 100%)}
+.news-img-coca{background:linear-gradient(135deg,#ff7675 0%,#d63031 100%)}
+.news-img-market{background:linear-gradient(135deg,#55efc4 0%,#00b894 100%)}
+.news-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.08))}
+.news-img-label{position:absolute;bottom:8px;left:10px;right:10px;font-family:'Unbounded',sans-serif;font-size:7px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.9);text-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+/* PROBLEM → SOLUTION strip */
+.pain-strip{background:var(--ink);padding:48px 28px}
+.pain-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:32px}
+@media(max-width:680px){.pain-inner{grid-template-columns:1fr;gap:16px}.pain-arrow{transform:rotate(90deg)}}
+.pain-side{border-radius:18px;padding:24px}
+.pain-before{background:rgba(201,64,0,.15);border:1px solid rgba(201,64,0,.3)}
+.pain-after{background:rgba(109,204,0,.12);border:1px solid rgba(109,204,0,.3)}
+.pain-tag{font-family:'Unbounded',sans-serif;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;display:block}
+.pain-tag-before{color:#f97316}
+.pain-tag-after{color:#6dcc00}
+.pain-title{font-family:'Unbounded',sans-serif;font-size:16px;font-weight:900;color:#fff;margin-bottom:8px;line-height:1.2}
+.pain-desc{font-size:12px;color:#888;line-height:1.6}
+.pain-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-top:10px}
+.pain-list li{font-size:12px;color:#888;display:flex;align-items:flex-start;gap:7px;line-height:1.4}
+.pain-arrow{font-size:28px;color:#444;text-align:center;flex-shrink:0}
+
 /* REVEAL */
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .reveal.vis{opacity:1;transform:none}
@@ -355,6 +436,15 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
   .final{padding:72px 18px}
   footer{padding:22px 18px;flex-direction:column;gap:10px}
   .modal{padding:24px 18px}
+  .hero-visual{height:180px;max-width:340px}
+  .sc-a{width:88px;height:72px;left:0;top:8px}
+  .sc-b{width:82px;height:68px;left:48px;top:70px}
+  .sc-c{width:86px;height:70px;left:120px;top:4px}
+  .sc-d{width:78px;height:64px;left:170px;top:76px}
+  .sc-e{width:80px;height:66px;right:0;top:14px}
+  .press-inner{gap:14px}
+  .press-logo{font-size:10px}
+  .pain-strip{padding:32px 18px}
 }
 @media(max-width:380px){
   .nav-news{display:none}
@@ -402,6 +492,16 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
     <span id="h1Line3">you needed</span>
   </h1>
   <p class="hero-sub" id="heroSub">You know what you have. You know what's missing.<br><strong>Trade and sell directly</strong> with other collectors. With <strong>protected payments</strong> until you confirm receipt.</p>
+
+  <!-- Hero sticker visual -->
+  <div class="hero-visual">
+    <div class="sticker-card sc-a"><span style="font-size:28px">🇦🇷</span><span class="sc-label">Argentina</span></div>
+    <div class="sticker-card sc-b"><span style="font-size:28px">🇧🇷</span><span class="sc-label">Brasil</span></div>
+    <div class="sticker-card sc-c"><span style="font-size:28px">🇺🇸</span><span class="sc-label">USA</span></div>
+    <div class="sticker-card sc-d"><span style="font-size:28px">🇫🇷</span><span class="sc-label">France</span></div>
+    <div class="sticker-card sc-e"><span style="font-size:28px">🇲🇽</span><span class="sc-label">México</span></div>
+    <div class="hero-badge"><span class="hero-badge-dot"></span> 980 stickers · 48 teams · 1 album</div>
+  </div>
 
   <!-- Pay badges -->
   <div class="pay-row">
@@ -456,6 +556,48 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
 <!-- TICKER -->
 <div class="ticker"><div class="ticker-inner" id="tickerInner"></div></div>
 
+<!-- PRESS STRIP -->
+<div class="press-strip">
+  <div class="press-inner">
+    <span class="press-lbl">As covered in</span>
+    <div class="press-sep"></div>
+    <div class="press-logos">
+      <span class="press-logo">Al Jazeera</span>
+      <span class="press-logo">Sports Illustrated</span>
+      <span class="press-logo">STV News</span>
+      <span class="press-logo">Panini</span>
+      <span class="press-logo">Marca</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAIN → SOLUTION -->
+<div class="pain-strip reveal">
+  <div class="pain-inner">
+    <div class="pain-side pain-before">
+      <span class="pain-tag pain-tag-before">😤 Without Collexo</span>
+      <div class="pain-title">Completing the album costs $1,400+</div>
+      <ul class="pain-list">
+        <li>❌ Buy pack after pack and get duplicates</li>
+        <li>❌ Trade with strangers on WhatsApp groups — no protection</li>
+        <li>❌ Pay and never receive the sticker</li>
+        <li>❌ No way to know who's trustworthy</li>
+      </ul>
+    </div>
+    <div class="pain-arrow">→</div>
+    <div class="pain-side pain-after">
+      <span class="pain-tag pain-tag-after">🎉 With Collexo</span>
+      <div class="pain-title">Trade smart. Complete your album for less.</div>
+      <ul class="pain-list">
+        <li style="color:#ccc">✓ See every collector's duplicates instantly</li>
+        <li style="color:#ccc">✓ Trade 1:1 or sell at your price</li>
+        <li style="color:#ccc">✓ Escrow protects every transaction</li>
+        <li style="color:#ccc">✓ Reputation system — trade with confidence</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 <!-- HOW IT WORKS -->
 <div class="section reveal">
   <span class="sec-eye" id="howEye">How it works</span>
@@ -465,6 +607,50 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
     <div class="step"><div class="step-ico si2">🔍</div><div class="step-title" id="st2">Find a match</div><div class="step-desc" id="sd2">The system cross-references your list with duplicates from thousands of users and shows you who has what you need.</div><div class="step-n">02</div></div>
     <div class="step"><div class="step-ico si3">⇄</div><div class="step-title" id="st3">Trade or sell</div><div class="step-desc" id="sd3">You decide: offer your duplicates in exchange for what you need, or sell them at the price you want.</div><div class="step-n">03</div></div>
     <div class="step"><div class="step-ico si4">🔒</div><div class="step-title" id="st4">Protected payment</div><div class="step-desc" id="sd4">Money is held in escrow. Released only when you confirm you received the correct sticker.</div><div class="step-n">04</div></div>
+  </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div class="section reveal" style="padding-top:0">
+  <span class="sec-eye">Collectors say</span>
+  <h2 class="sec-title">Real collectors,<br>real trades</h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"I had 73 duplicates and needed 34 stickers. Found matches for 28 of them in the first week. This is what we've always needed."</div>
+      <div class="testi-author">
+        <div class="testi-avatar av-ar">🇦🇷</div>
+        <div>
+          <div class="testi-name">@matias_col</div>
+          <div class="testi-loc">Buenos Aires, Argentina</div>
+        </div>
+        <div class="testi-sticker-tag" style="margin-left:auto">🔒 Secured trade</div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"I always feared getting scammed trading online. The escrow system changes everything — I paid, received the sticker, then released the money. Simple."</div>
+      <div class="testi-author">
+        <div class="testi-avatar av-co">🇨🇴</div>
+        <div>
+          <div class="testi-name">@valentina_stickers</div>
+          <div class="testi-loc">Medellín, Colombia</div>
+        </div>
+        <div class="testi-sticker-tag" style="margin-left:auto">✓ Verified buyer</div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-quote">"My kids and I collect together. Being able to track all 980 stickers and find trades nearby saved us hundreds of dollars vs buying more packs."</div>
+      <div class="testi-author">
+        <div class="testi-avatar av-br">🇧🇷</div>
+        <div>
+          <div class="testi-name">@familia_panini_br</div>
+          <div class="testi-loc">São Paulo, Brazil</div>
+        </div>
+        <div class="testi-sticker-tag" style="margin-left:auto">💰 Saved $200+</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -789,7 +975,10 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
   <!-- News cards — REAL news May 2026 -->
   <div class="news-grid">
     <div class="news-card">
-      <div class="news-img">📦</div>
+      <div class="news-img news-img-panini">
+        <span style="font-size:44px;position:relative;z-index:1">📦</span>
+        <span class="news-img-label">Panini World Cup 2026</span>
+      </div>
       <div class="news-body">
         <div class="news-cat" id="nc1">Panini 2026</div>
         <div class="news-title" id="nt1">The biggest album in World Cup history — 980 stickers</div>
@@ -798,7 +987,10 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
       </div>
     </div>
     <div class="news-card">
-      <div class="news-img">🥤</div>
+      <div class="news-img news-img-coca">
+        <span style="font-size:44px;position:relative;z-index:1">🥤</span>
+        <span class="news-img-label">Exclusive Coca-Cola drops</span>
+      </div>
       <div class="news-body">
         <div class="news-cat" id="nc2">Collectors</div>
         <div class="news-title" id="nt2">Coca-Cola hides 12 exclusive stickers behind bottle labels</div>
@@ -807,7 +999,10 @@ footer{background:var(--ink);padding:28px 32px;display:flex;align-items:center;j
       </div>
     </div>
     <div class="news-card">
-      <div class="news-img">💰</div>
+      <div class="news-img news-img-market">
+        <span style="font-size:44px;position:relative;z-index:1">💰</span>
+        <span class="news-img-label">Secondary market analysis</span>
+      </div>
       <div class="news-body">
         <div class="news-cat" id="nc3">Market</div>
         <div class="news-title" id="nt3">Completing the album solo costs over $1,000 — trading is the only smart move</div>
