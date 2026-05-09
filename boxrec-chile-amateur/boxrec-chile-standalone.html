@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BoxRec Chile Amateur</title>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --red:#c0392b;--red2:#e74c3c;--gold:#f39c12;--gold2:#f1c40f;
+  --dark:#0d0d0d;--dark2:#1a1a1a;--dark3:#232323;--dark4:#2e2e2e;
+  --gray:#3a3a3a;--gray2:#555;--gray3:#888;--gray4:#bbb;
+  --white:#f0f0f0;--white2:#e0e0e0;
+  --green:#27ae60;--blue:#2980b9;--orange:#e67e22;--purple:#8e44ad;
+  --sidebar:220px;
+  --font-title:'Oswald',sans-serif;
+  --font:'Inter',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--dark);color:var(--white);font-family:var(--font);font-size:14px;line-height:1.5;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--font-title);letter-spacing:.03em;color:var(--white)}
+a{color:var(--gold);text-decoration:none}
+input,select,textarea{font-family:var(--font);font-size:14px}
+button{font-family:var(--font-title);cursor:pointer;letter-spacing:.05em}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:var(--dark2)}
+::-webkit-scrollbar-thumb{background:var(--gray);border-radius:3px}
+
+/* LOGIN */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:var(--dark);background-image:radial-gradient(ellipse at 30% 50%,rgba(192,57,43,.15) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(243,156,18,.08) 0%,transparent 50%)}
+.login-box{background:var(--dark2);border:1px solid var(--gray);border-radius:12px;padding:48px 40px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.login-logo{text-align:center;margin-bottom:32px}
+.login-logo h1{font-size:32px;color:var(--red2);text-transform:uppercase;letter-spacing:.1em}
+.login-logo h1 span{color:var(--gold)}
+.login-logo p{font-size:11px;color:var(--gray3);letter-spacing:.15em;text-transform:uppercase;margin-top:4px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:11px;font-weight:600;color:var(--gray3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
+.form-group input,.form-group select,.form-group textarea{width:100%;background:var(--dark3);border:1px solid var(--gray);border-radius:6px;padding:10px 14px;color:var(--white);outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--red)}
+.form-group select option{background:var(--dark3)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:10px 20px;border-radius:6px;border:none;font-size:13px;font-weight:600;transition:all .2s;text-transform:uppercase;letter-spacing:.08em}
+.btn-primary{background:var(--red);color:#fff}
+.btn-primary:hover{background:var(--red2)}
+.btn-gold{background:var(--gold);color:var(--dark)}
+.btn-gold:hover{background:var(--gold2)}
+.btn-green{background:var(--green);color:#fff}
+.btn-green:hover{background:#2ecc71}
+.btn-blue{background:var(--blue);color:#fff}
+.btn-blue:hover{background:#3498db}
+.btn-ghost{background:transparent;border:1px solid var(--gray);color:var(--gray4)}
+.btn-ghost:hover{border-color:var(--gray4);color:var(--white)}
+.btn-danger{background:transparent;border:1px solid var(--red);color:var(--red)}
+.btn-danger:hover{background:var(--red);color:#fff}
+.btn-sm{padding:6px 14px;font-size:11px}
+.btn-full{width:100%;justify-content:center}
+.login-error{background:rgba(192,57,43,.2);border:1px solid var(--red);border-radius:6px;padding:10px 14px;font-size:13px;color:var(--red2);margin-bottom:16px;display:none}
+.login-hint{font-size:11px;color:var(--gray3);margin-top:24px;text-align:center;line-height:1.8}
+.login-hint strong{color:var(--gold)}
+
+/* APP LAYOUT */
+#app{display:none;min-height:100vh;flex-direction:column}
+.topbar{height:52px;background:var(--dark2);border-bottom:1px solid var(--gray);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:fixed;top:0;left:0;right:0;z-index:100}
+.topbar-left{display:flex;align-items:center;gap:16px}
+.topbar-logo{font-family:var(--font-title);font-size:20px;font-weight:700;color:var(--red2);letter-spacing:.08em;text-transform:uppercase}
+.topbar-logo span{color:var(--gold)}
+.topbar-badge{font-size:10px;background:var(--red);color:#fff;padding:2px 8px;border-radius:100px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.topbar-user{display:flex;align-items:center;gap:8px;font-size:13px}
+.topbar-user .avatar{width:32px;height:32px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;font-family:var(--font-title)}
+.topbar-user .user-info{display:flex;flex-direction:column}
+.topbar-user .user-name{font-weight:600;font-size:12px;color:var(--white)}
+.topbar-user .user-role{font-size:10px;color:var(--gray3);text-transform:uppercase;letter-spacing:.1em}
+.topbar-notify{position:relative}
+.notify-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;background:var(--red2);border-radius:50%;border:1px solid var(--dark2)}
+
+.layout{display:flex;padding-top:52px;min-height:100vh}
+.sidebar{width:var(--sidebar);background:var(--dark2);border-right:1px solid var(--gray);position:fixed;top:52px;left:0;bottom:0;overflow-y:auto;z-index:90;padding:16px 0}
+.sidebar-section{margin-bottom:8px}
+.sidebar-label{font-size:10px;color:var(--gray3);text-transform:uppercase;letter-spacing:.15em;padding:8px 20px 4px;font-weight:600}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:9px 20px;color:var(--gray4);cursor:pointer;transition:all .15s;font-size:13px;border-left:3px solid transparent;white-space:nowrap}
+.sidebar-item:hover{background:var(--dark3);color:var(--white)}
+.sidebar-item.active{background:rgba(192,57,43,.15);color:var(--red2);border-left-color:var(--red2)}
+.sidebar-item .icon{width:18px;text-align:center;font-size:15px;flex-shrink:0}
+.sidebar-badge{margin-left:auto;background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:100px;min-width:18px;text-align:center}
+
+.main{margin-left:var(--sidebar);flex:1;padding:24px;min-height:calc(100vh - 52px)}
+.page{display:none}
+.page.active{display:block}
+
+/* PAGE HEADER */
+.page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;gap:16px;flex-wrap:wrap}
+.page-title{font-size:26px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--white)}
+.page-title span{color:var(--red2)}
+.page-subtitle{font-size:12px;color:var(--gray3);margin-top:2px}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:28px}
+.stat-card{background:var(--dark2);border:1px solid var(--gray);border-radius:8px;padding:20px;display:flex;flex-direction:column;gap:6px}
+.stat-card .stat-icon{font-size:24px;margin-bottom:4px}
+.stat-card .stat-value{font-family:var(--font-title);font-size:32px;font-weight:700;color:var(--white);line-height:1}
+.stat-card .stat-label{font-size:11px;color:var(--gray3);text-transform:uppercase;letter-spacing:.1em}
+.stat-card.red{border-top:3px solid var(--red)}
+.stat-card.gold{border-top:3px solid var(--gold)}
+.stat-card.green{border-top:3px solid var(--green)}
+.stat-card.blue{border-top:3px solid var(--blue)}
+.stat-card.purple{border-top:3px solid var(--purple)}
+.stat-card.orange{border-top:3px solid var(--orange)}
+
+/* TABLE */
+.table-wrap{background:var(--dark2);border:1px solid var(--gray);border-radius:8px;overflow:hidden}
+.table-toolbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--gray);gap:12px;flex-wrap:wrap}
+.table-search{background:var(--dark3);border:1px solid var(--gray);border-radius:6px;padding:7px 12px;color:var(--white);outline:none;width:240px;font-size:13px}
+.table-search::placeholder{color:var(--gray3)}
+.table-search:focus{border-color:var(--red)}
+table{width:100%;border-collapse:collapse}
+th{background:var(--dark3);font-family:var(--font-title);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--gray3);padding:10px 14px;text-align:left;font-weight:600;white-space:nowrap}
+td{padding:10px 14px;border-top:1px solid var(--gray);font-size:13px;color:var(--gray4);vertical-align:middle}
+tr:hover td{background:rgba(255,255,255,.02);color:var(--white)}
+.td-primary{color:var(--white);font-weight:600}
+.td-mono{font-family:'Courier New',monospace;font-size:12px}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
+.badge-pending{background:rgba(230,126,34,.2);color:var(--orange);border:1px solid rgba(230,126,34,.3)}
+.badge-approved{background:rgba(39,174,96,.2);color:var(--green);border:1px solid rgba(39,174,96,.3)}
+.badge-rejected{background:rgba(192,57,43,.2);color:var(--red2);border:1px solid rgba(192,57,43,.3)}
+.badge-super{background:rgba(243,156,18,.2);color:var(--gold);border:1px solid rgba(243,156,18,.3)}
+.badge-fiscal{background:rgba(142,68,173,.2);color:#b180d7;border:1px solid rgba(142,68,173,.3)}
+.badge-admin{background:rgba(41,128,185,.2);color:#74b9e8;border:1px solid rgba(41,128,185,.3)}
+.badge-info{background:rgba(41,128,185,.15);color:var(--blue);border:1px solid rgba(41,128,185,.3)}
+.badge-gold{background:rgba(243,156,18,.15);color:var(--gold);border:1px solid rgba(243,156,18,.3)}
+.badge-cat{background:var(--dark3);color:var(--gray4);border:1px solid var(--gray)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--dark2);border:1px solid var(--gray);border-radius:10px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.7)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--gray)}
+.modal-title{font-family:var(--font-title);font-size:18px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.modal-close{background:none;border:none;color:var(--gray3);font-size:20px;cursor:pointer;line-height:1;padding:0 4px}
+.modal-close:hover{color:var(--white)}
+.modal-body{padding:24px}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;padding:16px 24px;border-top:1px solid var(--gray)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+
+/* EMPTY STATE */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--gray3);gap:12px}
+.empty .icon{font-size:48px;opacity:.4}
+.empty p{font-size:13px}
+
+/* AUDIT LOG */
+.audit-item{display:flex;gap:14px;padding:12px 16px;border-bottom:1px solid var(--gray);align-items:flex-start}
+.audit-item:last-child{border-bottom:none}
+.audit-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:6px}
+.audit-dot.create{background:var(--green)}
+.audit-dot.approve{background:var(--blue)}
+.audit-dot.reject{background:var(--red)}
+.audit-dot.login{background:var(--gold)}
+.audit-dot.update{background:var(--orange)}
+.audit-dot.delete{background:var(--red2)}
+.audit-content{flex:1;min-width:0}
+.audit-action{font-size:13px;color:var(--white);font-weight:500}
+.audit-meta{font-size:11px;color:var(--gray3);margin-top:2px}
+
+/* RANKING TABLE */
+.rank-num{font-family:var(--font-title);font-size:18px;font-weight:700;color:var(--gray2);width:32px}
+.rank-num.top1{color:var(--gold)}
+.rank-num.top2{color:var(--gray4)}
+.rank-num.top3{color:var(--orange)}
+.record-display{font-family:var(--font-title);font-size:15px;letter-spacing:.05em}
+.record-g{color:var(--green)}
+.record-e{color:var(--gold)}
+.record-p{color:var(--red2)}
+
+/* PENDING REVIEW */
+.review-card{background:var(--dark2);border:1px solid var(--gray);border-radius:8px;margin-bottom:16px;overflow:hidden}
+.review-card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;background:var(--dark3);border-bottom:1px solid var(--gray)}
+.review-card-body{padding:16px 18px}
+.review-field{display:flex;gap:8px;margin-bottom:8px;font-size:13px}
+.review-field label{color:var(--gray3);width:120px;flex-shrink:0}
+.review-field value,.review-field .val{color:var(--white)}
+.review-actions{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--gray)}
+
+/* TABS */
+.tabs{display:flex;gap:0;border-bottom:1px solid var(--gray);margin-bottom:20px}
+.tab{padding:10px 20px;font-family:var(--font-title);font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--gray3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.tab:hover{color:var(--white)}
+.tab.active{color:var(--red2);border-bottom-color:var(--red2)}
+
+/* TOAST */
+#toast{position:fixed;bottom:24px;right:24px;z-index:2000;display:flex;flex-direction:column;gap:8px;pointer-events:none}
+.toast-item{background:var(--dark3);border:1px solid var(--gray);border-radius:8px;padding:12px 18px;font-size:13px;color:var(--white);box-shadow:0 8px 24px rgba(0,0,0,.5);animation:slideIn .3s ease;min-width:240px;max-width:340px}
+.toast-item.success{border-left:4px solid var(--green)}
+.toast-item.error{border-left:4px solid var(--red)}
+.toast-item.info{border-left:4px solid var(--blue)}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* PROFILE FIGHTER */
+.fighter-profile{background:var(--dark2);border:1px solid var(--gray);border-radius:8px;padding:24px;margin-bottom:20px;display:flex;gap:24px;align-items:flex-start}
+.fighter-avatar{width:80px;height:80px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;font-family:var(--font-title);font-size:28px;font-weight:700;color:#fff;flex-shrink:0}
+.fighter-info h2{font-size:24px;margin-bottom:4px}
+.fighter-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.fighter-record{display:flex;gap:16px;margin-top:12px}
+.record-box{text-align:center;background:var(--dark3);border-radius:6px;padding:10px 18px}
+.record-box .num{font-family:var(--font-title);font-size:28px;font-weight:700;line-height:1}
+.record-box .lbl{font-size:10px;color:var(--gray3);text-transform:uppercase;letter-spacing:.1em}
+
+/* SECTION CARD */
+.section-card{background:var(--dark2);border:1px solid var(--gray);border-radius:8px;margin-bottom:20px;overflow:hidden}
+.section-card-header{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--gray)}
+.section-card-title{font-family:var(--font-title);font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--white)}
+.section-card-body{padding:0}
+
+/* REJECT FORM */
+.reject-form{background:var(--dark3);border-radius:6px;padding:14px;margin-top:12px;display:none}
+.reject-form textarea{width:100%;background:var(--dark);border:1px solid var(--gray);border-radius:6px;padding:10px;color:var(--white);resize:vertical;min-height:80px;font-size:13px;outline:none}
+.reject-form textarea:focus{border-color:var(--red)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}
+  .main{margin-left:0}
+  .form-row{grid-template-columns:1fr}
+  .stats-grid{grid-template-columns:1fr 1fr}
+}
+
+.flag{display:inline-block;margin-right:4px}
+.divider{height:1px;background:var(--gray);margin:20px 0}
+.text-muted{color:var(--gray3)}
+.text-sm{font-size:12px}
+.mt-1{margin-top:8px}.mt-2{margin-top:16px}.mt-3{margin-top:24px}
+.mb-1{margin-bottom:8px}.mb-2{margin-bottom:16px}
+.flex{display:flex}.items-center{align-items:center}.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
+.justify-between{justify-content:space-between}.flex-wrap{flex-wrap:wrap}
+.w-full{width:100%}
+.info-box{background:rgba(41,128,185,.1);border:1px solid rgba(41,128,185,.25);border-radius:6px;padding:12px 16px;font-size:12px;color:#74b9e8;line-height:1.6}
+.warn-box{background:rgba(230,126,34,.1);border:1px solid rgba(230,126,34,.25);border-radius:6px;padding:12px 16px;font-size:12px;color:var(--orange);line-height:1.6}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <h1>BOX<span>REC</span></h1>
+      <p>🇨🇱 Chile Amateur · Sistema Oficial</p>
+    </div>
+    <div class="login-error" id="login-error">Credenciales incorrectas. Intente nuevamente.</div>
+    <div class="form-group">
+      <label>Correo electrónico</label>
+      <input type="email" id="login-email" placeholder="correo@ejemplo.cl" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">INGRESAR AL SISTEMA</button>
+    <div class="login-hint">
+      <strong>Super Admin:</strong> superadmin@boxrecchile.cl / Super2024!<br>
+      <strong>Fiscalizador:</strong> fiscalizador@boxrecchile.cl / Fiscal2024!<br>
+      <strong>Admin Stgo:</strong> stgo@boxrecchile.cl / Stgo2024!<br>
+      <strong>Admin Valpo:</strong> valpo@boxrecchile.cl / Valpo2024!<br>
+      <strong>Admin Biobío:</strong> biobio@boxrecchile.cl / Biobio2024!
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-logo">BOX<span>REC</span></div>
+      <div class="topbar-badge">🇨🇱 Amateur Chile</div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-user">
+        <div class="avatar" id="top-avatar">SA</div>
+        <div class="user-info">
+          <span class="user-name" id="top-name">Super Admin</span>
+          <span class="user-role" id="top-role">Super Administrador</span>
+        </div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">SALIR</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Principal</div>
+        <div class="sidebar-item active" onclick="showPage('dashboard')" data-page="dashboard">
+          <span class="icon">📊</span> Dashboard
+        </div>
+        <div class="sidebar-item" onclick="showPage('rankings')" data-page="rankings">
+          <span class="icon">🏆</span> Rankings
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Registros</div>
+        <div class="sidebar-item" onclick="showPage('boxeadores')" data-page="boxeadores">
+          <span class="icon">🥊</span> Boxeadores
+        </div>
+        <div class="sidebar-item" onclick="showPage('eventos')" data-page="eventos">
+          <span class="icon">📅</span> Eventos
+        </div>
+        <div class="sidebar-item" onclick="showPage('peleas')" data-page="peleas">
+          <span class="icon">⚔️</span> Peleas
+        </div>
+      </div>
+      <div class="sidebar-section" id="sidebar-admin-section">
+        <div class="sidebar-label">Administración</div>
+        <div class="sidebar-item" onclick="showPage('pendientes')" data-page="pendientes" id="nav-pendientes">
+          <span class="icon">⏳</span> Pendientes
+          <span class="sidebar-badge" id="pending-count" style="display:none">0</span>
+        </div>
+        <div class="sidebar-item" onclick="showPage('auditoria')" data-page="auditoria" id="nav-auditoria">
+          <span class="icon">📋</span> Auditoría
+        </div>
+        <div class="sidebar-item" onclick="showPage('asociaciones')" data-page="asociaciones" id="nav-asociaciones" style="display:none">
+          <span class="icon">🏛️</span> Asociaciones
+        </div>
+        <div class="sidebar-item" onclick="showPage('usuarios')" data-page="usuarios" id="nav-usuarios" style="display:none">
+          <span class="icon">👥</span> Usuarios
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-header">
+          <div>
+            <div class="page-title"><span>Dashboard</span> General</div>
+            <div class="page-subtitle" id="dashboard-welcome">Bienvenido al sistema</div>
+          </div>
+        </div>
+        <div class="stats-grid" id="stats-grid"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;flex-wrap:wrap" id="dashboard-panels"></div>
+      </div>
+
+      <!-- BOXEADORES -->
+      <div class="page" id="page-boxeadores">
+        <div class="page-header">
+          <div>
+            <div class="page-title">🥊 <span>Boxeadores</span></div>
+            <div class="page-subtitle">Registro de deportistas amateur</div>
+          </div>
+          <button class="btn btn-primary" id="btn-add-boxeador" onclick="openModal('modal-boxeador')">+ REGISTRAR BOXEADOR</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <input class="table-search" id="search-boxeadores" placeholder="Buscar por nombre, RUT, asociación..." oninput="renderBoxeadores()">
+            <div class="flex gap-2">
+              <select class="table-search" style="width:auto" id="filter-cat-box" onchange="renderBoxeadores()">
+                <option value="">Todas las categorías</option>
+              </select>
+              <select class="table-search" style="width:auto" id="filter-status-box" onchange="renderBoxeadores()">
+                <option value="">Todos los estados</option>
+                <option value="PENDIENTE">Pendiente</option>
+                <option value="APROBADO">Aprobado</option>
+                <option value="RECHAZADO">Rechazado</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto"><table id="table-boxeadores"><thead><tr>
+            <th>NOMBRE</th><th>RUT</th><th>CATEGORÍA</th><th>ASOCIACIÓN</th>
+            <th>RÉCORD</th><th>ESTADO</th><th>SUBIDO POR</th><th>ACCIONES</th>
+          </tr></thead><tbody id="tbody-boxeadores"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- EVENTOS -->
+      <div class="page" id="page-eventos">
+        <div class="page-header">
+          <div>
+            <div class="page-title">📅 <span>Eventos</span></div>
+            <div class="page-subtitle">Torneos, campeonatos y veladas</div>
+          </div>
+          <button class="btn btn-primary" id="btn-add-evento" onclick="openModal('modal-evento')">+ CREAR EVENTO</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <input class="table-search" id="search-eventos" placeholder="Buscar evento..." oninput="renderEventos()">
+            <select class="table-search" style="width:auto" id="filter-status-evt" onchange="renderEventos()">
+              <option value="">Todos los estados</option>
+              <option value="PENDIENTE">Pendiente</option>
+              <option value="APROBADO">Aprobado</option>
+              <option value="RECHAZADO">Rechazado</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto"><table id="table-eventos"><thead><tr>
+            <th>NOMBRE</th><th>FECHA</th><th>TIPO</th><th>LUGAR</th>
+            <th>ASOCIACIÓN</th><th>ESTADO</th><th>SUBIDO POR</th><th>ACCIONES</th>
+          </tr></thead><tbody id="tbody-eventos"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- PELEAS -->
+      <div class="page" id="page-peleas">
+        <div class="page-header">
+          <div>
+            <div class="page-title">⚔️ <span>Peleas</span> & Resultados</div>
+            <div class="page-subtitle">Registro de combates y resultados oficiales</div>
+          </div>
+          <button class="btn btn-primary" id="btn-add-pelea" onclick="openModal('modal-pelea')">+ REGISTRAR PELEA</button>
+        </div>
+        <div class="table-wrap">
+          <div class="table-toolbar">
+            <input class="table-search" id="search-peleas" placeholder="Buscar por nombre o evento..." oninput="renderPeleas()">
+            <select class="table-search" style="width:auto" id="filter-status-fight" onchange="renderPeleas()">
+              <option value="">Todos los estados</option>
+              <option value="PENDIENTE">Pendiente</option>
+              <option value="APROBADO">Aprobado</option>
+              <option value="RECHAZADO">Rechazado</option>
+            </select>
+          </div>
+          <div style="overflow-x:auto"><table><thead><tr>
+            <th>BOXEADOR ROJO</th><th>VS</th><th>BOXEADOR AZUL</th><th>RESULTADO</th>
+            <th>CATEGORÍA</th><th>EVENTO</th><th>ESTADO</th><th>SUBIDO POR</th><th>ACCIONES</th>
+          </tr></thead><tbody id="tbody-peleas"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- RANKINGS -->
+      <div class="page" id="page-rankings">
+        <div class="page-header">
+          <div>
+            <div class="page-title">🏆 <span>Rankings</span> Amateur Chile</div>
+            <div class="page-subtitle">Solo boxeadores con récord aprobado</div>
+          </div>
+          <select class="table-search" style="width:200px" id="ranking-cat" onchange="renderRankings()">
+            <option value="">Todas las categorías</option>
+          </select>
+        </div>
+        <div id="rankings-container"></div>
+      </div>
+
+      <!-- PENDIENTES -->
+      <div class="page" id="page-pendientes">
+        <div class="page-header">
+          <div>
+            <div class="page-title">⏳ <span>Pendientes</span> de Aprobación</div>
+            <div class="page-subtitle">Registros esperando revisión del Fiscalizador</div>
+          </div>
+        </div>
+        <div class="tabs">
+          <div class="tab active" onclick="switchTab('pendientes','boxeadores')" data-tab="boxeadores">Boxeadores</div>
+          <div class="tab" onclick="switchTab('pendientes','eventos')" data-tab="eventos">Eventos</div>
+          <div class="tab" onclick="switchTab('pendientes','peleas')" data-tab="peleas">Peleas</div>
+        </div>
+        <div id="pending-boxeadores-list"></div>
+        <div id="pending-eventos-list" style="display:none"></div>
+        <div id="pending-peleas-list" style="display:none"></div>
+      </div>
+
+      <!-- AUDITORIA -->
+      <div class="page" id="page-auditoria">
+        <div class="page-header">
+          <div>
+            <div class="page-title">📋 <span>Auditoría</span> del Sistema</div>
+            <div class="page-subtitle">Historial completo de acciones registradas</div>
+          </div>
+          <select class="table-search" style="width:160px" id="filter-audit-type" onchange="renderAudit()">
+            <option value="">Todas las acciones</option>
+            <option value="create">Creaciones</option>
+            <option value="approve">Aprobaciones</option>
+            <option value="reject">Rechazos</option>
+            <option value="login">Inicios de sesión</option>
+            <option value="update">Actualizaciones</option>
+          </select>
+        </div>
+        <div class="section-card">
+          <div class="section-card-body" id="audit-list"></div>
+        </div>
+      </div>
+
+      <!-- ASOCIACIONES -->
+      <div class="page" id="page-asociaciones">
+        <div class="page-header">
+          <div>
+            <div class="page-title">🏛️ <span>Asociaciones</span></div>
+            <div class="page-subtitle">Organizaciones regionales de boxeo amateur</div>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-asociacion')">+ NUEVA ASOCIACIÓN</button>
+        </div>
+        <div class="table-wrap">
+          <div style="overflow-x:auto"><table><thead><tr>
+            <th>NOMBRE</th><th>REGIÓN</th><th>PRESIDENTE</th><th>BOXEADORES</th><th>EVENTOS</th><th>ESTADO</th><th>ACCIONES</th>
+          </tr></thead><tbody id="tbody-asociaciones"></tbody></table></div>
+        </div>
+      </div>
+
+      <!-- USUARIOS -->
+      <div class="page" id="page-usuarios">
+        <div class="page-header">
+          <div>
+            <div class="page-title">👥 <span>Usuarios</span> del Sistema</div>
+            <div class="page-subtitle">Gestión de acceso y roles</div>
+          </div>
+          <button class="btn btn-primary" onclick="openModal('modal-usuario')">+ CREAR USUARIO</button>
+        </div>
+        <div class="table-wrap">
+          <div style="overflow-x:auto"><table><thead><tr>
+            <th>NOMBRE</th><th>CORREO</th><th>ROL</th><th>ASOCIACIÓN</th><th>ÚLTIMO ACCESO</th><th>ESTADO</th><th>ACCIONES</th>
+          </tr></thead><tbody id="tbody-usuarios"></tbody></table></div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /layout -->
+</div><!-- /app -->
+
+<!-- MODALES -->
+<div class="modal-overlay" id="modal-boxeador">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-boxeador-title">Registrar Boxeador</div>
+      <button class="modal-close" onclick="closeModal('modal-boxeador')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="boxeador-edit-id">
+      <div class="form-row">
+        <div class="form-group"><label>Nombre completo *</label><input id="b-nombre" placeholder="Juan Pérez González"></div>
+        <div class="form-group"><label>RUT *</label><input id="b-rut" placeholder="12.345.678-9"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Fecha de nacimiento *</label><input type="date" id="b-nacimiento"></div>
+        <div class="form-group"><label>Género *</label>
+          <select id="b-genero" onchange="updateCategoriasModal()">
+            <option value="M">Masculino</option>
+            <option value="F">Femenino</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Categoría de peso *</label><select id="b-categoria"></select></div>
+        <div class="form-group"><label>Asociación *</label><select id="b-asociacion"></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Región</label><select id="b-region">
+          <option>Región Metropolitana</option><option>Valparaíso</option><option>Biobío</option>
+          <option>La Araucanía</option><option>Maule</option><option>Coquimbo</option>
+          <option>Antofagasta</option><option>Los Lagos</option><option>Tarapacá</option>
+          <option>Atacama</option><option>O'Higgins</option><option>Los Ríos</option>
+          <option>Arica y Parinacota</option><option>Aysén</option><option>Magallanes</option>
+        </select></div>
+        <div class="form-group"><label>Gimnasio / Club</label><input id="b-gimnasio" placeholder="Club de Boxeo..."></div>
+      </div>
+      <div class="info-box mt-2">El boxeador quedará en estado <strong>PENDIENTE</strong> hasta que el Fiscalizador apruebe el registro.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-boxeador')">CANCELAR</button>
+      <button class="btn btn-primary" onclick="saveBoxeador()">GUARDAR REGISTRO</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-evento">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-evento-title">Crear Evento</div>
+      <button class="modal-close" onclick="closeModal('modal-evento')">✕</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="evento-edit-id">
+      <div class="form-group"><label>Nombre del evento *</label><input id="e-nombre" placeholder="Campeonato Regional Santiago 2025"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Fecha *</label><input type="date" id="e-fecha"></div>
+        <div class="form-group"><label>Tipo de evento *</label>
+          <select id="e-tipo">
+            <option>Campeonato Regional</option><option>Campeonato Nacional</option>
+            <option>Torneo Clasificatorio</option><option>Velada Amateur</option>
+            <option>Copa Interclubes</option><option>Selectivo Olímpico</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Ciudad</label><input id="e-ciudad" placeholder="Santiago"></div>
+        <div class="form-group"><label>Recinto / Venue</label><input id="e-recinto" placeholder="Estadio..."></div>
+      </div>
+      <div class="form-group"><label>Asociación organizadora *</label><select id="e-asociacion"></select></div>
+      <div class="form-group"><label>Descripción</label><textarea id="e-descripcion" rows="3" placeholder="Detalles del evento..."></textarea></div>
+      <div class="info-box mt-2">El evento quedará en estado <strong>PENDIENTE</strong> hasta aprobación del Fiscalizador.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-evento')">CANCELAR</button>
+      <button class="btn btn-primary" onclick="saveEvento()">GUARDAR EVENTO</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-pelea">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Registrar Pelea</div>
+      <button class="modal-close" onclick="closeModal('modal-pelea')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Evento *</label><select id="p-evento"></select></div>
+      <div class="form-row">
+        <div class="form-group"><label>🔴 Esquina Roja *</label><select id="p-rojo"></select></div>
+        <div class="form-group"><label>🔵 Esquina Azul *</label><select id="p-azul"></select></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Categoría de peso *</label><select id="p-categoria"></select></div>
+        <div class="form-group"><label>Número de rounds</label>
+          <select id="p-rounds"><option>3</option><option>4</option><option>5</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Ganador *</label>
+          <select id="p-ganador">
+            <option value="">-- Seleccionar --</option>
+            <option value="ROJO">Esquina Roja</option>
+            <option value="AZUL">Esquina Azul</option>
+            <option value="EMPATE">Empate</option>
+            <option value="NC">Sin Resultado (NC)</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Método de victoria</label>
+          <select id="p-metodo">
+            <option>Decisión Unánime</option><option>Decisión Dividida</option>
+            <option>Decisión Mayoritaria</option><option>KO</option>
+            <option>KO Técnico (TKO)</option><option>Abandono</option>
+            <option>Descalificación</option><option>No Contest</option>
+          </select>
+        </div>
+      </div>
+      <div class="info-box mt-2">La pelea quedará en estado <strong>PENDIENTE</strong>. El récord de ambos boxeadores se actualizará al aprobar.</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-pelea')">CANCELAR</button>
+      <button class="btn btn-primary" onclick="savePelea()">GUARDAR PELEA</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-asociacion">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Nueva Asociación</div>
+      <button class="modal-close" onclick="closeModal('modal-asociacion')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Nombre oficial *</label><input id="a-nombre" placeholder="Asociación de Boxeo Amateur de..."></div>
+      <div class="form-row">
+        <div class="form-group"><label>Región *</label><select id="a-region">
+          <option>Región Metropolitana</option><option>Valparaíso</option><option>Biobío</option>
+          <option>La Araucanía</option><option>Maule</option><option>Coquimbo</option>
+          <option>Antofagasta</option><option>Los Lagos</option><option>Tarapacá</option>
+        </select></div>
+        <div class="form-group"><label>Presidente *</label><input id="a-presidente" placeholder="Nombre del presidente"></div>
+      </div>
+      <div class="form-group"><label>Dirección</label><input id="a-direccion" placeholder="Av. Ejemplo 123, Ciudad"></div>
+      <div class="form-group"><label>Teléfono de contacto</label><input id="a-telefono" placeholder="+56 9 XXXX XXXX"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-asociacion')">CANCELAR</button>
+      <button class="btn btn-primary" onclick="saveAsociacion()">CREAR ASOCIACIÓN</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-usuario">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Crear Usuario</div>
+      <button class="modal-close" onclick="closeModal('modal-usuario')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>Nombre completo *</label><input id="u-nombre" placeholder="Juan Pérez"></div>
+        <div class="form-group"><label>Correo electrónico *</label><input type="email" id="u-email" placeholder="correo@ejemplo.cl"></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Contraseña *</label><input type="password" id="u-pass" placeholder="Mínimo 8 caracteres"></div>
+        <div class="form-group"><label>Rol *</label>
+          <select id="u-rol" onchange="toggleAsocField()">
+            <option value="ADMIN_ASOCIACION">Admin Asociación</option>
+            <option value="FISCALIZADOR">Fiscalizador</option>
+            <option value="SUPER_ADMIN">Super Administrador</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group" id="u-asoc-group">
+        <label>Asociación asignada *</label><select id="u-asociacion"></select>
+      </div>
+      <div class="form-group"><label>Cargo / Función</label><input id="u-cargo" placeholder="Presidente de asociación..."></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeModal('modal-usuario')">CANCELAR</button>
+      <button class="btn btn-primary" onclick="saveUsuario()">CREAR USUARIO</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="modal-overlay" id="modal-detalle">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title" id="detalle-title">Detalle</div>
+      <button class="modal-close" onclick="closeModal('modal-detalle')">✕</button>
+    </div>
+    <div class="modal-body" id="detalle-body"></div>
+    <div class="modal-footer" id="detalle-footer"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>// ============================
+// BOXREC CHILE AMATEUR - app.js
+// ============================
+
+const CATS_M = ['48kg','51kg','54kg','57kg','60kg','63.5kg','67kg','71kg','75kg','80kg','86kg','92kg','+92kg'];
+const CATS_F = ['48kg','50kg','52kg','54kg','57kg','60kg','63kg','66kg','70kg','75kg','81kg','+81kg'];
+const ROLES = { SUPER_ADMIN:'Super Administrador', FISCALIZADOR:'Fiscalizador', ADMIN_ASOCIACION:'Admin Asociación' };
+
+// ── SEED DATA ──────────────────────────────────────────────────────────────────
+function seedData() {
+  if (localStorage.getItem('brc_seeded')) return;
+
+  const asocs = [
+    { id:'a1', nombre:'Asociación de Boxeo Amateur Metropolitana', region:'Región Metropolitana', presidente:'Carlos Fuentes Vega', direccion:'Av. Libertador Bernardo O\'Higgins 1234, Santiago', telefono:'+56 2 2345 6789', activa:true },
+    { id:'a2', nombre:'Asociación de Boxeo Amateur Valparaíso', region:'Valparaíso', presidente:'Roberto Díaz Morales', direccion:'Av. Brasil 567, Valparaíso', telefono:'+56 32 234 5678', activa:true },
+    { id:'a3', nombre:'Asociación de Boxeo Amateur Biobío', region:'Biobío', presidente:'Luis Sanhueza Rojas', direccion:'Calle Freire 890, Concepción', telefono:'+56 41 234 5678', activa:true },
+    { id:'a4', nombre:'Asociación de Boxeo Amateur Coquimbo', region:'Coquimbo', presidente:'Ana Contreras Soto', direccion:'Av. El Santo 234, La Serena', telefono:'+56 51 234 5678', activa:true },
+  ];
+
+  const users = [
+    { id:'u0', nombre:'Carlos Muñoz Ortiz', email:'superadmin@boxrecchile.cl', password:'Super2024!', rol:'SUPER_ADMIN', asociacion:null, cargo:'Super Administrador FEBOXCHI', activo:true, ultimoAcceso:null },
+    { id:'u1', nombre:'Patricia Vera Lagos', email:'fiscalizador@boxrecchile.cl', password:'Fiscal2024!', rol:'FISCALIZADOR', asociacion:null, cargo:'Fiscalizadora Nacional', activo:true, ultimoAcceso:null },
+    { id:'u2', nombre:'Carlos Fuentes Vega', email:'stgo@boxrecchile.cl', password:'Stgo2024!', rol:'ADMIN_ASOCIACION', asociacion:'a1', cargo:'Presidente Asociación Metropolitana', activo:true, ultimoAcceso:null },
+    { id:'u3', nombre:'Roberto Díaz Morales', email:'valpo@boxrecchile.cl', password:'Valpo2024!', rol:'ADMIN_ASOCIACION', asociacion:'a2', cargo:'Presidente Asociación Valparaíso', activo:true, ultimoAcceso:null },
+    { id:'u4', nombre:'Luis Sanhueza Rojas', email:'biobio@boxrecchile.cl', password:'Biobio2024!', rol:'ADMIN_ASOCIACION', asociacion:'a3', cargo:'Presidente Asociación Biobío', activo:true, ultimoAcceso:null },
+  ];
+
+  const boxeadores = [
+    { id:'b1', nombre:'Marco Antonio Farías', rut:'15.234.567-8', nacimiento:'2001-03-15', genero:'M', categoria:'60kg', asociacion:'a1', region:'Región Metropolitana', gimnasio:'Club Box Santiago Centro', victorias:8, empates:1, derrotas:2, status:'APROBADO', uploadedBy:'u2', uploadedAt:'2024-11-10T10:00:00Z', approvedBy:'u1', approvedAt:'2024-11-11T09:00:00Z', rechazoRazon:null },
+    { id:'b2', nombre:'Diego Hernández Pino', rut:'16.123.456-7', nacimiento:'2002-07-22', genero:'M', categoria:'67kg', asociacion:'a1', region:'Región Metropolitana', gimnasio:'Gimnasio Las Américas', victorias:5, empates:0, derrotas:3, status:'APROBADO', uploadedBy:'u2', uploadedAt:'2024-11-12T11:00:00Z', approvedBy:'u1', approvedAt:'2024-11-13T10:00:00Z', rechazoRazon:null },
+    { id:'b3', nombre:'Sebastián Castro Molina', rut:'17.345.678-9', nacimiento:'2003-01-08', genero:'M', categoria:'54kg', asociacion:'a2', region:'Valparaíso', gimnasio:'Club Boxeo Cerro Alegre', victorias:12, empates:0, derrotas:1, status:'APROBADO', uploadedBy:'u3', uploadedAt:'2024-10-20T14:00:00Z', approvedBy:'u1', approvedAt:'2024-10-21T09:00:00Z', rechazoRazon:null },
+    { id:'b4', nombre:'Francisco Muñoz Torres', rut:'14.456.789-0', nacimiento:'2000-05-30', genero:'M', categoria:'75kg', asociacion:'a3', region:'Biobío', gimnasio:'Escuela de Boxeo Concepción', victorias:7, empates:2, derrotas:4, status:'APROBADO', uploadedBy:'u4', uploadedAt:'2024-11-01T09:00:00Z', approvedBy:'u1', approvedAt:'2024-11-02T10:00:00Z', rechazoRazon:null },
+    { id:'b5', nombre:'Camila Rodríguez Vega', rut:'18.234.567-K', nacimiento:'2004-09-12', genero:'F', categoria:'57kg', asociacion:'a1', region:'Región Metropolitana', gimnasio:'Club Box Femenino Santiago', victorias:6, empates:1, derrotas:0, status:'APROBADO', uploadedBy:'u2', uploadedAt:'2024-11-15T10:00:00Z', approvedBy:'u1', approvedAt:'2024-11-16T09:00:00Z', rechazoRazon:null },
+    { id:'b6', nombre:'Alejandro Soto Reyes', rut:'19.123.456-3', nacimiento:'2005-02-28', genero:'M', categoria:'51kg', asociacion:'a2', region:'Valparaíso', gimnasio:'Boxing Club Viña del Mar', victorias:3, empates:0, derrotas:1, status:'PENDIENTE', uploadedBy:'u3', uploadedAt:'2025-01-05T10:00:00Z', approvedBy:null, approvedAt:null, rechazoRazon:null },
+    { id:'b7', nombre:'Valentina López Arce', rut:'18.567.890-1', nacimiento:'2003-11-14', genero:'F', categoria:'60kg', asociacion:'a3', region:'Biobío', gimnasio:'Club Pugilístico Sur', victorias:4, empates:0, derrotas:2, status:'PENDIENTE', uploadedBy:'u4', uploadedAt:'2025-01-06T11:00:00Z', approvedBy:null, approvedAt:null, rechazoRazon:null },
+    { id:'b8', nombre:'Rodrigo Pérez Álvarez', rut:'15.789.012-2', nacimiento:'2001-08-03', genero:'M', categoria:'67kg', asociacion:'a1', region:'Región Metropolitana', gimnasio:'Team Box Pro', victorias:0, empates:0, derrotas:0, status:'RECHAZADO', uploadedBy:'u2', uploadedAt:'2024-12-10T10:00:00Z', approvedBy:null, approvedAt:null, rechazoRazon:'Documentos de identidad ilegibles. Favor resubir RUT con foto nítida.' },
+  ];
+
+  const eventos = [
+    { id:'e1', nombre:'Campeonato Regional Metropolitano 2024', fecha:'2024-11-20', tipo:'Campeonato Regional', ciudad:'Santiago', recinto:'Estadio Víctor Jara', asociacion:'a1', descripcion:'Primer campeonato regional del año', status:'APROBADO', uploadedBy:'u2', uploadedAt:'2024-11-01T10:00:00Z', approvedBy:'u1', approvedAt:'2024-11-02T09:00:00Z' },
+    { id:'e2', nombre:'Copa Cerro Alegre 2024', fecha:'2024-10-15', tipo:'Copa Interclubes', ciudad:'Valparaíso', recinto:'Gimnasio Municipal Valparaíso', asociacion:'a2', descripcion:'Copa tradicional del club', status:'APROBADO', uploadedBy:'u3', uploadedAt:'2024-09-20T14:00:00Z', approvedBy:'u1', approvedAt:'2024-09-21T10:00:00Z' },
+    { id:'e3', nombre:'Torneo Clasificatorio Olímpico Zona Sur 2025', fecha:'2025-03-15', tipo:'Selectivo Olímpico', ciudad:'Concepción', recinto:'Palacio de los Deportes Concepción', asociacion:'a3', descripcion:'Clasificatorio para selección nacional', status:'PENDIENTE', uploadedBy:'u4', uploadedAt:'2025-01-07T09:00:00Z', approvedBy:null, approvedAt:null },
+  ];
+
+  const peleas = [
+    { id:'p1', evento:'e1', rojo:'b1', azul:'b2', categoria:'67kg', rounds:'3', ganador:'ROJO', metodo:'Decisión Unánime', status:'APROBADO', uploadedBy:'u2', uploadedAt:'2024-11-21T10:00:00Z', approvedBy:'u1', approvedAt:'2024-11-22T09:00:00Z' },
+    { id:'p2', evento:'e2', rojo:'b3', azul:'b4', categoria:'60kg', rounds:'3', ganador:'ROJO', metodo:'KO Técnico (TKO)', status:'APROBADO', uploadedBy:'u3', uploadedAt:'2024-10-16T11:00:00Z', approvedBy:'u1', approvedAt:'2024-10-17T09:00:00Z' },
+    { id:'p3', evento:'e1', rojo:'b4', azul:'b1', categoria:'60kg', rounds:'3', ganador:'AZUL', metodo:'Decisión Dividida', status:'PENDIENTE', uploadedBy:'u2', uploadedAt:'2025-01-08T10:00:00Z', approvedBy:null, approvedAt:null },
+  ];
+
+  const audit = [
+    { id:'audit1', userId:'u2', action:'create', entity:'boxeador', entityId:'b1', desc:'Registró boxeador Marco Antonio Farías', ts:'2024-11-10T10:00:00Z' },
+    { id:'audit2', userId:'u1', action:'approve', entity:'boxeador', entityId:'b1', desc:'Aprobó registro de Marco Antonio Farías', ts:'2024-11-11T09:00:00Z' },
+    { id:'audit3', userId:'u3', action:'create', entity:'boxeador', entityId:'b3', desc:'Registró boxeador Sebastián Castro Molina', ts:'2024-10-20T14:00:00Z' },
+    { id:'audit4', userId:'u1', action:'approve', entity:'boxeador', entityId:'b3', desc:'Aprobó registro de Sebastián Castro Molina', ts:'2024-10-21T09:00:00Z' },
+    { id:'audit5', userId:'u2', action:'create', entity:'evento', entityId:'e1', desc:'Creó evento Campeonato Regional Metropolitano 2024', ts:'2024-11-01T10:00:00Z' },
+    { id:'audit6', userId:'u1', action:'approve', entity:'evento', entityId:'e1', desc:'Aprobó evento Campeonato Regional Metropolitano 2024', ts:'2024-11-02T09:00:00Z' },
+    { id:'audit7', userId:'u1', action:'reject', entity:'boxeador', entityId:'b8', desc:'Rechazó registro de Rodrigo Pérez Álvarez: Documentos ilegibles', ts:'2024-12-11T10:00:00Z' },
+    { id:'audit8', userId:'u4', action:'create', entity:'boxeador', entityId:'b7', desc:'Registró boxeadora Valentina López Arce', ts:'2025-01-06T11:00:00Z' },
+    { id:'audit9', userId:'u3', action:'create', entity:'boxeador', entityId:'b6', desc:'Registró boxeador Alejandro Soto Reyes', ts:'2025-01-05T10:00:00Z' },
+    { id:'audit10', userId:'u4', action:'create', entity:'evento', entityId:'e3', desc:'Creó evento Torneo Clasificatorio Olímpico Zona Sur 2025', ts:'2025-01-07T09:00:00Z' },
+  ];
+
+  save('asocs', asocs);
+  save('users', users);
+  save('boxeadores', boxeadores);
+  save('eventos', eventos);
+  save('peleas', peleas);
+  save('audit', audit);
+  localStorage.setItem('brc_seeded', '1');
+}
+
+// ── STORAGE ────────────────────────────────────────────────────────────────────
+function save(key, data) { localStorage.setItem('brc_' + key, JSON.stringify(data)); }
+function load(key) { try { return JSON.parse(localStorage.getItem('brc_' + key)) || []; } catch(e) { return []; } }
+
+// ── AUTH ───────────────────────────────────────────────────────────────────────
+let currentUser = null;
+
+function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const users = load('users');
+  const user = users.find(u => u.email === email && u.password === pass && u.activo);
+  if (!user) {
+    document.getElementById('login-error').style.display = 'block';
+    return;
+  }
+  document.getElementById('login-error').style.display = 'none';
+  // update last access
+  user.ultimoAcceso = new Date().toISOString();
+  save('users', users);
+  currentUser = user;
+  addAudit('login', 'sistema', null, `Inició sesión en el sistema`);
+  initApp();
+}
+
+function doLogout() {
+  addAudit('login', 'sistema', null, `Cerró sesión del sistema`);
+  currentUser = null;
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('login-email').value = '';
+  document.getElementById('login-pass').value = '';
+}
+
+function initApp() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'flex';
+
+  // topbar
+  const initials = currentUser.nombre.split(' ').slice(0,2).map(w=>w[0]).join('');
+  document.getElementById('top-avatar').textContent = initials;
+  document.getElementById('top-name').textContent = currentUser.nombre;
+  document.getElementById('top-role').textContent = ROLES[currentUser.rol];
+
+  // sidebar visibility
+  const isSuperAdmin = currentUser.rol === 'SUPER_ADMIN';
+  const isFiscal = currentUser.rol === 'FISCALIZADOR';
+  const isAdmin = currentUser.rol === 'ADMIN_ASOCIACION';
+
+  document.getElementById('nav-asociaciones').style.display = isSuperAdmin ? 'flex' : 'none';
+  document.getElementById('nav-usuarios').style.display = isSuperAdmin ? 'flex' : 'none';
+  document.getElementById('nav-pendientes').style.display = (isSuperAdmin || isFiscal) ? 'flex' : 'none';
+  document.getElementById('nav-auditoria').style.display = (isSuperAdmin || isFiscal) ? 'flex' : 'none';
+
+  // hide add buttons for non-admins viewing read-only
+  const canAdd = isSuperAdmin || isAdmin;
+  ['btn-add-boxeador','btn-add-evento','btn-add-pelea'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = canAdd ? '' : 'none';
+  });
+
+  populateSelects();
+  showPage('dashboard');
+  updatePendingCount();
+}
+
+// ── AUDIT LOG ──────────────────────────────────────────────────────────────────
+function addAudit(action, entity, entityId, desc) {
+  if (!currentUser) return;
+  const log = load('audit');
+  log.unshift({
+    id: 'audit_' + Date.now(),
+    userId: currentUser.id,
+    action, entity, entityId,
+    desc,
+    ts: new Date().toISOString()
+  });
+  save('audit', log);
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────────────
+let currentPendingTab = 'boxeadores';
+
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  document.querySelector(`[data-page="${page}"]`)?.classList.add('active');
+
+  const renders = {
+    dashboard: renderDashboard,
+    boxeadores: renderBoxeadores,
+    eventos: renderEventos,
+    peleas: renderPeleas,
+    rankings: renderRankings,
+    pendientes: renderPendientes,
+    auditoria: renderAudit,
+    asociaciones: renderAsociaciones,
+    usuarios: renderUsuarios,
+  };
+  if (renders[page]) renders[page]();
+}
+
+function switchTab(page, tab) {
+  currentPendingTab = tab;
+  document.querySelectorAll(`#page-${page} .tab`).forEach(t => {
+    t.classList.toggle('active', t.dataset.tab === tab);
+  });
+  ['boxeadores','eventos','peleas'].forEach(t => {
+    document.getElementById(`pending-${t}-list`).style.display = t === tab ? 'block' : 'none';
+  });
+  renderPendientes();
+}
+
+// ── SELECTS POPULATE ───────────────────────────────────────────────────────────
+function populateSelects() {
+  const asocs = load('asocs');
+  const users = load('users');
+
+  // filter asocs for current admin
+  const myAsocs = currentUser.rol === 'ADMIN_ASOCIACION'
+    ? asocs.filter(a => a.id === currentUser.asociacion)
+    : asocs;
+
+  // boxeador form
+  updateCategoriasModal();
+  fillSelect('b-asociacion', myAsocs, 'id', 'nombre');
+
+  // evento form
+  fillSelect('e-asociacion', myAsocs, 'id', 'nombre');
+
+  // pelea form - eventos aprobados
+  const evAprobados = load('eventos').filter(e => e.status === 'APROBADO');
+  fillSelect('p-evento', evAprobados, 'id', 'nombre');
+
+  // pelea boxeadores
+  const boxAprobados = load('boxeadores').filter(b => b.status === 'APROBADO');
+  fillSelect('p-rojo', boxAprobados, 'id', 'nombre');
+  fillSelect('p-azul', boxAprobados, 'id', 'nombre');
+  updateCategoriasModal('p-categoria', 'M', true);
+
+  // usuario form
+  fillSelect('u-asociacion', asocs, 'id', 'nombre');
+
+  // filters
+  const allCats = [...new Set([...CATS_M, ...CATS_F])].sort();
+  const filterCat = document.getElementById('filter-cat-box');
+  if (filterCat) allCats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; filterCat.appendChild(o); });
+
+  // ranking cats
+  const rankCat = document.getElementById('ranking-cat');
+  if (rankCat) { rankCat.innerHTML = '<option value="">Todas las categorías</option>'; allCats.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = c; rankCat.appendChild(o); }); }
+}
+
+function fillSelect(id, items, val, label) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = '';
+  items.forEach(item => {
+    const o = document.createElement('option');
+    o.value = item[val];
+    o.textContent = item[label];
+    el.appendChild(o);
+  });
+}
+
+function updateCategoriasModal(targetId, genero, all) {
+  const gen = genero || document.getElementById('b-genero')?.value || 'M';
+  const cats = gen === 'F' ? CATS_F : CATS_M;
+  const selId = targetId || 'b-categoria';
+  const el = document.getElementById(selId);
+  if (!el) return;
+  el.innerHTML = '';
+  if (all) { [...CATS_M, ...CATS_F].filter((v,i,a)=>a.indexOf(v)===i).sort().forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; el.appendChild(o); }); return; }
+  cats.forEach(c => { const o=document.createElement('option'); o.value=c; o.textContent=c; el.appendChild(o); });
+}
+
+function toggleAsocField() {
+  const rol = document.getElementById('u-rol').value;
+  document.getElementById('u-asoc-group').style.display = rol === 'ADMIN_ASOCIACION' ? 'block' : 'none';
+}
+
+// ── DASHBOARD ──────────────────────────────────────────────────────────────────
+function renderDashboard() {
+  const boxeadores = load('boxeadores');
+  const eventos = load('eventos');
+  const peleas = load('peleas');
+  const asocs = load('asocs');
+  const users = load('users');
+  const audit = load('audit');
+
+  const aprobados = boxeadores.filter(b=>b.status==='APROBADO').length;
+  const pendientes = boxeadores.filter(b=>b.status==='PENDIENTE').length + eventos.filter(e=>e.status==='PENDIENTE').length + peleas.filter(p=>p.status==='PENDIENTE').length;
+  const evAprobados = eventos.filter(e=>e.status==='APROBADO').length;
+  const peleasAprobadas = peleas.filter(p=>p.status==='APROBADO').length;
+
+  const welcome = currentUser.rol === 'SUPER_ADMIN' ? `Sistema BoxRec Chile Amateur — Control Total`
+    : currentUser.rol === 'FISCALIZADOR' ? `Panel de Fiscalización — ${pendientes} registro(s) pendiente(s)`
+    : `Asociación: ${getAsocName(currentUser.asociacion)}`;
+  document.getElementById('dashboard-welcome').textContent = welcome;
+
+  const stats = [
+    { icon:'🥊', value:aprobados, label:'Boxeadores Activos', cls:'red' },
+    { icon:'📅', value:evAprobados, label:'Eventos Aprobados', cls:'gold' },
+    { icon:'⚔️', value:peleasAprobadas, label:'Peleas Registradas', cls:'green' },
+    { icon:'🏛️', value:asocs.length, label:'Asociaciones', cls:'blue' },
+  ];
+  if (currentUser.rol === 'SUPER_ADMIN' || currentUser.rol === 'FISCALIZADOR') {
+    stats.push({ icon:'⏳', value:pendientes, label:'Pendientes Aprobación', cls:'orange' });
+    stats.push({ icon:'👥', value:users.filter(u=>u.activo).length, label:'Usuarios Activos', cls:'purple' });
+  }
+
+  document.getElementById('stats-grid').innerHTML = stats.map(s =>
+    `<div class="stat-card ${s.cls}"><div class="stat-icon">${s.icon}</div><div class="stat-value">${s.value}</div><div class="stat-label">${s.label}</div></div>`
+  ).join('');
+
+  // panels
+  let panels = '';
+  // recent audit
+  const recentAudit = audit.slice(0,6);
+  panels += `<div class="section-card"><div class="section-card-header"><div class="section-card-title">📋 Actividad Reciente</div></div><div class="section-card-body">`;
+  if (recentAudit.length === 0) panels += `<div class="empty"><div class="icon">📋</div><p>Sin actividad</p></div>`;
+  else recentAudit.forEach(a => { panels += renderAuditItem(a, users); });
+  panels += `</div></div>`;
+
+  // top boxeadores
+  const topBox = boxeadores.filter(b=>b.status==='APROBADO').sort((a,b)=>b.victorias-a.victorias).slice(0,5);
+  panels += `<div class="section-card"><div class="section-card-header"><div class="section-card-title">🏆 Top Boxeadores</div></div><div class="section-card-body"><table><thead><tr><th>#</th><th>NOMBRE</th><th>CAT.</th><th>RÉCORD</th></tr></thead><tbody>`;
+  topBox.forEach((b,i) => {
+    panels += `<tr><td><span class="rank-num ${i===0?'top1':i===1?'top2':i===2?'top3':''}">${i+1}</span></td><td class="td-primary">${b.nombre}</td><td><span class="badge badge-cat">${b.categoria}</span></td><td><span class="record-display"><span class="record-g">${b.victorias}</span>-<span class="record-e">${b.empates}</span>-<span class="record-p">${b.derrotas}</span></span></td></tr>`;
+  });
+  panels += `</tbody></table></div></div>`;
+  document.getElementById('dashboard-panels').innerHTML = panels;
+}
+
+// ── BOXEADORES ─────────────────────────────────────────────────────────────────
+function renderBoxeadores() {
+  const all = load('boxeadores');
+  const q = document.getElementById('search-boxeadores')?.value?.toLowerCase() || '';
+  const filterCat = document.getElementById('filter-cat-box')?.value || '';
+  const filterStatus = document.getElementById('filter-status-box')?.value || '';
+  const users = load('users');
+  const asocs = load('asocs');
+
+  let data = all;
+  if (currentUser.rol === 'ADMIN_ASOCIACION') data = data.filter(b => b.asociacion === currentUser.asociacion);
+  if (q) data = data.filter(b => b.nombre.toLowerCase().includes(q) || b.rut.includes(q) || getAsocName(b.asociacion).toLowerCase().includes(q));
+  if (filterCat) data = data.filter(b => b.categoria === filterCat);
+  if (filterStatus) data = data.filter(b => b.status === filterStatus);
+
+  const canEdit = currentUser.rol === 'SUPER_ADMIN' || currentUser.rol === 'ADMIN_ASOCIACION';
+  const canReview = currentUser.rol === 'SUPER_ADMIN' || currentUser.rol === 'FISCALIZADOR';
+
+  const tbody = document.getElementById('tbody-boxeadores');
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><div class="icon">🥊</div><p>No se encontraron boxeadores</p></div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = data.map(b => {
+    const uploader = users.find(u=>u.id===b.uploadedBy);
+    return `<tr>
+      <td class="td-primary" style="cursor:pointer" onclick="showBoxeadorDetail('${b.id}')">${b.nombre}</td>
+      <td class="td-mono">${b.rut}</td>
+      <td><span class="badge badge-cat">${b.categoria}</span> ${b.genero==='F'?'👩':'👨'}</td>
+      <td>${getAsocName(b.asociacion)}</td>
+      <td><span class="record-display"><span class="record-g">${b.victorias}</span>-<span class="record-e">${b.empates}</span>-<span class="record-p">${b.derrotas}</span></span></td>
+      <td>${statusBadge(b.status)}</td>
+      <td class="text-sm text-muted">${uploader ? uploader.nombre : '—'}<br><span style="font-size:10px">${formatDate(b.uploadedAt)}</span></td>
+      <td>
+        <div class="flex gap-2">
+          <button class="btn btn-ghost btn-sm" onclick="showBoxeadorDetail('${b.id}')">VER</button>
+          ${canEdit && b.status !== 'APROBADO' ? `<button class="btn btn-blue btn-sm" onclick="editBoxeador('${b.id}')">EDITAR</button>` : ''}
+          ${canReview && b.status === 'PENDIENTE' ? `<button class="btn btn-green btn-sm" onclick="quickApprove('boxeador','${b.id}')">✓</button><button class="btn btn-danger btn-sm" onclick="quickReject('boxeador','${b.id}')">✗</button>` : ''}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function showBoxeadorDetail(id) {
+  const b = load('boxeadores').find(x=>x.id===id);
+  if (!b) return;
+  const users = load('users');
+  const uploader = users.find(u=>u.id===b.uploadedBy);
+  const approver = users.find(u=>u.id===b.approvedBy);
+  const canReview = (currentUser.rol === 'SUPER_ADMIN' || currentUser.rol === 'FISCALIZADOR') && b.status === 'PENDIENTE';
+  const peleas = load('peleas').filter(p => (p.rojo===id || p.azul===id) && p.status==='APROBADO');
+  const eventos = load('eventos');
+
+  document.getElementById('detalle-title').textContent = b.nombre;
+  document.getElementById('detalle-body').innerHTML = `
+    <div class="fighter-profile">
+      <div class="fighter-avatar">${b.nombre.split(' ').slice(0,2).map(w=>w[0]).join('')}</div>
+      <div class="fighter-info">
+        <h2>${b.nombre}</h2>
+        <div class="text-muted text-sm">${b.rut} · ${b.genero==='F'?'Femenino':'Masculino'} · Nac. ${b.nacimiento}</div>
+        <div class="fighter-meta">
+          ${statusBadge(b.status)}
+          <span class="badge badge-cat">${b.categoria}</span>
+          <span class="badge badge-info">${b.region}</span>
+          <span class="badge badge-info">${getAsocName(b.asociacion)}</span>
+        </div>
+        <div class="fighter-record">
+          <div class="record-box"><div class="num record-g">${b.victorias}</div><div class="lbl">Victorias</div></div>
+          <div class="record-box"><div class="num record-e">${b.empates}</div><div class="lbl">Empates</div></div>
+          <div class="record-box"><div class="num record-p">${b.derrotas}</div><div class="lbl">Derrotas</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="review-field"><label>Gimnasio / Club:</label><span class="val">${b.gimnasio || '—'}</span></div>
+    <div class="review-field"><label>Subido por:</label><span class="val">${uploader?.nombre || '—'} <span class="text-muted">(${formatDate(b.uploadedAt)})</span></span></div>
+    ${approver ? `<div class="review-field"><label>Aprobado por:</label><span class="val">${approver.nombre} <span class="text-muted">(${formatDate(b.approvedAt)})</span></span></div>` : ''}
+    ${b.rechazoRazon ? `<div class="warn-box mt-2"><strong>Motivo de rechazo:</strong> ${b.rechazoRazon}</div>` : ''}
+    ${peleas.length > 0 ? `
+    <div class="divider"></div>
+    <h4 style="margin-bottom:12px;font-size:14px">Historial de Peleas (${peleas.length})</h4>
+    <table><thead><tr><th>EVENTO</th><th>RIVAL</th><th>RESULTADO</th><th>MÉTODO</th></tr></thead><tbody>
+    ${peleas.map(p => {
+      const rival = load('boxeadores').find(x=>x.id===(p.rojo===id?p.azul:p.rojo));
+      const evt = eventos.find(e=>e.id===p.evento);
+      const isWinner = (p.ganador==='ROJO'&&p.rojo===id)||(p.ganador==='AZUL'&&p.azul===id);
+      const res = p.ganador==='EMPATE'?'Empate':p.ganador==='NC'?'NC':isWinner?'Victoria':'Derrota';
+      const resCls = res==='Victoria'?'record-g':res==='Derrota'?'record-p':'record-e';
+      return `<tr><td>${evt?.nombre||'—'}</td><td>${rival?.nombre||'—'}</td><td class="${resCls}" style="font-weight:700">${res}</td><td>${p.metodo}</td></tr>`;
+    }).join('')}
+    </tbody></table>` : ''}
+  `;
+
+  const footer = document.getElementById('detalle-footer');
+  if (canReview) {
+    footer.innerHTML = `
+      <button class="btn btn-ghost" onclick="closeModal('modal-detalle')">CERRAR</button>
+      <button class="btn btn-danger" onclick="closeModal('modal-detalle');openRejectModal('boxeador','${id}')">RECHAZAR</button>
+      <button class="btn btn-green" onclick="approveRecord('boxeador','${id}');closeModal('modal-detalle')">APROBAR</button>
+    `;
+  } else {
+    footer.innerHTML = `<button class="btn btn-ghost" onclick="closeModal('modal-detalle')">CERRAR</button>`;
+  }
+  openModal('modal-detalle');
+}
+
+function editBoxeador(id) {
+  const b = load('boxeadores').find(x=>x.id===id);
+  if (!b) return;
+  document.getElementById('boxeador-edit-id').value = id;
+  document.getElementById('modal-boxeador-title').textContent = 'Editar Boxeador';
+  document.getElementById('b-nombre').value = b.nombre;
+  document.getElementById('b-rut').value = b.rut;
+  document.getElementById('b-nacimiento').value = b.nacimiento;
+  document.getElementById('b-genero').value = b.genero;
+  updateCategoriasModal();
+  document.getElementById('b-categoria').value = b.categoria;
+  document.getElementById('b-asociacion').value = b.asociacion;
+  document.getElementById('b-region').value = b.region;
+  document.getElementById('b-gimnasio').value = b.gimnasio || '';
+  openModal('modal-boxeador');
+}
+
+function saveBoxeador() {
+  const nombre = document.getElementById('b-nombre').value.trim();
+  const rut = document.getElementById('b-rut').value.trim();
+  const nacimiento = document.getElementById('b-nacimiento').value;
+  const genero = document.getElementById('b-genero').value;
+  const categoria = document.getElementById('b-categoria').value;
+  const asociacion = document.getElementById('b-asociacion').value;
+  const region = document.getElementById('b-region').value;
+  const gimnasio = document.getElementById('b-gimnasio').value.trim();
+
+  if (!nombre || !rut || !nacimiento || !categoria || !asociacion) { showToast('Complete todos los campos requeridos', 'error'); return; }
+
+  const editId = document.getElementById('boxeador-edit-id').value;
+  const all = load('boxeadores');
+
+  if (editId) {
+    const idx = all.findIndex(b=>b.id===editId);
+    if (idx >= 0) {
+      all[idx] = { ...all[idx], nombre, rut, nacimiento, genero, categoria, asociacion, region, gimnasio, status:'PENDIENTE', uploadedBy:currentUser.id, uploadedAt:new Date().toISOString(), approvedBy:null, approvedAt:null, rechazoRazon:null };
+      save('boxeadores', all);
+      addAudit('update', 'boxeador', editId, `Actualizó boxeador ${nombre} (vuelve a PENDIENTE)`);
+      showToast('Boxeador actualizado — vuelve a revisión', 'info');
+    }
+  } else {
+    const b = { id:'b'+Date.now(), nombre, rut, nacimiento, genero, categoria, asociacion, region, gimnasio, victorias:0, empates:0, derrotas:0, status:'PENDIENTE', uploadedBy:currentUser.id, uploadedAt:new Date().toISOString(), approvedBy:null, approvedAt:null, rechazoRazon:null };
+    all.push(b);
+    save('boxeadores', all);
+    addAudit('create', 'boxeador', b.id, `Registró boxeador ${nombre}`);
+    showToast('Boxeador registrado — pendiente de aprobación', 'success');
+  }
+
+  closeModal('modal-boxeador');
+  document.getElementById('boxeador-edit-id').value = '';
+  document.getElementById('modal-boxeador-title').textContent = 'Registrar Boxeador';
+  renderBoxeadores();
+  updatePendingCount();
+}
+
+// ── EVENTOS ────────────────────────────────────────────────────────────────────
+function renderEventos() {
+  let data = load('eventos');
+  const q = document.getElementById('search-eventos')?.value?.toLowerCase() || '';
+  const filterStatus = document.getElementById('filter-status-evt')?.value || '';
+  const users = load('users');
+
+  if (currentUser.rol === 'ADMIN_ASOCIACION') data = data.filter(e => e.asociacion === currentUser.asociacion);
+  if (q) data = data.filter(e => e.nombre.toLowerCase().includes(q));
+  if (filterStatus) data = data.filter(e => e.status === filterStatus);
+
+  const canReview = currentUser.rol === 'SUPER_ADMIN' || currentUser.rol === 'FISCALIZADOR';
+
+  const tbody = document.getElementById('tbody-eventos');
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="8"><div class="empty"><div class="icon">📅</div><p>No se encontraron eventos</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(e => {
+    const uploader = users.find(u=>u.id===e.uploadedBy);
+    return `<tr>
+      <td class="td-primary">${e.nombre}</td>
+      <td>${formatDate(e.fecha)}</td>
+      <td><span class="badge badge-cat">${e.tipo}</span></td>
+      <td>${e.ciudad}${e.recinto?` — ${e.recinto}`:''}</td>
+      <td>${getAsocName(e.asociacion)}</td>
+      <td>${statusBadge(e.status)}</td>
+      <td class="text-sm text-muted">${uploader?.nombre||'—'}<br><span style="font-size:10px">${formatDate(e.uploadedAt)}</span></td>
+      <td>
+        <div class="flex gap-2">
+          ${canReview && e.status==='PENDIENTE' ? `<button class="btn btn-green btn-sm" onclick="quickApprove('evento','${e.id}')">✓</button><button class="btn btn-danger btn-sm" onclick="quickReject('evento','${e.id}')">✗</button>` : ''}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function saveEvento() {
+  const nombre = document.getElementById('e-nombre').value.trim();
+  const fecha = document.getElementById('e-fecha').value;
+  const tipo = document.getElementById('e-tipo').value;
+  const ciudad = document.getElementById('e-ciudad').value.trim();
+  const recinto = document.getElementById('e-recinto').value.trim();
+  const asociacion = document.getElementById('e-asociacion').value;
+  const descripcion = document.getElementById('e-descripcion').value.trim();
+
+  if (!nombre || !fecha || !asociacion) { showToast('Complete los campos requeridos', 'error'); return; }
+
+  const editId = document.getElementById('evento-edit-id').value;
+  const all = load('eventos');
+  const evt = { id: editId || 'e'+Date.now(), nombre, fecha, tipo, ciudad, recinto, asociacion, descripcion, status:'PENDIENTE', uploadedBy:currentUser.id, uploadedAt:new Date().toISOString(), approvedBy:null, approvedAt:null };
+
+  if (editId) { const i = all.findIndex(e=>e.id===editId); if(i>=0) all[i]=evt; }
+  else all.push(evt);
+
+  save('eventos', all);
+  addAudit('create', 'evento', evt.id, `Creó evento ${nombre}`);
+  showToast('Evento guardado — pendiente de aprobación', 'success');
+  closeModal('modal-evento');
+  ['e-nombre','e-fecha','e-ciudad','e-recinto','e-descripcion'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('evento-edit-id').value='';
+  renderEventos();
+  updatePendingCount();
+}
+
+// ── PELEAS ─────────────────────────────────────────────────────────────────────
+function renderPeleas() {
+  let data = load('peleas');
+  const q = document.getElementById('search-peleas')?.value?.toLowerCase() || '';
+  const filterStatus = document.getElementById('filter-status-fight')?.value || '';
+  const boxeadores = load('boxeadores');
+  const eventos = load('eventos');
+  const users = load('users');
+
+  if (currentUser.rol === 'ADMIN_ASOCIACION') {
+    const myAsoc = currentUser.asociacion;
+    const myBoxIds = boxeadores.filter(b=>b.asociacion===myAsoc).map(b=>b.id);
+    data = data.filter(p => myBoxIds.includes(p.rojo) || myBoxIds.includes(p.azul));
+  }
+  if (filterStatus) data = data.filter(p=>p.status===filterStatus);
+  if (q) {
+    data = data.filter(p => {
+      const r = boxeadores.find(b=>b.id===p.rojo);
+      const a = boxeadores.find(b=>b.id===p.azul);
+      const e = eventos.find(e=>e.id===p.evento);
+      return (r&&r.nombre.toLowerCase().includes(q))||(a&&a.nombre.toLowerCase().includes(q))||(e&&e.nombre.toLowerCase().includes(q));
+    });
+  }
+
+  const canReview = currentUser.rol === 'SUPER_ADMIN' || currentUser.rol === 'FISCALIZADOR';
+
+  const tbody = document.getElementById('tbody-peleas');
+  if (data.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="9"><div class="empty"><div class="icon">⚔️</div><p>No se encontraron peleas</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML = data.map(p => {
+    const r = boxeadores.find(b=>b.id===p.rojo);
+    const a = boxeadores.find(b=>b.id===p.azul);
+    const e = eventos.find(ev=>ev.id===p.evento);
+    const uploader = users.find(u=>u.id===p.uploadedBy);
+    const resLabel = p.ganador==='ROJO'?`🔴 ${r?.nombre||'—'}`:p.ganador==='AZUL'?`🔵 ${a?.nombre||'—'}`:p.ganador==='EMPATE'?'Empate':'NC';
+    return `<tr>
+      <td class="td-primary">🔴 ${r?.nombre||'?'}</td>
+      <td style="color:var(--gray3);text-align:center">VS</td>
+      <td class="td-primary">🔵 ${a?.nombre||'?'}</td>
+      <td>${resLabel}<br><span class="text-sm text-muted">${p.metodo}</span></td>
+      <td><span class="badge badge-cat">${p.categoria}</span></td>
+      <td class="text-sm">${e?.nombre||'—'}</td>
+      <td>${statusBadge(p.status)}</td>
+      <td class="text-sm text-muted">${uploader?.nombre||'—'}<br><span style="font-size:10px">${formatDate(p.uploadedAt)}</span></td>
+      <td>
+        ${canReview && p.status==='PENDIENTE' ? `<div class="flex gap-2"><button class="btn btn-green btn-sm" onclick="quickApprove('pelea','${p.id}')">✓</button><button class="btn btn-danger btn-sm" onclick="quickReject('pelea','${p.id}')">✗</button></div>` : ''}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function savePelea() {
+  const evento = document.getElementById('p-evento').value;
+  const rojo = document.getElementById('p-rojo').value;
+  const azul = document.getElementById('p-azul').value;
+  const categoria = document.getElementById('p-categoria').value;
+  const rounds = document.getElementById('p-rounds').value;
+  const ganador = document.getElementById('p-ganador').value;
+  const metodo = document.getElementById('p-metodo').value;
+
+  if (!evento || !rojo || !azul || !ganador) { showToast('Complete todos los campos requeridos', 'error'); return; }
+  if (rojo === azul) { showToast('Los boxeadores no pueden ser el mismo', 'error'); return; }
+
+  const all = load('peleas');
+  const p = { id:'p'+Date.now(), evento, rojo, azul, categoria, rounds, ganador, metodo, status:'PENDIENTE', uploadedBy:currentUser.id, uploadedAt:new Date().toISOString(), approvedBy:null, approvedAt:null };
+  all.push(p);
+  save('peleas', all);
+  addAudit('create', 'pelea', p.id, `Registró pelea`);
+  showToast('Pelea registrada — pendiente de aprobación', 'success');
+  closeModal('modal-pelea');
+  renderPeleas();
+  updatePendingCount();
+}
+
+// ── RANKINGS ───────────────────────────────────────────────────────────────────
+function renderRankings() {
+  const catFilter = document.getElementById('ranking-cat')?.value || '';
+  const boxeadores = load('boxeadores').filter(b=>b.status==='APROBADO');
+  const asocs = load('asocs');
+
+  const cats = catFilter ? [catFilter] : [...new Set([...CATS_M,...CATS_F])];
+  let html = '';
+
+  cats.forEach(cat => {
+    const fighters = boxeadores
+      .filter(b=>b.categoria===cat)
+      .sort((a,b)=>{
+        const ptsA = a.victorias*3 + a.empates - a.derrotas;
+        const ptsB = b.victorias*3 + b.empates - b.derrotas;
+        if (ptsB !== ptsA) return ptsB-ptsA;
+        return b.victorias - a.victorias;
+      });
+    if (fighters.length === 0) return;
+
+    html += `<div class="section-card" style="margin-bottom:20px">
+      <div class="section-card-header">
+        <div class="section-card-title">🏆 ${cat} — ${fighters.length} boxeador${fighters.length!==1?'es':''}</div>
+      </div>
+      <div class="section-card-body"><table><thead><tr>
+        <th style="width:40px">#</th><th>NOMBRE</th><th>ASOCIACIÓN</th><th>REGIÓN</th>
+        <th>RÉCORD (G-E-D)</th><th>PELEAS</th>
+      </tr></thead><tbody>
+      ${fighters.map((b,i)=>{
+        const total = b.victorias+b.empates+b.derrotas;
+        return `<tr>
+          <td><span class="rank-num ${i===0?'top1':i===1?'top2':i===2?'top3':''}">${i+1}</span></td>
+          <td class="td-primary">${b.nombre}</td>
+          <td>${getAsocName(b.asociacion)}</td>
+          <td class="text-muted text-sm">${b.region}</td>
+          <td><span class="record-display"><span class="record-g">${b.victorias}</span>-<span class="record-e">${b.empates}</span>-<span class="record-p">${b.derrotas}</span></span></td>
+          <td class="text-muted">${total}</td>
+        </tr>`;
+      }).join('')}
+      </tbody></table></div></div>`;
+  });
+
+  document.getElementById('rankings-container').innerHTML = html || `<div class="empty"><div class="icon">🏆</div><p>No hay boxeadores aprobados aún</p></div>`;
+}
+
+// ── PENDIENTES ─────────────────────────────────────────────────────────────────
+function renderPendientes() {
+  const users = load('users');
+  const asocs = load('asocs');
+  const tab = currentPendingTab;
+
+  if (tab === 'boxeadores') {
+    const pending = load('boxeadores').filter(b=>b.status==='PENDIENTE');
+    document.getElementById('pending-boxeadores-list').innerHTML = pending.length === 0
+      ? `<div class="empty"><div class="icon">✅</div><p>No hay boxeadores pendientes</p></div>`
+      : pending.map(b => renderReviewCard('boxeador', b, users, asocs)).join('');
+  } else if (tab === 'eventos') {
+    const pending = load('eventos').filter(e=>e.status==='PENDIENTE');
+    document.getElementById('pending-eventos-list').innerHTML = pending.length === 0
+      ? `<div class="empty"><div class="icon">✅</div><p>No hay eventos pendientes</p></div>`
+      : pending.map(e => renderReviewCard('evento', e, users, asocs)).join('');
+  } else {
+    const pending = load('peleas').filter(p=>p.status==='PENDIENTE');
+    const boxeadores = load('boxeadores');
+    const eventos = load('eventos');
+    document.getElementById('pending-peleas-list').innerHTML = pending.length === 0
+      ? `<div class="empty"><div class="icon">✅</div><p>No hay peleas pendientes</p></div>`
+      : pending.map(p => renderReviewCard('pelea', p, users, asocs, boxeadores, eventos)).join('');
+  }
+}
+
+function renderReviewCard(type, item, users, asocs, boxeadores, eventos) {
+  const uploader = users.find(u=>u.id===item.uploadedBy);
+  let title = '', details = '';
+
+  if (type === 'boxeador') {
+    title = `🥊 ${item.nombre}`;
+    details = `
+      <div class="review-field"><label>RUT:</label><span class="val td-mono">${item.rut}</span></div>
+      <div class="review-field"><label>Nacimiento:</label><span class="val">${item.nacimiento}</span></div>
+      <div class="review-field"><label>Género:</label><span class="val">${item.genero==='F'?'Femenino':'Masculino'}</span></div>
+      <div class="review-field"><label>Categoría:</label><span class="val"><span class="badge badge-cat">${item.categoria}</span></span></div>
+      <div class="review-field"><label>Asociación:</label><span class="val">${getAsocName(item.asociacion)}</span></div>
+      <div class="review-field"><label>Región:</label><span class="val">${item.region}</span></div>
+      <div class="review-field"><label>Gimnasio:</label><span class="val">${item.gimnasio||'—'}</span></div>
+    `;
+  } else if (type === 'evento') {
+    title = `📅 ${item.nombre}`;
+    details = `
+      <div class="review-field"><label>Fecha:</label><span class="val">${item.fecha}</span></div>
+      <div class="review-field"><label>Tipo:</label><span class="val">${item.tipo}</span></div>
+      <div class="review-field"><label>Ciudad:</label><span class="val">${item.ciudad} — ${item.recinto||'S/D'}</span></div>
+      <div class="review-field"><label>Asociación:</label><span class="val">${getAsocName(item.asociacion)}</span></div>
+      ${item.descripcion?`<div class="review-field"><label>Descripción:</label><span class="val">${item.descripcion}</span></div>`:''}
+    `;
+  } else if (type === 'pelea') {
+    const r = boxeadores?.find(b=>b.id===item.rojo);
+    const a = boxeadores?.find(b=>b.id===item.azul);
+    const e = eventos?.find(ev=>ev.id===item.evento);
+    title = `⚔️ ${r?.nombre||'?'} vs ${a?.nombre||'?'}`;
+    details = `
+      <div class="review-field"><label>Evento:</label><span class="val">${e?.nombre||'—'}</span></div>
+      <div class="review-field"><label>Categoría:</label><span class="val">${item.categoria}</span></div>
+      <div class="review-field"><label>Rounds:</label><span class="val">${item.rounds}</span></div>
+      <div class="review-field"><label>Ganador:</label><span class="val">${item.ganador==='ROJO'?`🔴 ${r?.nombre}`:item.ganador==='AZUL'?`🔵 ${a?.nombre}`:item.ganador}</span></div>
+      <div class="review-field"><label>Método:</label><span class="val">${item.metodo}</span></div>
+    `;
+  }
+
+  const rejectId = `reject-form-${type}-${item.id}`;
+  return `
+    <div class="review-card">
+      <div class="review-card-header">
+        <div>
+          <strong>${title}</strong>
+          <div class="text-sm text-muted mt-1">Subido por <strong>${uploader?.nombre||'—'}</strong> · ${formatDate(item.uploadedAt)}</div>
+        </div>
+        <span class="badge badge-pending">⏳ PENDIENTE</span>
+      </div>
+      <div class="review-card-body">
+        ${details}
+        <div class="review-actions">
+          <button class="btn btn-green" onclick="approveRecord('${type}','${item.id}')">✓ APROBAR</button>
+          <button class="btn btn-danger" onclick="toggleRejectForm('${rejectId}')">✗ RECHAZAR</button>
+        </div>
+        <div class="reject-form" id="${rejectId}">
+          <div class="form-group" style="margin-bottom:10px"><label>Motivo del rechazo *</label>
+            <textarea id="reject-reason-${type}-${item.id}" placeholder="Indique el motivo del rechazo..."></textarea>
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="rejectRecord('${type}','${item.id}')">CONFIRMAR RECHAZO</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function toggleRejectForm(id) {
+  const el = document.getElementById(id);
+  if (el) el.style.display = el.style.display === 'none' || !el.style.display ? 'block' : 'none';
+}
+
+// ── APPROVAL WORKFLOW ──────────────────────────────────────────────────────────
+function quickApprove(type, id) {
+  if (!confirm('¿Aprobar este registro?')) return;
+  approveRecord(type, id);
+}
+
+function approveRecord(type, id) {
+  const key = type === 'boxeador' ? 'boxeadores' : type === 'evento' ? 'eventos' : 'peleas';
+  const all = load(key);
+  const idx = all.findIndex(x=>x.id===id);
+  if (idx < 0) return;
+
+  all[idx].status = 'APROBADO';
+  all[idx].approvedBy = currentUser.id;
+  all[idx].approvedAt = new Date().toISOString();
+  all[idx].rechazoRazon = null;
+
+  // Update records for fights
+  if (type === 'pelea') {
+    const p = all[idx];
+    updateBoxRecord(p.rojo, p.ganador==='ROJO'?'win':p.ganador==='EMPATE'?'draw':'loss');
+    updateBoxRecord(p.azul, p.ganador==='AZUL'?'win':p.ganador==='EMPATE'?'draw':'loss');
+    if (p.ganador === 'NC') { /* no record change */ }
+  }
+
+  save(key, all);
+  addAudit('approve', type, id, `Aprobó ${type}: ${getEntityName(type, all[idx])}`);
+  showToast('Registro aprobado exitosamente', 'success');
+  renderPendientes();
+  renderBoxeadores();
+  renderEventos();
+  renderPeleas();
+  updatePendingCount();
+}
+
+function updateBoxRecord(boxId, result) {
+  const all = load('boxeadores');
+  const idx = all.findIndex(b=>b.id===boxId);
+  if (idx < 0) return;
+  if (result === 'win') all[idx].victorias++;
+  else if (result === 'draw') all[idx].empates++;
+  else if (result === 'loss') all[idx].derrotas++;
+  save('boxeadores', all);
+}
+
+function quickReject(type, id) {
+  const reason = prompt('Motivo del rechazo:');
+  if (!reason || !reason.trim()) return;
+  rejectRecordWithReason(type, id, reason.trim());
+}
+
+function rejectRecord(type, id) {
+  const reason = document.getElementById(`reject-reason-${type}-${id}`)?.value?.trim();
+  if (!reason) { showToast('Ingrese el motivo del rechazo', 'error'); return; }
+  rejectRecordWithReason(type, id, reason);
+}
+
+function rejectRecordWithReason(type, id, reason) {
+  const key = type === 'boxeador' ? 'boxeadores' : type === 'evento' ? 'eventos' : 'peleas';
+  const all = load(key);
+  const idx = all.findIndex(x=>x.id===id);
+  if (idx < 0) return;
+  all[idx].status = 'RECHAZADO';
+  all[idx].rechazoRazon = reason;
+  save(key, all);
+  addAudit('reject', type, id, `Rechazó ${type}: ${reason}`);
+  showToast('Registro rechazado', 'info');
+  renderPendientes();
+  renderBoxeadores();
+  renderEventos();
+  renderPeleas();
+  updatePendingCount();
+}
+
+function openRejectModal(type, id) {
+  // fallback: use prompt
+  const reason = prompt('Motivo del rechazo:');
+  if (reason && reason.trim()) rejectRecordWithReason(type, id, reason.trim());
+}
+
+function getEntityName(type, item) {
+  if (type === 'boxeador') return item.nombre;
+  if (type === 'evento') return item.nombre;
+  if (type === 'pelea') return `Pelea ${item.id}`;
+  return item.id;
+}
+
+// ── AUDITORÍA ──────────────────────────────────────────────────────────────────
+function renderAudit() {
+  const filter = document.getElementById('filter-audit-type')?.value || '';
+  let data = load('audit');
+  const users = load('users');
+  if (filter) data = data.filter(a=>a.action===filter);
+
+  const list = document.getElementById('audit-list');
+  if (data.length === 0) {
+    list.innerHTML = `<div class="empty"><div class="icon">📋</div><p>Sin registros de auditoría</p></div>`;
+    return;
+  }
+  list.innerHTML = data.map(a => renderAuditItem(a, users)).join('');
+}
+
+function renderAuditItem(a, users) {
+  const user = users.find(u=>u.id===a.userId);
+  const icons = { create:'🟢', approve:'🔵', reject:'🔴', login:'🟡', update:'🟠', delete:'⭕' };
+  return `<div class="audit-item">
+    <span style="font-size:16px">${icons[a.action]||'⚪'}</span>
+    <div class="audit-content">
+      <div class="audit-action">${a.desc}</div>
+      <div class="audit-meta">${user?.nombre||'Sistema'} · ${ROLES[user?.rol]||'—'} · ${formatDateTime(a.ts)}</div>
+    </div>
+  </div>`;
+}
+
+// ── ASOCIACIONES ───────────────────────────────────────────────────────────────
+function renderAsociaciones() {
+  const asocs = load('asocs');
+  const boxeadores = load('boxeadores');
+  const eventos = load('eventos');
+
+  document.getElementById('tbody-asociaciones').innerHTML = asocs.map(a => {
+    const numBox = boxeadores.filter(b=>b.asociacion===a.id&&b.status==='APROBADO').length;
+    const numEvt = eventos.filter(e=>e.asociacion===a.id&&e.status==='APROBADO').length;
+    return `<tr>
+      <td class="td-primary">${a.nombre}</td>
+      <td>${a.region}</td>
+      <td>${a.presidente}</td>
+      <td>${numBox}</td>
+      <td>${numEvt}</td>
+      <td><span class="badge ${a.activa?'badge-approved':'badge-rejected'}">${a.activa?'Activa':'Inactiva'}</span></td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="toggleAsoc('${a.id}')">${a.activa?'DESACTIVAR':'ACTIVAR'}</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function saveAsociacion() {
+  const nombre = document.getElementById('a-nombre').value.trim();
+  const region = document.getElementById('a-region').value;
+  const presidente = document.getElementById('a-presidente').value.trim();
+  const direccion = document.getElementById('a-direccion').value.trim();
+  const telefono = document.getElementById('a-telefono').value.trim();
+
+  if (!nombre || !presidente) { showToast('Complete nombre y presidente', 'error'); return; }
+
+  const all = load('asocs');
+  const a = { id:'a'+Date.now(), nombre, region, presidente, direccion, telefono, activa:true };
+  all.push(a);
+  save('asocs', all);
+  addAudit('create', 'asociacion', a.id, `Creó asociación ${nombre}`);
+  showToast('Asociación creada', 'success');
+  closeModal('modal-asociacion');
+  renderAsociaciones();
+  populateSelects();
+}
+
+function toggleAsoc(id) {
+  const all = load('asocs');
+  const idx = all.findIndex(a=>a.id===id);
+  if (idx>=0) { all[idx].activa = !all[idx].activa; save('asocs', all); renderAsociaciones(); }
+}
+
+// ── USUARIOS ───────────────────────────────────────────────────────────────────
+function renderUsuarios() {
+  const users = load('users');
+  const asocs = load('asocs');
+
+  document.getElementById('tbody-usuarios').innerHTML = users.map(u => {
+    const asoc = asocs.find(a=>a.id===u.asociacion);
+    return `<tr>
+      <td class="td-primary">${u.nombre}<br><span class="text-sm text-muted">${u.cargo||''}</span></td>
+      <td class="td-mono text-sm">${u.email}</td>
+      <td>${rolBadge(u.rol)}</td>
+      <td class="text-sm">${asoc?.nombre||'—'}</td>
+      <td class="text-sm text-muted">${u.ultimoAcceso?formatDateTime(u.ultimoAcceso):'Nunca'}</td>
+      <td><span class="badge ${u.activo?'badge-approved':'badge-rejected'}">${u.activo?'Activo':'Inactivo'}</span></td>
+      <td>
+        ${u.id !== currentUser.id ? `<button class="btn btn-ghost btn-sm" onclick="toggleUser('${u.id}')">${u.activo?'DESACTIVAR':'ACTIVAR'}</button>` : '<span class="text-muted text-sm">Tú</span>'}
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function saveUsuario() {
+  const nombre = document.getElementById('u-nombre').value.trim();
+  const email = document.getElementById('u-email').value.trim();
+  const pass = document.getElementById('u-pass').value;
+  const rol = document.getElementById('u-rol').value;
+  const cargo = document.getElementById('u-cargo').value.trim();
+  const asociacion = rol === 'ADMIN_ASOCIACION' ? document.getElementById('u-asociacion').value : null;
+
+  if (!nombre || !email || !pass) { showToast('Complete todos los campos requeridos', 'error'); return; }
+  if (pass.length < 6) { showToast('La contraseña debe tener al menos 6 caracteres', 'error'); return; }
+
+  const all = load('users');
+  if (all.find(u=>u.email===email)) { showToast('Ya existe un usuario con ese correo', 'error'); return; }
+
+  const u = { id:'u'+Date.now(), nombre, email, password:pass, rol, cargo, asociacion, activo:true, ultimoAcceso:null };
+  all.push(u);
+  save('users', all);
+  addAudit('create', 'usuario', u.id, `Creó usuario ${nombre} con rol ${ROLES[rol]}`);
+  showToast('Usuario creado exitosamente', 'success');
+  closeModal('modal-usuario');
+  renderUsuarios();
+}
+
+function toggleUser(id) {
+  const all = load('users');
+  const idx = all.findIndex(u=>u.id===id);
+  if (idx>=0) {
+    all[idx].activo = !all[idx].activo;
+    save('users', all);
+    addAudit('update', 'usuario', id, `${all[idx].activo?'Activó':'Desactivó'} usuario ${all[idx].nombre}`);
+    renderUsuarios();
+    showToast(`Usuario ${all[idx].activo?'activado':'desactivado'}`, 'info');
+  }
+}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────────
+function getAsocName(id) {
+  const a = load('asocs').find(x=>x.id===id);
+  return a ? a.nombre.replace('Asociación de Boxeo Amateur ','') : '—';
+}
+
+function statusBadge(status) {
+  const map = { PENDIENTE:'badge-pending', APROBADO:'badge-approved', RECHAZADO:'badge-rejected' };
+  const label = { PENDIENTE:'⏳ Pendiente', APROBADO:'✅ Aprobado', RECHAZADO:'❌ Rechazado' };
+  return `<span class="badge ${map[status]||''}">${label[status]||status}</span>`;
+}
+
+function rolBadge(rol) {
+  const map = { SUPER_ADMIN:'badge-super', FISCALIZADOR:'badge-fiscal', ADMIN_ASOCIACION:'badge-admin' };
+  return `<span class="badge ${map[rol]||''}">${ROLES[rol]||rol}</span>`;
+}
+
+function formatDate(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-CL', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+function formatDateTime(ts) {
+  if (!ts) return '—';
+  const d = new Date(ts);
+  return d.toLocaleString('es-CL', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+function updatePendingCount() {
+  const count = load('boxeadores').filter(b=>b.status==='PENDIENTE').length
+    + load('eventos').filter(e=>e.status==='PENDIENTE').length
+    + load('peleas').filter(p=>p.status==='PENDIENTE').length;
+  const el = document.getElementById('pending-count');
+  if (el) { el.textContent = count; el.style.display = count > 0 ? 'inline-block' : 'none'; }
+}
+
+// ── MODAL ──────────────────────────────────────────────────────────────────────
+function openModal(id) {
+  if (id === 'modal-pelea') {
+    // refresh selects
+    const evAprobados = load('eventos').filter(e=>e.status==='APROBADO');
+    fillSelect('p-evento', evAprobados, 'id', 'nombre');
+    const boxAprobados = load('boxeadores').filter(b=>b.status==='APROBADO');
+    fillSelect('p-rojo', boxAprobados, 'id', 'nombre');
+    fillSelect('p-azul', boxAprobados, 'id', 'nombre');
+  }
+  if (id === 'modal-boxeador') {
+    const editId = document.getElementById('boxeador-edit-id').value;
+    if (!editId) {
+      ['b-nombre','b-rut','b-nacimiento','b-gimnasio'].forEach(f=>{const el=document.getElementById(f);if(el)el.value='';});
+    }
+  }
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Close modal on overlay click
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+});
+
+// ── TOAST ──────────────────────────────────────────────────────────────────────
+function showToast(msg, type='info') {
+  const container = document.getElementById('toast');
+  const t = document.createElement('div');
+  t.className = `toast-item ${type}`;
+  t.textContent = msg;
+  container.appendChild(t);
+  setTimeout(() => t.remove(), 3500);
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+seedData();
+</script>
+</body>
+</html>
