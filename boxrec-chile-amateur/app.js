@@ -154,6 +154,10 @@ function addAudit(action, entity, entityId, desc) {
 let currentPendingTab = 'boxeadores';
 
 function showPage(page) {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-overlay')?.classList.remove('open');
+  }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');

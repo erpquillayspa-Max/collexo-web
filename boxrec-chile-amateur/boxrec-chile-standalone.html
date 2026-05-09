@@ -221,11 +221,20 @@ tr:hover td{background:rgba(255,255,255,.02);color:var(--white)}
 .reject-form textarea:focus{border-color:var(--red)}
 
 /* RESPONSIVE */
+.hamburger{display:none;background:none;border:none;color:var(--white);font-size:22px;cursor:pointer;padding:4px 8px;line-height:1}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:89}
+.sidebar-overlay.open{display:block}
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}
+  .hamburger{display:block}
+  .sidebar{transform:translateX(-100%);transition:transform .25s ease;z-index:90}
+  .sidebar.open{transform:translateX(0)}
   .main{margin-left:0}
   .form-row{grid-template-columns:1fr}
   .stats-grid{grid-template-columns:1fr 1fr}
+  .topbar-badge{display:none}
+  .page-title{font-size:20px}
+  table{font-size:12px}
+  th,td{padding:8px 10px}
 }
 
 .flag{display:inline-block;margin-right:4px}
@@ -275,6 +284,7 @@ tr:hover td{background:rgba(255,255,255,.02);color:var(--white)}
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="topbar-left">
+      <button class="hamburger" onclick="toggleSidebar()" id="hamburger-btn">☰</button>
       <div class="topbar-logo">BOX<span>REC</span></div>
       <div class="topbar-badge">🇨🇱 Amateur Chile</div>
     </div>
@@ -715,8 +725,28 @@ tr:hover td{background:rgba(255,255,255,.02);color:var(--white)}
   </div>
 </div>
 
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
 <div id="toast"></div>
 
+<script>
+function toggleSidebar(){
+  const s=document.getElementById('sidebar');
+  const o=document.getElementById('sidebar-overlay');
+  const open=s.classList.toggle('open');
+  o.classList.toggle('open',open);
+}
+function closeSidebar(){
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+// Close sidebar after selecting a page on mobile
+const _origShowPage = typeof showPage === 'function' ? showPage : null;
+document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.sidebar-item').forEach(el=>{
+    el.addEventListener('click',()=>{ if(window.innerWidth<=768) closeSidebar(); });
+  });
+});
+</script>
 <script>// ============================
 // BOXREC CHILE AMATEUR - app.js
 // ============================
@@ -873,6 +903,10 @@ function addAudit(action, entity, entityId, desc) {
 let currentPendingTab = 'boxeadores';
 
 function showPage(page) {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar')?.classList.remove('open');
+    document.getElementById('sidebar-overlay')?.classList.remove('open');
+  }
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
   document.getElementById('page-' + page).classList.add('active');
